@@ -219,19 +219,13 @@ export const advisors: TeamMember[] = [
     name: "Huo Yasi",
     position: "Senior Associate Director at IIE",
     photo: "/team/advisors/yasi.jpg",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/huo-yasi/",
   },
   {
     name: "Nazreen Coupland",
     position: "Assistant Manager at IIE",
     photo: "/team/advisors/naz.jpg",
-    linkedin: "",
-  },
-  {
-    name: "Lu Yi",
-    position: "Senior Manager at IIE",
-    photo: "/team/advisors/luyi.jpg",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/nazreen-annecoupland/",
   },
 ];
 
@@ -243,6 +237,4 @@ export const advisorsProfileSummary: Record<string, string> = {
     "Leading programs that inspire innovation, Yasi combines her rich educational background and a Harvard Master’s to foster impactful learning experiences and partnerships.",
   "Nazreen Coupland":
     "Nazreen brings her passion for community building to IIE, with experience at the Mental Health Film Festival and a Theatre Studies degree from NUS.",
-  "Lu Yi":
-    "Lu Yi combines expertise in finance and education to drive innovation and entrepreneurship. A First-Class Honours LSE graduate with a Master’s in Education, she is dedicated to shaping future leaders.",
 };
