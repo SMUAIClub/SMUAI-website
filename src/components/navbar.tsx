@@ -92,7 +92,7 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <a
-            href="https://api.opine.asia/telegram/survey/441d6327-6cf7-49d3-98d0-ccdb72f72667"
+            href="https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
@@ -126,7 +126,7 @@ export default function Navbar() {
           >
             <div className="space-y-2 py-4">
               <a
-                href="https://api.opine.asia/telegram/survey/441d6327-6cf7-49d3-98d0-ccdb72f72667"
+                href="https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df"
                 target="_blank"
                 rel="noreferrer"
                 className="mb-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-gold px-4 py-3 text-sm font-semibold text-brand-deep-blue"
