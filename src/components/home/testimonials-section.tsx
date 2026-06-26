@@ -1,7 +1,7 @@
 "use client";
 
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { testimonials } from "@/content/home";
 
 export default function TestimonialsSection() {
@@ -31,17 +31,18 @@ export default function TestimonialsSection() {
 
   const maxIndex = Math.max(0, testimonials.length - slidesToShow);
   const safeIndex = Math.min(activeIndex, maxIndex);
+  const pageStarts = useMemo(() => {
+    const starts: number[] = [];
+    for (let index = 0; index <= maxIndex; index += slidesToShow) {
+      starts.push(index);
+    }
 
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setActiveIndex((current) => {
-        const bounded = Math.min(current, Math.max(0, testimonials.length - slidesToShow));
-        return bounded >= Math.max(0, testimonials.length - slidesToShow) ? 0 : bounded + 1;
-      });
-    }, 3200);
+    if (starts.length === 0 || starts[starts.length - 1] !== maxIndex) {
+      starts.push(maxIndex);
+    }
 
-    return () => window.clearInterval(interval);
-  }, [slidesToShow]);
+    return Array.from(new Set(starts));
+  }, [maxIndex, slidesToShow]);
 
   const previous = () => {
     setActiveIndex((current) => (Math.min(current, maxIndex) === 0 ? maxIndex : Math.min(current, maxIndex) - 1));
@@ -130,6 +131,25 @@ export default function TestimonialsSection() {
             <ChevronRight size={18} />
           </button>
         </div>
+
+        {pageStarts.length > 1 ? (
+          <div className="mt-6 flex items-center justify-center gap-2">
+            {pageStarts.map((pageStart) => {
+              const isActive = safeIndex === pageStart;
+              return (
+                <button
+                  key={`testimonial-page-${pageStart}`}
+                  type="button"
+                  onClick={() => setActiveIndex(pageStart)}
+                  aria-label={`Go to testimonial group ${pageStarts.indexOf(pageStart) + 1}`}
+                  className={`h-2.5 rounded-full transition-all ${
+                    isActive ? "w-8 bg-brand-deep-blue" : "w-2.5 bg-brand-soft hover:bg-brand-slate/50"
+                  }`}
+                />
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </section>
   );

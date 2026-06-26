@@ -105,6 +105,7 @@ function buildOrbitRings(items: Partner[]): OrbitRingConfig[] {
 export default function PartnersPage() {
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [pausedRing, setPausedRing] = useState<number | null>(null);
+  const [isGeneratingDraft, setIsGeneratingDraft] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
@@ -138,29 +139,57 @@ export default function PartnersPage() {
     window.location.href = mailto;
   };
 
-  const handleGenerateDraft = () => {
-    const draft = [
-      `Hi SMUAI Team,`,
-      "",
-      `I'm ${contactForm.name || "[Your Name]"} from ${contactForm.organization || "[Organization]"}.`,
-      `I'm reaching out regarding ${contactForm.topic.toLowerCase()} collaboration opportunities.`,
-      "",
-      "Context:",
-      "- Goals:",
-      "- Proposed timeline:",
-      "- What support we are looking for:",
-      "",
-      "Looking forward to exploring this with your team.",
-      "",
-      "Best regards,",
-      contactForm.name || "[Your Name]",
-    ].join("\n");
+  const handleGenerateDraft = async () => {
+    setIsGeneratingDraft(true);
 
-    setContactForm((prev) => ({
-      ...prev,
-      subject: prev.subject || `SMUAI ${prev.topic} Collaboration`,
-      message: draft,
-    }));
+    try {
+      const response = await fetch("/api/contact-draft", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactForm),
+      });
+
+      if (!response.ok) {
+        throw new Error("Draft generation failed");
+      }
+
+      const data = (await response.json()) as { subject?: string; message?: string };
+      setContactForm((prev) => ({
+        ...prev,
+        subject: data.subject || prev.subject || `SMUAI ${prev.topic} Collaboration`,
+        message: data.message || prev.message,
+      }));
+    } catch {
+      const fallbackDraft = [
+        contactForm.message.trim() || `Hi SMUAI Team,`,
+        "",
+        contactForm.message.trim()
+          ? "A few helpful details we can align on:"
+          : `I'm ${contactForm.name || "[Your Name]"} from ${contactForm.organization || "[Organization]"}.`,
+        ...(contactForm.message.trim()
+          ? []
+          : [`I'm reaching out regarding ${contactForm.topic.toLowerCase()} collaboration opportunities.`]),
+        "",
+        "- Goals:",
+        "- Proposed timeline:",
+        "- Support or collaboration needed from SMUAI:",
+        "",
+        "Looking forward to exploring this together.",
+        "",
+        "Best regards,",
+        contactForm.name || "[Your Name]",
+      ].join("\n");
+
+      setContactForm((prev) => ({
+        ...prev,
+        subject: prev.subject || `SMUAI ${prev.topic} Collaboration`,
+        message: fallbackDraft,
+      }));
+    } finally {
+      setIsGeneratingDraft(false);
+    }
   };
 
   const previewBody = useMemo(
@@ -308,10 +337,11 @@ export default function PartnersPage() {
                   <button
                     type="button"
                     onClick={handleGenerateDraft}
+                    disabled={isGeneratingDraft}
                     className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-brand-cloud px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-soft"
                   >
                     <Sparkles size={15} />
-                    Smart Draft
+                    {isGeneratingDraft ? "Generating..." : "Smart Draft"}
                   </button>
                   <button
                     type="submit"

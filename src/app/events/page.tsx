@@ -16,7 +16,7 @@ export default function EventsPage() {
     [],
   );
   const [year, setYear] = useState(years[0]);
-  const [nowTs] = useState(() => Date.now());
+  const [nowTs, setNowTs] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
 
   const events = useMemo(
@@ -26,6 +26,10 @@ export default function EventsPage() {
       ),
     [year],
   );
+
+  useEffect(() => {
+    setNowTs(Date.now());
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -77,7 +81,7 @@ export default function EventsPage() {
 
             <div className="space-y-3">
               {events.map((ev) => {
-                const isEnded = nowTs > new Date(ev.endAt ?? ev.startAt).getTime();
+                const isEnded = nowTs !== null && nowTs > new Date(ev.endAt ?? ev.startAt).getTime();
                 const hasLuma = Boolean(ev.lumaLink);
                 const isLumaEnabled = hasLuma && !isEnded;
 
@@ -201,6 +205,7 @@ export default function EventsPage() {
 
                 <div className="pt-2">
                   {selectedEvent.lumaLink &&
+                  nowTs !== null &&
                   nowTs <= new Date(selectedEvent.endAt ?? selectedEvent.startAt).getTime() ? (
                     <a
                       href={selectedEvent.lumaLink}
@@ -216,7 +221,7 @@ export default function EventsPage() {
                       disabled
                       className="inline-flex cursor-not-allowed rounded-full bg-brand-soft px-4 py-2 text-sm font-semibold text-brand-slate"
                     >
-                      {nowTs > new Date(selectedEvent.endAt ?? selectedEvent.startAt).getTime()
+                      {nowTs !== null && nowTs > new Date(selectedEvent.endAt ?? selectedEvent.startAt).getTime()
                         ? "Event Ended"
                         : "Luma Link Soon"}
                     </button>
