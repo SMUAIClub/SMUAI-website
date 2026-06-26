@@ -1,0 +1,5 @@
+{
+  "tailwindCSS.experimental.configFile": {
+    "src/app/globals.css": "src/**/*.{ts,tsx,js,jsx,mdx}"
+  }
+}

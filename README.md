@@ -1,6 +1,6 @@
 # SMUAI Website Handover Guide
 
-This README is for future ExCo members who need to update the site quickly (events, team, membership link, etc.).
+This README is for future ExCo members who need to update the SMUAI website quickly without digging through the whole codebase.
 
 ## Tech Stack
 
@@ -17,178 +17,278 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-Useful checks:
+## Recommended Check Before Push / Deploy
 
 ```bash
-npm run lint
-npx tsc --noEmit
+npm run build
 ```
 
-## Main Content Files (Most Important)
+This catches both compile issues and most content/data mistakes.
+
+## Main Files To Know
+
+Content:
 
 - Home content: `src/content/home.ts`
 - Events data: `src/content/events.ts`
-- Team/ExCo/Advisors data: `src/content/team.ts`
+- Team / ExCo / advisors data: `src/content/team.ts`
 - Partners data: `src/content/partners.ts`
 
-Page UIs:
+Pages:
 
-- Home page: `src/app/page.tsx` + `src/components/home/*`
+- Home page: `src/app/page.tsx`
 - Events page: `src/app/events/page.tsx`
 - Team page: `src/app/team/page.tsx`
 - Partners page: `src/app/partners/page.tsx`
 
-Global layout/navigation:
+Reusable UI:
 
 - Navbar: `src/components/navbar.tsx`
-- Footer (membership section): `src/components/footer.tsx`
-- App layout (header spacing): `src/app/layout.tsx`
+- Footer: `src/components/footer.tsx`
+- Home hero: `src/components/home/hero-section.tsx`
+- Home mission/vision: `src/components/home/mission-vision-section.tsx`
+- Home testimonials: `src/components/home/testimonials-section.tsx`
+- Orbiting partners circles: `src/components/ui/orbiting-circles.tsx`
 
-## 1) Update Membership Form Link
+App shell:
 
-Currently membership CTA is in the footer.
+- Layout / header spacing: `src/app/layout.tsx`
+- Global styles: `src/app/globals.css`
 
-Edit: `src/components/footer.tsx`
+## Home Page
 
-- Find the Membership CTA `<a>` (currently mailto/TBC).
-- Replace `href` with your live form link (Google Form / Typeform / etc).
-- Update button text from `Membership Registration (TBC)` to something like `Join SMUAI`.
-- Optional: update the short paragraph above it.
+Main home page sections:
 
-If you also want a top-nav join link:
+- Hero logo + intro copy
+- Gallery strip
+- Mission and Vision
+- Testimonials
 
-- Edit `src/components/navbar.tsx`
-- Update the `Join SMUAI` button `href` (currently points to `/events`).
+Latest home intro copy is in:
 
-## 2) Update Events
+- `src/components/home/hero-section.tsx`
 
-Edit: `src/content/events.ts`
+Current positioning line:
 
-Each event should include:
+> SMUAI is a student-led AI community where students learn, build, and connect through innovation and industry.
 
-- `title`
-- `dateLabel` (display text)
-- `timeLabel` (display text)
-- `startAt` (ISO datetime, SG timezone)
-- `endAt` (ISO datetime, SG timezone)
-- `poster` (optional image path)
-- `lumaLink` (signup link)
+If you want to update the rotating gallery, edit:
 
-Important behavior on events page (`src/app/events/page.tsx`):
-
-- Events are auto-sorted by `startAt` (latest first).
-- Luma button is primary.
-- Button auto-disables after `endAt`.
-
-ISO datetime format example:
-
-```ts
-startAt: "2026-02-03T19:00:00+08:00",
-endAt: "2026-02-03T21:30:00+08:00",
-```
-
-### Event Poster Naming Convention
+- `src/content/home.ts`
 
 Use:
 
-- Folder: `public/events/25-26/` (or matching AY folder)
-- Filename: `YYYY-MM-DD-short-slug.jpg`
+- `heroGalleryImages`
+- `testimonials`
+
+## Join SMUAI Link
+
+The top navigation `Join SMUAI` button is in:
+
+- `src/components/navbar.tsx`
+
+It currently points to an external survey link, not email.
+
+If the registration link changes, update both:
+
+- desktop button
+- mobile menu button
+
+## Events
+
+Edit:
+
+- `src/content/events.ts`
+
+Current academic year groups in the file:
+
+- `26/27`
+- `25/26`
+
+Each event uses:
+
+- `title`
+- `dateLabel`
+- `timeLabel`
+- `startAt`
+- `endAt`
+- `poster`
+- `lumaLink`
+
+Important behavior on the Events page:
+
+- events are auto-sorted by `startAt` with latest first
+- signup buttons disable automatically after the event `endAt`
+- clicking an event opens a viewport-centered modal
+
+ISO SG-time example:
+
+```ts
+startAt: "2026-06-25T18:00:00+08:00",
+endAt: "2026-06-25T21:00:00+08:00",
+```
+
+### Event Poster Uploads
+
+Upload posters into:
+
+- `public/events/26-27/`
+- `public/events/25-26/`
+
+Use filename format:
+
+- `YYYY-MM-DD-short-slug.jpg`
 
 Example:
 
-- `2025-10-01-networking-night.jpg`
-- `2025-10-29-code-with-manusai.jpg`
+- `2026-06-25-openclaw-singapore-agentic-night.jpg`
 
-Then in `events.ts`:
+Then reference it like:
 
 ```ts
-poster: "/events/25-26/2025-10-01-networking-night.jpg"
+poster: "/events/26-27/2026-06-25-openclaw-singapore-agentic-night.jpg"
 ```
 
-## 3) Update Team / ExCo / Advisors
+Square posters work well on mobile.
 
-Edit: `src/content/team.ts`
+## Team / ExCo / Advisors
 
-### ExCo by Academic Year
+Edit:
+
+- `src/content/team.ts`
+
+The Team page reads all its content from that file.
 
 Structure:
 
+- `executiveCommitteeByYear["26/27"]`
 - `executiveCommitteeByYear["25/26"]`
-- `excoNumber` (e.g. `7th ExCo`)
-- `leadership` (Big 4)
-- `departments` with:
-  - `leads` (array, supports 1 or 2 leads)
-  - `executives` (array, can be empty)
+- `executiveCommitteeByYear["24/25"]`
 
-For each person:
+Each year contains:
+
+- `excoNumber`
+- `leadership` for Big 4
+- `departments`
+
+Each person can have:
 
 - `name`
 - `position`
 - `photo`
-- `linkedin` (optional but recommended)
+- `linkedin`
 
-### Advisor Section
-
-Also in `src/content/team.ts`:
+Advisors are also maintained in the same file:
 
 - `advisors`
 - `advisorsIntro`
 - `advisorsProfileSummary`
 
-## 4) Team Image Locations
+### Team Image Uploads
 
-Advisors:
+Advisor images:
 
-- `public/team/advisors/yasi.jpg`
-- `public/team/advisors/naz.jpg`
-- `public/team/advisors/luyi.jpg`
+- `public/team/advisors/`
 
-ExCo example folders:
+ExCo images:
 
+- `public/team/exco/26-27/`
 - `public/team/exco/25-26/`
 - `public/team/exco/24-25/`
 
-Use lowercase filenames with hyphens (no spaces).
+Use lowercase filenames with hyphens.
 
-## 5) Update Home Page
+The current Team page supports:
 
-Edit: `src/content/home.ts`
+- one or multiple leads
+- multiple executives
+- mobile-friendly stacked cards
 
-- `heroGalleryImages`: rotating hero images (paths in `public/gallery`)
-- `testimonials`: quote cards and marquee text
+## Partners
 
-Home section styling/components:
+Edit:
 
-- `src/components/home/hero-section.tsx`
-- `src/components/home/mission-vision-section.tsx`
-- `src/components/home/testimonials-section.tsx`
+- `src/content/partners.ts`
 
-## 6) Update Partners
-
-Edit: `src/content/partners.ts`
-
-Each partner:
+Each partner currently uses:
 
 - `name`
 - `website`
-- `tagline` (optional)
-- `logo` (optional, if later used in UI)
+- `linkedin`
+- `description`
+- `logo`
 
-## 7) Before You Deploy
+Partners page behavior:
 
-Run:
+- mobile view uses a grid
+- desktop view uses 3 orbiting rings
+- clicking a logo opens a viewport-centered modal
+- orbit pauses only when hovering a logo directly
 
-```bash
-npm run lint
-npx tsc --noEmit
+Partner logo images live in:
+
+- `public/partners/`
+
+## Partners Contact Form / Smart Draft
+
+The Partners page includes a contact form with a `Smart Draft` button.
+
+Files:
+
+- page UI: `src/app/partners/page.tsx`
+- API route: `src/app/api/contact-draft/route.ts`
+
+Current behavior:
+
+- if the user already typed a draft, Smart Draft improves it instead of overwriting it
+- the route tries Gemini first
+- if Gemini fails, it falls back to a local draft template
+
+### Environment Variable
+
+Set this locally and on Vercel:
+
+```env
+GEMINI_API_KEY=your_key_here
 ```
 
-Then deploy as usual.
+Important:
 
-## Quick Monthly Checklist
+- keep the API key server-side only
+- do not expose it with `NEXT_PUBLIC_`
 
-1. Add latest event with `startAt/endAt` and `lumaLink`.
-2. Upload event poster and set `poster` path.
-3. Check Team page for latest ExCo updates and LinkedIn links.
-4. Update membership form link if intake opens/closes.
-5. Run lint + typecheck before push.
+## Mobile / Responsive Notes
+
+The site has already been adjusted for mobile in these areas:
+
+- Home hero spacing
+- Events cards and modal
+- Team stacked card layout
+- Partners mobile logo grid and modal
+- Testimonial manual controls
+
+If you make major layout changes, re-check mobile view on:
+
+- Home
+- Team
+- Events
+- Partners
+
+## Deployment
+
+For Vercel:
+
+1. Push your latest code.
+2. Add `GEMINI_API_KEY` in Project Settings if Smart Draft should use Gemini.
+3. Deploy.
+
+For the current project, no other secret is required.
+
+## Quick Update Checklist
+
+1. Update upcoming or completed events in `src/content/events.ts`.
+2. Upload matching event posters into the correct `public/events/<ay>/` folder.
+3. Update ExCo names / roles / photos in `src/content/team.ts`.
+4. Update partner entries and logos in `src/content/partners.ts`.
+5. Check the `Join SMUAI` link in `src/components/navbar.tsx`.
+6. Run `npm run build` before pushing.
