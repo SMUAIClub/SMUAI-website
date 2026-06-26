@@ -201,9 +201,10 @@ export default function PartnersPage() {
   );
 
   return (
-    <div className="relative left-1/2 w-screen -translate-x-1/2">
-      <section className="relative flex min-h-[calc(100svh-72px)] flex-col justify-start bg-brand-cloud px-5 pb-6 pt-6 lg:px-8 lg:pb-8 lg:pt-8">
-        <div className="relative mx-auto w-full max-w-[1320px]">
+    <>
+      <div className="relative left-1/2 w-screen -translate-x-1/2">
+        <section className="relative flex min-h-[calc(100svh-72px)] flex-col justify-start bg-brand-cloud px-5 pb-6 pt-6 lg:px-8 lg:pb-8 lg:pt-8">
+          <div className="relative mx-auto w-full max-w-[1320px]">
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Partners</p>
             <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
@@ -246,11 +247,11 @@ export default function PartnersPage() {
               </OrbitingCircles>
             ))}
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section className="bg-white px-5 py-10 lg:px-8">
-        <div className="mx-auto w-full max-w-[1320px]">
+        <section className="bg-white px-5 py-10 lg:px-8">
+          <div className="mx-auto w-full max-w-[1320px]">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Contact</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">Reach Out To Us</h2>
@@ -378,8 +379,9 @@ export default function PartnersPage() {
               </pre>
             </aside>
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+      </div>
 
       {selectedPartner && (
         <div
@@ -450,6 +452,6 @@ export default function PartnersPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

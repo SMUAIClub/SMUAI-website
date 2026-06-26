@@ -20,7 +20,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
-  const [pillStyle, setPillStyle] = useState({ width: 0, x: 0, opacity: 0 });
+  const [pillStyle, setPillStyle] = useState({ width: 0, left: 0, opacity: 0 });
 
   useEffect(() => {
     const updatePill = () => {
@@ -32,9 +32,12 @@ export default function Navbar() {
         return;
       }
 
+      const navRect = nav.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+
       setPillStyle({
-        width: activeItem.offsetWidth,
-        x: activeItem.offsetLeft,
+        width: itemRect.width,
+        left: itemRect.left - navRect.left,
         opacity: 1,
       });
     };
@@ -59,12 +62,13 @@ export default function Navbar() {
           <motion.span
             aria-hidden="true"
             className="absolute top-1 bottom-1 rounded-full bg-brand-gold"
+            initial={false}
             animate={{
-              x: pillStyle.x,
+              left: pillStyle.left,
               width: pillStyle.width,
               opacity: pillStyle.opacity,
             }}
-            transition={{ type: "spring", stiffness: 420, damping: 34 }}
+            transition={{ type: "spring", stiffness: 500, damping: 42, mass: 0.7 }}
           />
           {navItems.map((item) => {
             const isActive = pathname === item.href;

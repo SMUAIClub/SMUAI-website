@@ -46,7 +46,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[calc(100svh-78px)] flex-col justify-center overflow-hidden bg-white pt-8 sm:pt-12">
+    <section className="relative flex min-h-0 flex-col justify-start overflow-hidden bg-white pb-8 pt-6 sm:pb-12 sm:pt-10 lg:min-h-[calc(100svh-78px)] lg:justify-center">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(27,43,84,0.06),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(81,97,133,0.08),transparent_44%)]" />
       <div className="absolute inset-0 hidden opacity-80 sm:block">
         <Gravity attractorStrength={0} cursorStrength={0.00032} cursorFieldRadius={180} className="h-full w-full" addTopWall={false}>
@@ -66,33 +66,33 @@ export default function HeroSection() {
 
       <div className="relative mx-auto flex w-full max-w-[1320px] flex-col items-center px-5 text-center lg:px-8">
         <div className="max-w-4xl">
-          <div className="relative mx-auto inline-flex overflow-hidden rounded-[28px] border border-brand-soft/80 px-5 py-4 shadow-[0_28px_60px_-48px_rgba(27,43,84,0.55)]">
+          <div className="relative mx-auto inline-flex overflow-hidden rounded-[24px] border border-brand-soft/80 px-4 py-3 shadow-[0_28px_60px_-48px_rgba(27,43,84,0.55)] sm:rounded-[28px] sm:px-5 sm:py-4">
             <Image
               src="/brand/smuai_navy_logo.png"
               alt="SMUAI"
               width={420}
               height={131}
               priority
-              className="relative z-10 mx-auto h-auto w-[240px] sm:w-[340px] lg:w-[420px]"
+              className="relative z-10 mx-auto h-auto w-[220px] sm:w-[340px] lg:w-[420px]"
             />
           </div>
-          <p className="mx-auto mt-8 max-w-3xl text-[17px] leading-relaxed text-brand-slate sm:mt-12 sm:text-[20px]">
-            SMUAI is a student-led ThinkTank that facilitates the sharing of ideas in the field of Artificial Intelligence.
+          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-brand-slate sm:mt-10 sm:text-[20px]">
+            SMUAI is a student-led AI community where students learn, build, and connect through innovation and industry.
           </p>
-          <p className="mx-auto mt-4 max-w-3xl text-[17px] leading-relaxed text-brand-slate sm:text-[20px]">
+          <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-brand-slate sm:mt-4 sm:text-[20px]">
             We are proudly supported by the Singapore Management University&apos;s Institute of Innovation and Entrepreneurship (SMU
             IIE).
           </p>
         </div>
       </div>
 
-      <div className="relative mt-8 w-full overflow-hidden py-4 sm:mt-14 sm:py-10">
+      <div className="relative mt-6 w-full overflow-hidden py-3 sm:mt-14 sm:py-10">
         <div className="mx-auto block w-full max-w-[1320px] px-5 sm:hidden">
           <div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {heroGalleryImages.slice(0, 5).map((src, index) => (
               <div
                 key={`${src}-${index}`}
-                className="relative aspect-[4/5] w-[44vw] min-w-[150px] max-w-[190px] flex-none snap-start overflow-hidden rounded-2xl border border-brand-soft bg-brand-cloud shadow-[0_20px_36px_-30px_rgba(27,43,84,0.35)]"
+                className="relative aspect-[4/5] w-[42vw] min-w-[138px] max-w-[176px] flex-none snap-start overflow-hidden rounded-2xl border border-brand-soft bg-brand-cloud shadow-[0_20px_36px_-30px_rgba(27,43,84,0.35)]"
               >
                 <Image src={src} alt="SMUAI gallery" fill sizes="(max-width: 640px) 44vw" className="object-cover" />
               </div>
