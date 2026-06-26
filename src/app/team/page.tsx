@@ -60,7 +60,7 @@ export default function TeamPage() {
 
   return (
     <div className="relative left-1/2 w-screen -translate-x-1/2">
-      <section className="bg-white px-5 py-12 text-brand-deep-blue lg:px-8">
+      <section className="bg-white px-5 py-6 text-brand-deep-blue lg:px-8 lg:py-8">
         <div className="mx-auto w-full max-w-[1320px] space-y-8">
           <div className="space-y-4">
             <div className="max-w-3xl">
@@ -163,11 +163,11 @@ export default function TeamPage() {
             </a>
           </div>
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-6 sm:grid-cols-2">
             {advisors.map((advisor) => (
               <article
                 key={advisor.name}
-                className="rounded-3xl border border-brand-soft bg-white p-5 shadow-[0_25px_50px_-40px_rgba(27,43,84,0.55)]"
+                className="rounded-3xl border border-brand-soft bg-white p-5 shadow-[0_25px_50px_-40px_rgba(27,43,84,0.55)] sm:p-6"
               >
                 <div className="aspect-[3/4] w-full overflow-hidden rounded-xl bg-brand-soft">
                   {advisor.photo ? (
@@ -177,7 +177,7 @@ export default function TeamPage() {
                       className="h-full w-full object-cover"
                       width={640}
                       height={640}
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      sizes="(min-width: 640px) 40vw, 100vw"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center text-xs text-brand-slate">
