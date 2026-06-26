@@ -71,7 +71,7 @@ export default function TeamPage() {
               <p className="mt-3 text-sm text-brand-slate">{executiveLabel}</p>
             </div>
 
-            <div className="ml-auto w-full max-w-xs">
+            <div className="w-full max-w-xs md:ml-auto">
               <div className="relative">
                 <select
                   value={year}

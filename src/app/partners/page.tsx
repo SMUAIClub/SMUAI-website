@@ -19,31 +19,92 @@ const contactTopics = [
 function PartnerNode({
   partner,
   onOpen,
+  onHoverChange,
+  compact = false,
 }: {
   partner: Partner;
   onOpen: (partner: Partner) => void;
+  onHoverChange?: (hovered: boolean) => void;
+  compact?: boolean;
 }) {
   const { name, logo } = partner;
   return (
     <button
       type="button"
       onClick={() => onOpen(partner)}
+      onMouseEnter={() => onHoverChange?.(true)}
+      onMouseLeave={() => onHoverChange?.(false)}
+      onFocus={() => onHoverChange?.(true)}
+      onBlur={() => onHoverChange?.(false)}
       aria-label={name}
-      className="flex h-full w-full items-center justify-center rounded-full p-2 text-center shadow-[0_18px_30px_-24px_rgba(27,43,84,0.6)] transition hover:scale-105"
+      className={`flex items-center justify-center rounded-full p-2 text-center shadow-[0_18px_30px_-24px_rgba(27,43,84,0.6)] transition hover:scale-105 ${
+        compact ? "h-full w-full" : "h-full w-full"
+      }`}
     >
       {logo ? (
         <div className="relative h-full w-full overflow-hidden rounded-full">
-          <Image src={logo} alt={name} fill className="object-cover" sizes="92px" />
+          <Image src={logo} alt={name} fill className="object-cover" sizes={compact ? "33vw" : "112px"} />
         </div>
       ) : (
-        <span className="text-xs font-semibold leading-tight text-brand-deep-blue">{name}</span>
+        <span className="px-1 text-xs font-semibold leading-tight text-brand-deep-blue">{name}</span>
       )}
     </button>
   );
 }
 
+type OrbitRingConfig = {
+  partners: Partner[];
+  radius: number;
+  iconSize: number;
+  speed: number;
+  reverse?: boolean;
+};
+
+function buildOrbitRings(items: Partner[]): OrbitRingConfig[] {
+  const capacities = [8, 7, 3];
+  const iconSizes = [88, 80, 70];
+  const speeds = [0.85, 1, 1.14];
+  const gapRatio = 0.35;
+  const targetOuterRadius = 248;
+  const radialPadding = 24;
+  const rings: OrbitRingConfig[] = [];
+
+  const rawRadii = capacities.map(
+    (capacity, index) => (capacity * iconSizes[index] * (1 + gapRatio)) / (2 * Math.PI),
+  );
+  const rawOuterRadius = rawRadii[0];
+  const radiusScale = targetOuterRadius / rawOuterRadius;
+  const scaledRadii = rawRadii.map((radius) => radius * radiusScale);
+  const adjustedRadii = [...scaledRadii];
+
+  for (let index = 1; index < adjustedRadii.length; index += 1) {
+    const minGap = (iconSizes[index - 1] + iconSizes[index]) / 2 + radialPadding;
+    adjustedRadii[index] = Math.min(adjustedRadii[index], adjustedRadii[index - 1] - minGap);
+  }
+
+  let start = 0;
+  capacities.forEach((capacity, index) => {
+    if (start >= items.length) {
+      return;
+    }
+
+    const end = Math.min(start + capacity, items.length);
+    rings.push({
+      partners: items.slice(start, end),
+      radius: Math.round(adjustedRadii[index]),
+      iconSize: iconSizes[index],
+      speed: speeds[index],
+      reverse: index % 2 === 1,
+    });
+    start = end;
+  });
+
+  return rings;
+}
+
 export default function PartnersPage() {
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+  const [pausedRing, setPausedRing] = useState<number | null>(null);
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
@@ -52,9 +113,7 @@ export default function PartnersPage() {
     topic: "General",
     message: "",
   });
-  const ring1 = useMemo(() => partners.slice(0, 9), []);
-  const ring2 = useMemo(() => partners.slice(9, 15), []);
-  const ring3 = useMemo(() => partners.slice(15, 18), []);
+  const orbitRings = useMemo(() => buildOrbitRings(partners), []);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -124,49 +183,39 @@ export default function PartnersPage() {
             <p className="mt-3 text-sm text-brand-slate">Organizations we have collaborated with.</p>
           </div>
 
-          <div className="group/orbit relative mx-auto mt-2 flex h-[520px] w-full max-w-[1220px] items-center justify-center overflow-visible sm:h-[560px] lg:h-[620px]">
-          {ring1.length > 0 && (
-            <OrbitingCircles
-              radius={250}
-              path
-              iconSize={92}
-              speed={0.8}
-              className="z-20 group-hover/orbit:[animation-play-state:paused]"
-            >
-              {ring1.map((partner) => (
-                <PartnerNode key={`${partner.name}-ring1`} partner={partner} onOpen={setSelectedPartner} />
-              ))}
-            </OrbitingCircles>
-          )}
+          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:hidden">
+            {partners.map((partner) => (
+              <div
+                key={`${partner.name}-mobile`}
+                className="flex aspect-square items-center justify-center rounded-3xl bg-white p-4 text-center shadow-[0_24px_36px_-30px_rgba(27,43,84,0.35)]"
+              >
+                <PartnerNode partner={partner} onOpen={setSelectedPartner} compact />
+              </div>
+            ))}
+          </div>
 
-          {ring2.length > 0 && (
-            <OrbitingCircles
-              radius={160}
-              path
-              reverse
-              iconSize={92}
-              speed={1}
-              className="z-20 group-hover/orbit:[animation-play-state:paused]"
-            >
-              {ring2.map((partner) => (
-                <PartnerNode key={`${partner.name}-ring2`} partner={partner} onOpen={setSelectedPartner} />
-              ))}
-            </OrbitingCircles>
-          )}
-
-          {ring3.length > 0 && (
-            <OrbitingCircles
-              radius={55}
-              path
-              iconSize={92}
-              speed={1.2}
-              className="z-20 group-hover/orbit:[animation-play-state:paused]"
-            >
-              {ring3.map((partner) => (
-                <PartnerNode key={`${partner.name}-ring3`} partner={partner} onOpen={setSelectedPartner} />
-              ))}
-            </OrbitingCircles>
-          )}
+          <div className="relative mx-auto mt-4 hidden h-[560px] w-full max-w-[1180px] overflow-visible md:block lg:h-[620px]">
+            {orbitRings.map((ring, ringIndex) => (
+              <OrbitingCircles
+                key={`orbit-ring-${ringIndex}`}
+                radius={ring.radius}
+                path
+                reverse={ring.reverse}
+                iconSize={ring.iconSize}
+                speed={ring.speed}
+                paused={pausedRing === ringIndex}
+                className="z-20"
+              >
+                {ring.partners.map((partner) => (
+                  <PartnerNode
+                    key={`${partner.name}-ring-${ringIndex}`}
+                    partner={partner}
+                    onOpen={setSelectedPartner}
+                    onHoverChange={(hovered) => setPausedRing(hovered ? ringIndex : null)}
+                  />
+                ))}
+              </OrbitingCircles>
+            ))}
           </div>
         </div>
       </section>
@@ -294,7 +343,7 @@ export default function PartnersPage() {
                   {[contactForm.name, contactForm.email, contactForm.organization].filter(Boolean).join(" • ") || "—"}
                 </span>
               </p>
-              <pre className="mt-4 max-h-[290px] overflow-auto whitespace-pre-wrap rounded-xl bg-brand-cloud p-3 text-sm leading-relaxed text-brand-deep-blue">
+              <pre className="mt-4 max-h-[240px] overflow-auto whitespace-pre-wrap rounded-xl bg-brand-cloud p-3 text-sm leading-relaxed text-brand-deep-blue sm:max-h-[290px]">
                 {previewBody}
               </pre>
             </aside>

@@ -46,9 +46,9 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[calc(100svh-78px)] flex-col justify-center overflow-hidden bg-white pt-12">
+    <section className="relative flex min-h-[calc(100svh-78px)] flex-col justify-center overflow-hidden bg-white pt-8 sm:pt-12">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(27,43,84,0.06),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(81,97,133,0.08),transparent_44%)]" />
-      <div className="absolute inset-0 opacity-80">
+      <div className="absolute inset-0 hidden opacity-80 sm:block">
         <Gravity attractorStrength={0} cursorStrength={0.00032} cursorFieldRadius={180} className="h-full w-full" addTopWall={false}>
           {heroParticles.map((particle, index) => (
             <MatterBody
@@ -73,21 +73,34 @@ export default function HeroSection() {
               width={420}
               height={131}
               priority
-              className="relative z-10 mx-auto h-auto w-[270px] sm:w-[340px] lg:w-[420px]"
+              className="relative z-10 mx-auto h-auto w-[240px] sm:w-[340px] lg:w-[420px]"
             />
           </div>
-          <p className="mx-auto mt-12 max-w-3xl text-[20px] leading-relaxed text-brand-slate">
+          <p className="mx-auto mt-8 max-w-3xl text-[17px] leading-relaxed text-brand-slate sm:mt-12 sm:text-[20px]">
             SMUAI is a student-led ThinkTank that facilitates the sharing of ideas in the field of Artificial Intelligence.
           </p>
-          <p className="mx-auto mt-4 max-w-3xl text-[20px] leading-relaxed text-brand-slate">
+          <p className="mx-auto mt-4 max-w-3xl text-[17px] leading-relaxed text-brand-slate sm:text-[20px]">
             We are proudly supported by the Singapore Management University&apos;s Institute of Innovation and Entrepreneurship (SMU
             IIE).
           </p>
         </div>
       </div>
 
-      <div className="relative mt-14 w-full overflow-hidden py-10">
-        <div className="mx-auto h-[260px] w-full max-w-[1320px] px-2 sm:px-5 lg:px-8">
+      <div className="relative mt-8 w-full overflow-hidden py-4 sm:mt-14 sm:py-10">
+        <div className="mx-auto block w-full max-w-[1320px] px-5 sm:hidden">
+          <div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {heroGalleryImages.slice(0, 5).map((src, index) => (
+              <div
+                key={`${src}-${index}`}
+                className="relative aspect-[4/5] w-[44vw] min-w-[150px] max-w-[190px] flex-none snap-start overflow-hidden rounded-2xl border border-brand-soft bg-brand-cloud shadow-[0_20px_36px_-30px_rgba(27,43,84,0.35)]"
+              >
+                <Image src={src} alt="SMUAI gallery" fill sizes="(max-width: 640px) 44vw" className="object-cover" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mx-auto hidden h-[260px] w-full max-w-[1320px] px-2 sm:block sm:px-5 lg:px-8">
           <AnimatePresence initial={false}>
             {carouselItems.map((item, slotIndex) => {
               const slot = slots[slotIndex];
