@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import { Globe, Linkedin, Sparkles, X } from "lucide-react";
+import { Linkedin, Sparkles, X } from "lucide-react";
 import { partners } from "@/content/partners";
 import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import type { Partner } from "@/content/partners";
@@ -61,37 +61,28 @@ type OrbitRingConfig = {
 };
 
 function buildOrbitRings(items: Partner[]): OrbitRingConfig[] {
-  const capacities = [8, 7, 3];
-  const iconSizes = [88, 80, 70];
-  const speeds = [0.85, 1, 1.14];
-  const gapRatio = 0.35;
-  const targetOuterRadius = 248;
-  const radialPadding = 24;
+  const capacities = [10, 8, 5, 3];
+  const iconSizes = [68, 68, 68, 68];
+  const speeds = [0.42, 0.5, 0.58, 0.68];
+  const radii = [306, 220, 146, 60];
   const rings: OrbitRingConfig[] = [];
-
-  const rawRadii = capacities.map(
-    (capacity, index) => (capacity * iconSizes[index] * (1 + gapRatio)) / (2 * Math.PI),
-  );
-  const rawOuterRadius = rawRadii[0];
-  const radiusScale = targetOuterRadius / rawOuterRadius;
-  const scaledRadii = rawRadii.map((radius) => radius * radiusScale);
-  const adjustedRadii = [...scaledRadii];
-
-  for (let index = 1; index < adjustedRadii.length; index += 1) {
-    const minGap = (iconSizes[index - 1] + iconSizes[index]) / 2 + radialPadding;
-    adjustedRadii[index] = Math.min(adjustedRadii[index], adjustedRadii[index - 1] - minGap);
-  }
+  const innerRingPriority = ["AI Singapore", "Singapore Youth AI", "OpenClawSG"];
+  const prioritized = innerRingPriority
+    .map((name) => items.find((partner) => partner.name === name))
+    .filter((partner): partner is Partner => Boolean(partner));
+  const prioritizedNames = new Set(prioritized.map((partner) => partner.name));
+  const outerItems = items.filter((partner) => !prioritizedNames.has(partner.name));
 
   let start = 0;
-  capacities.forEach((capacity, index) => {
-    if (start >= items.length) {
+  capacities.slice(0, -1).forEach((capacity, index) => {
+    if (start >= outerItems.length) {
       return;
     }
 
-    const end = Math.min(start + capacity, items.length);
+    const end = Math.min(start + capacity, outerItems.length);
     rings.push({
-      partners: items.slice(start, end),
-      radius: Math.round(adjustedRadii[index]),
+      partners: outerItems.slice(start, end),
+      radius: radii[index],
       iconSize: iconSizes[index],
       speed: speeds[index],
       reverse: index % 2 === 1,
@@ -99,12 +90,23 @@ function buildOrbitRings(items: Partner[]): OrbitRingConfig[] {
     start = end;
   });
 
+  if (prioritized.length > 0) {
+    const innerIndex = capacities.length - 1;
+    rings.push({
+      partners: prioritized.slice(0, capacities[innerIndex]),
+      radius: radii[innerIndex],
+      iconSize: iconSizes[innerIndex],
+      speed: speeds[innerIndex],
+      reverse: innerIndex % 2 === 1,
+    });
+  }
+
   return rings;
 }
 
 export default function PartnersPage() {
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
-  const [pausedRing, setPausedRing] = useState<number | null>(null);
+  const [orbitsPaused, setOrbitsPaused] = useState(false);
   const [isGeneratingDraft, setIsGeneratingDraft] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -224,7 +226,7 @@ export default function PartnersPage() {
             ))}
           </div>
 
-          <div className="relative mx-auto mt-4 hidden h-[560px] w-full max-w-[1180px] overflow-visible md:block lg:h-[620px]">
+          <div className="relative mt-0 hidden h-[620px] w-full max-w-[1360px] overflow-visible md:block lg:h-[700px]">
             {orbitRings.map((ring, ringIndex) => (
               <OrbitingCircles
                 key={`orbit-ring-${ringIndex}`}
@@ -233,7 +235,7 @@ export default function PartnersPage() {
                 reverse={ring.reverse}
                 iconSize={ring.iconSize}
                 speed={ring.speed}
-                paused={pausedRing === ringIndex}
+                paused={orbitsPaused}
                 className="z-20"
               >
                 {ring.partners.map((partner) => (
@@ -241,7 +243,7 @@ export default function PartnersPage() {
                     key={`${partner.name}-ring-${ringIndex}`}
                     partner={partner}
                     onOpen={setSelectedPartner}
-                    onHoverChange={(hovered) => setPausedRing(hovered ? ringIndex : null)}
+                    onHoverChange={setOrbitsPaused}
                   />
                 ))}
               </OrbitingCircles>
@@ -407,27 +409,6 @@ export default function PartnersPage() {
             <p className="mt-3 text-sm leading-relaxed text-brand-slate">{selectedPartner.description}</p>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              {selectedPartner.website ? (
-                <a
-                  href={selectedPartner.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-brand-deep-blue px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-deep-blue/90"
-                >
-                  <Globe size={16} />
-                  Website
-                </a>
-              ) : (
-                <button
-                  type="button"
-                  disabled
-                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-brand-soft px-4 py-2 text-sm font-semibold text-brand-slate"
-                >
-                  <Globe size={16} />
-                  Website Soon
-                </button>
-              )}
-
               {selectedPartner.linkedin ? (
                 <a
                   href={selectedPartner.linkedin}
