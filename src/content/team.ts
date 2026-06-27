@@ -21,93 +21,153 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
   "26/27": {
     excoNumber: "8th ExCo",
     leadership: [
-      { name: "Eric Law", position: "President", photo: "/team/exco/26-27/president.jpg" },
-      { name: "Win Lei Thawdar", position: "Vice President", photo: "/team/exco/26-27/vice-president.jpg" },
-      { name: "Jasmine Cheong", position: "Honorary General Secretary", photo: "/team/exco/26-27/hgs.jpg" },
-      { name: "Su Myat Myat Htay (Sera)", position: "Honorary Finance Secretary", photo: "/team/exco/26-27/hfs.jpg" },
+      {
+        name: "Eric Law",
+        position: "President",
+        photo: "/team/exco/26-27/president.jpg",
+        linkedin: "https://www.linkedin.com/in/law-eric/",
+      },
+      {
+        name: "Win Lei Thawdar",
+        position: "Vice President",
+        photo: "/team/exco/26-27/vice-president.jpg",
+        linkedin: "https://www.linkedin.com/in/winleithawdar",
+      },
+      {
+        name: "Jasmine Cheong",
+        position: "Honorary General Secretary",
+        photo: "/team/exco/26-27/hgs.jpg",
+        linkedin: "https://www.linkedin.com/in/jasmine-ch",
+      },
+      {
+        name: "Su Myat Myat Htay (Sera)",
+        position: "Honorary Finance Secretary",
+        photo: "/team/exco/26-27/hfs.jpg",
+        linkedin: "https://www.linkedin.com/in/su-myat-myat-htay-7342a3271/",
+      },
     ],
     departments: [
       {
         name: "Partnerships",
-        leads: [{ name: "Isaac Pua", position: "Partnerships Lead", photo: "/team/exco/26-27/partnerships-lead.jpg" }],
+        leads: [
+          {
+            name: "Isaac Pua",
+            position: "Partnerships Lead",
+            photo: "/team/exco/26-27/partnerships-lead.jpg",
+            linkedin: "https://www.linkedin.com/in/isaacpua/",
+          },
+        ],
         executives: [
           {
             name: "Liu Zihan",
             position: "Partnerships Executive",
             photo: "/team/exco/26-27/partnerships-executive-1.jpg",
+            linkedin: "https://www.linkedin.com/in/zihan-liu-bb2bba3b4",
           },
           {
             name: "Makendra Prasad",
             position: "Partnerships Executive",
             photo: "/team/exco/26-27/partnerships-executive-2.jpg",
+            linkedin: "https://www.linkedin.com/in/subramanian-makendra-prasad/",
           },
           {
             name: "Palaash Jadav",
             position: "Partnerships Executive",
             photo: "/team/exco/26-27/partnerships-executive-3.jpg",
+            linkedin: "https://sg.linkedin.com/in/palaash-jadav",
           },
           {
             name: "Tan Ai Qi",
             position: "Partnerships Executive",
             photo: "/team/exco/26-27/partnerships-executive-4.jpg",
+            linkedin: "https://www.linkedin.com/in/ai-qi-tan",
           },
         ],
       },
       {
         name: "Programmes",
-        leads: [{ name: "Keane Travasso", position: "Programmes Lead", photo: "/team/exco/26-27/programmes-lead.jpg" }],
+        leads: [
+          {
+            name: "Keane Travasso",
+            position: "Programmes Lead",
+            photo: "/team/exco/26-27/programmes-lead.jpg",
+            linkedin: "https://www.linkedin.com/in/keanedt/",
+          },
+        ],
         executives: [
           {
             name: "Ang Cheng Zuo",
             position: "Programmes Executive",
             photo: "/team/exco/26-27/programmes-executive-1.jpg",
+            linkedin: "https://www.linkedin.com/in/ang-cheng-zuo",
           },
           {
             name: "Chelsea Gaol",
             position: "Programmes Executive",
             photo: "/team/exco/26-27/programmes-executive-2.jpg",
+            linkedin: "https://www.linkedin.com/in/chelseamalg",
           },
           {
             name: "William Hansel",
             position: "Programmes Executive",
             photo: "/team/exco/26-27/programmes-executive-3.jpg",
+            linkedin: "https://www.linkedin.com/in/whansel007",
           },
           {
             name: "Yang Dairu",
             position: "Programmes Executive",
             photo: "/team/exco/26-27/programmes-executive-4.jpg",
+            linkedin: "https://www.linkedin.com/in/dairu/",
           },
         ],
       },
       {
         name: "Marketing",
-        leads: [{ name: "Su Pyae Pyae Zaw (Suzan)", position: "Marketing Lead", photo: "/team/exco/26-27/marketing-lead.jpg" }],
+        leads: [
+          {
+            name: "Su Pyae Pyae Zaw (Suzan)",
+            position: "Marketing Lead",
+            photo: "/team/exco/26-27/marketing-lead.jpg",
+            linkedin: "https://www.linkedin.com/in/supyaepyaezaw/",
+          },
+        ],
         executives: [
           {
             name: "Alan Sebastian",
             position: "Marketing Executive",
             photo: "/team/exco/26-27/marketing-executive-1.jpg",
+            linkedin: "https://www.linkedin.com/in/alan-sebastian-bun",
           },
           {
             name: "Wunna Aung",
             position: "Marketing Executive",
             photo: "/team/exco/26-27/marketing-executive-2.jpg",
+            linkedin: "https://www.linkedin.com/in/wunna-ag",
           },
         ],
       },
       {
         name: "Research",
-        leads: [{ name: "Darrius Ng", position: "Research Lead", photo: "/team/exco/26-27/research-lead.jpg" }],
+        leads: [
+          {
+            name: "Darrius Ng",
+            position: "Research Lead",
+            photo: "/team/exco/26-27/research-lead.jpg",
+            linkedin: "https://www.linkedin.com/in/darriusng",
+          },
+        ],
         executives: [
           {
             name: "Chai Yi Khuen",
             position: "Research Executive",
             photo: "/team/exco/26-27/research-executive-1.jpg",
+            linkedin: "https://www.linkedin.com/in/chaiyikhuen/",
           },
           {
             name: "Anson Koh",
             position: "Research Executive",
             photo: "/team/exco/26-27/research-executive-2.jpg",
+            linkedin: "https://www.linkedin.com/in/ansonkohh/",
           },
         ],
       },
@@ -180,33 +240,33 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
   "24/25": {
     excoNumber: "6th ExCo",
     leadership: [
-      { name: "TBC", position: "President", photo: "/team/exco/24-25/president.jpg" },
-      { name: "TBC", position: "Vice-President", photo: "/team/exco/24-25/vice-president.jpg" },
-      { name: "TBC", position: "HGS", photo: "/team/exco/24-25/hgs.jpg" },
-      { name: "TBC", position: "HFS", photo: "/team/exco/24-25/hfs.jpg" },
+      { name: "Vaishnavi Singh", position: "President", photo: "/team/exco/24-25/president-1.jpg" },
+      { name: "Anson Koh", position: "Vice-President", photo: "/team/exco/24-25/vice-president-1.jpg" },
+      { name: "Maymunah M", position: "Honorary General Secretary", photo: "/team/exco/24-25/hgs-1.jpg" },
+      { name: "Kaung Htet Nyunt", position: "Honorary Finance Secretary", photo: "/team/exco/24-25/hfs-1.jpg" },
     ],
     departments: [
       {
         name: "Programmes",
         leads: [
-          { name: "TBC", position: "Programmes Lead", photo: "/team/exco/24-25/programmes-lead-1.jpg" },
-          { name: "TBC", position: "Programmes Lead", photo: "/team/exco/24-25/programmes-lead-2.jpg" },
+          { name: "Jayden Teoh", position: "Programmes Lead", photo: "/team/exco/24-25/programmes-lead-1.jpg" },
+          { name: "Lye Jia Jun", position: "Programmes Lead", photo: "/team/exco/24-25/programmes-lead-2.jpg" },
         ],
         executives: [],
       },
       {
         name: "Partnerships",
         leads: [
-          { name: "TBC", position: "Partnerships Lead", photo: "/team/exco/24-25/partnerships-lead-1.jpg" },
-          { name: "TBC", position: "Partnerships Lead", photo: "/team/exco/24-25/partnerships-lead-2.jpg" },
+          { name: "Ryan Teo", position: "Partnerships Lead", photo: "/team/exco/24-25/partnerships-lead-1.jpg" },
+          { name: "Shyn Lim", position: "Partnerships Lead", photo: "/team/exco/24-25/partnerships-lead-2.jpg" },
         ],
         executives: [],
       },
       {
         name: "Marketing",
         leads: [
-          { name: "TBC", position: "Marketing Lead", photo: "/team/exco/24-25/marketing-lead-1.jpg" },
-          { name: "TBC", position: "Marketing Lead", photo: "/team/exco/24-25/marketing-lead-2.jpg" },
+          { name: "Diya Desai", position: "Marketing Lead", photo: "/team/exco/24-25/marketing-lead-1.jpg" },
+          { name: "Sandra Yap", position: "Marketing Lead", photo: "/team/exco/24-25/marketing-lead-2.jpg" },
         ],
         executives: [],
       },
