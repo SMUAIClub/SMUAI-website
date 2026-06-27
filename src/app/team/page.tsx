@@ -30,7 +30,7 @@ export default function TeamPage() {
       ? "grid gap-5 md:grid-cols-2 xl:grid-cols-4"
       : "grid gap-5 md:grid-cols-2 xl:grid-cols-3";
 
-  const renderFeaturedCard = (member: TeamMember, key: string) => (
+  const renderFeaturedCard = (member: TeamMember, key: string, compact = false) => (
     <article
       key={key}
       className="overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)]"
@@ -52,7 +52,22 @@ export default function TeamPage() {
         )}
       </div>
       <div className="space-y-1 px-4 py-3">
-        <div className="font-semibold">{member.name}</div>
+        <div className={compact ? "space-y-2" : "flex items-start justify-between gap-3"}>
+          <div className="min-w-0 flex-1 text-[15px] font-semibold leading-snug text-balance sm:text-base">
+            {member.name}
+          </div>
+          {member.linkedin && (
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${member.name} LinkedIn`}
+              className="inline-flex shrink-0 self-start rounded-xl border border-brand-soft p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
+            >
+              <Linkedin size={16} />
+            </a>
+          )}
+        </div>
         <div className="text-sm text-brand-slate">{member.position}</div>
       </div>
     </article>
@@ -127,7 +142,7 @@ export default function TeamPage() {
                     {department.executives.length > 0 ? (
                       <div className="grid gap-3 sm:grid-cols-2">
                         {department.executives.map((member, index) =>
-                          renderFeaturedCard(member, `${department.name}-exec-${index}`),
+                          renderFeaturedCard(member, `${department.name}-exec-${index}`, true),
                         )}
                       </div>
                     ) : (
@@ -195,7 +210,7 @@ export default function TeamPage() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${advisor.name} LinkedIn`}
-                        className="rounded-full border border-brand-soft p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
+                        className="rounded-xl border border-brand-soft p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
                       >
                         <Linkedin size={16} />
                       </a>
