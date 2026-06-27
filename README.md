@@ -81,18 +81,25 @@ Use:
 - `heroGalleryImages`
 - `testimonials`
 
-## Join SMUAI Link
+## Membership Registration Link
 
-The top navigation `Join SMUAI` button is in:
+The membership registration CTA is used in:
 
 - `src/components/navbar.tsx`
+- `src/components/footer.tsx`
 
-It currently points to an external survey link, not email.
+Current button copy:
 
-If the registration link changes, update both:
+- navbar: `Join SMUAI`
+- footer: `Join as a Member`
 
-- desktop button
-- mobile menu button
+Both currently point to the external registration survey link.
+
+If the registration link changes, update:
+
+- desktop navbar button
+- mobile navbar menu button
+- footer CTA button
 
 ## Events
 
@@ -203,6 +210,13 @@ The current Team page supports:
 - one or multiple leads
 - multiple executives
 - mobile-friendly stacked cards
+- optional LinkedIn icons on member cards
+
+Current Team page behavior:
+
+- the year dropdown resets to the latest ExCo on refresh because it is local page state only
+- advisors use a centered 2-card layout
+- advisor cards and team cards show LinkedIn buttons when `linkedin` is present
 
 ## Partners
 
@@ -220,14 +234,21 @@ Each partner currently uses:
 
 Partners page behavior:
 
-- mobile view uses a grid
-- desktop view uses 3 orbiting rings
+- mobile view uses a compact 3-column logo grid
+- desktop view uses orbiting logo rings
 - clicking a logo opens a viewport-centered modal
-- orbit pauses only when hovering a logo directly
+- all orbit rings pause when hovering any logo
+- inner ring currently prioritizes `AI Singapore`, `Singapore Youth AI`, and `OpenClawSG`
+- partner modal now uses LinkedIn only, not website buttons
 
 Partner logo images live in:
 
 - `public/partners/`
+
+If a new logo file is added but does not appear:
+
+- make sure it is referenced in `src/content/partners.ts`
+- make sure the filename exactly matches the file in `public/partners/`
 
 ## Partners Contact Form / Smart Draft
 
@@ -266,6 +287,7 @@ The site has already been adjusted for mobile in these areas:
 - Team stacked card layout
 - Partners mobile logo grid and modal
 - Testimonial manual controls
+- Footer social/contact layout
 
 If you make major layout changes, re-check mobile view on:
 

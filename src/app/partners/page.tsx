@@ -43,7 +43,7 @@ function PartnerNode({
     >
       {logo ? (
         <div className="relative h-full w-full overflow-hidden rounded-full">
-          <Image src={logo} alt={name} fill className="object-cover" sizes={compact ? "33vw" : "112px"} />
+          <Image src={logo} alt={name} fill className="object-cover" sizes={compact ? "24vw" : "112px"} />
         </div>
       ) : (
         <span className="px-1 text-xs font-semibold leading-tight text-brand-deep-blue">{name}</span>
@@ -215,11 +215,11 @@ export default function PartnersPage() {
             <p className="mt-3 text-sm text-brand-slate">Organizations we have collaborated with.</p>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:hidden">
+          <div className="mt-6 grid grid-cols-3 gap-3 md:hidden">
             {partners.map((partner) => (
               <div
                 key={`${partner.name}-mobile`}
-                className="flex aspect-square items-center justify-center rounded-3xl bg-white p-4 text-center shadow-[0_24px_36px_-30px_rgba(27,43,84,0.35)]"
+                className="flex aspect-square items-center justify-center rounded-2xl bg-white p-2 text-center shadow-[0_24px_36px_-30px_rgba(27,43,84,0.35)]"
               >
                 <PartnerNode partner={partner} onOpen={setSelectedPartner} compact />
               </div>
