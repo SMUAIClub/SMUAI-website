@@ -17,6 +17,8 @@ export type ExecutiveCommitteeByYear = {
   departments: DepartmentGroup[];
 };
 
+const exco2627Placeholder = "/team/exco/26-27/placeholder_profile_v2.webp";
+
 export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> = {
   "26/27": {
     excoNumber: "8th ExCo",
@@ -24,25 +26,25 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
       {
         name: "Eric Law",
         position: "President",
-        photo: "/team/exco/26-27/president.jpg",
+        photo: exco2627Placeholder,
         linkedin: "https://www.linkedin.com/in/law-eric/",
       },
       {
         name: "Win Lei Thawdar",
         position: "Vice President",
-        photo: "/team/exco/26-27/vice-president.jpg",
+        photo: exco2627Placeholder,
         linkedin: "https://www.linkedin.com/in/winleithawdar",
       },
       {
         name: "Jasmine Cheong",
         position: "Honorary General Secretary",
-        photo: "/team/exco/26-27/hgs.jpg",
+        photo: exco2627Placeholder,
         linkedin: "https://www.linkedin.com/in/jasmine-ch",
       },
       {
         name: "Su Myat Myat Htay (Sera)",
         position: "Honorary Finance Secretary",
-        photo: "/team/exco/26-27/hfs.jpg",
+        photo: exco2627Placeholder,
         linkedin: "https://www.linkedin.com/in/su-myat-myat-htay-7342a3271/",
       },
     ],
@@ -53,7 +55,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Isaac Pua",
             position: "Partnerships Lead",
-            photo: "/team/exco/26-27/partnerships-lead.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/isaacpua/",
           },
         ],
@@ -61,25 +63,25 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Liu Zihan",
             position: "Partnerships Executive",
-            photo: "/team/exco/26-27/partnerships-executive-1.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/zihan-liu-bb2bba3b4",
           },
           {
             name: "Makendra Prasad",
             position: "Partnerships Executive",
-            photo: "/team/exco/26-27/partnerships-executive-2.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/subramanian-makendra-prasad/",
           },
           {
             name: "Palaash Jadav",
             position: "Partnerships Executive",
-            photo: "/team/exco/26-27/partnerships-executive-3.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://sg.linkedin.com/in/palaash-jadav",
           },
           {
             name: "Tan Ai Qi",
             position: "Partnerships Executive",
-            photo: "/team/exco/26-27/partnerships-executive-4.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/ai-qi-tan",
           },
         ],
@@ -90,7 +92,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Keane Travasso",
             position: "Programmes Lead",
-            photo: "/team/exco/26-27/programmes-lead.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/keanedt/",
           },
         ],
@@ -98,25 +100,25 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Ang Cheng Zuo",
             position: "Programmes Executive",
-            photo: "/team/exco/26-27/programmes-executive-1.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/ang-cheng-zuo",
           },
           {
             name: "Chelsea Gaol",
             position: "Programmes Executive",
-            photo: "/team/exco/26-27/programmes-executive-2.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/chelseamalg",
           },
           {
             name: "William Hansel",
             position: "Programmes Executive",
-            photo: "/team/exco/26-27/programmes-executive-3.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/whansel007",
           },
           {
             name: "Yang Dairu",
             position: "Programmes Executive",
-            photo: "/team/exco/26-27/programmes-executive-4.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/dairu/",
           },
         ],
@@ -127,7 +129,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Su Pyae Pyae Zaw (Suzan)",
             position: "Marketing Lead",
-            photo: "/team/exco/26-27/marketing-lead.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/supyaepyaezaw/",
           },
         ],
@@ -135,13 +137,13 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Alan Sebastian",
             position: "Marketing Executive",
-            photo: "/team/exco/26-27/marketing-executive-1.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/alan-sebastian-bun",
           },
           {
             name: "Wunna Aung",
             position: "Marketing Executive",
-            photo: "/team/exco/26-27/marketing-executive-2.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/wunna-ag",
           },
         ],
@@ -152,7 +154,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Darrius Ng",
             position: "Research Lead",
-            photo: "/team/exco/26-27/research-lead.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/darriusng",
           },
         ],
@@ -160,13 +162,13 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
           {
             name: "Chai Yi Khuen",
             position: "Research Executive",
-            photo: "/team/exco/26-27/research-executive-1.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/chaiyikhuen/",
           },
           {
             name: "Anson Koh",
             position: "Research Executive",
-            photo: "/team/exco/26-27/research-executive-2.jpg",
+            photo: exco2627Placeholder,
             linkedin: "https://www.linkedin.com/in/ansonkohh/",
           },
         ],

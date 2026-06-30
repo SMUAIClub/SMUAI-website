@@ -18,14 +18,14 @@ export const partners: Partner[] = [
     name: "ManusAI",
     description: "AI-focused organization building tools and experiences for modern workflows.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/manus-im/posts/?feedView=all",
     logo: "/partners/manusai.jpg",
   },
   {
     name: "Lytehouse",
     description: "Technology and innovation partner supporting applied AI learning.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/lytehouse-ai-sg/",
     logo: "/partners/lytehouse.jpg",
   },
   {
@@ -39,7 +39,7 @@ export const partners: Partner[] = [
     name: "Chat and Build",
     description: "Builder-first community focused on fast prototyping with AI.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/chatandbuild/",
     logo: "/partners/chat-and-build.jpg",
   },
   {
@@ -53,7 +53,7 @@ export const partners: Partner[] = [
     name: "Singapore AI Safety Hub",
     description: "Initiative advancing responsible AI and AI safety capabilities in Singapore.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/singapore-ai-safety-hub/",
     logo: "/partners/singapore-ai-safety-hub.jpg",
   },
   {
@@ -67,7 +67,7 @@ export const partners: Partner[] = [
     name: "Addlly AI",
     description: "AI company supporting productivity and content workflows.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/addllyai/",
     logo: "/partners/addlly-ai.jpg",
   },
   {
@@ -88,7 +88,7 @@ export const partners: Partner[] = [
     name: "Puffer AI",
     description: "AI startup exploring practical products and intelligent systems.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/puffer-pte-ltd/posts/?feedView=all",
     logo: "/partners/puffer-ai.jpg",
   },
   {
@@ -102,7 +102,7 @@ export const partners: Partner[] = [
     name: "GMI Cloud AI",
     description: "Cloud and AI infrastructure partner supporting experimentation, deployment, and scale.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/gmi-cloud-ai/",
     logo: "/partners/gmi-cloud-ai.jpg",
   },
   {
@@ -116,7 +116,7 @@ export const partners: Partner[] = [
     name: "OpenClawSG",
     description: "Community partner focused on collaborative AI building and practical experimentation.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/clawsingapore/",
     logo: "/partners/openclawsg.jpg",
   },
   {
@@ -130,7 +130,7 @@ export const partners: Partner[] = [
     name: "Qwen",
     description: "Foundation model ecosystem partner supporting modern AI application development.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/qwen/posts/?feedView=all",
     logo: "/partners/qwen.jpg",
   },
   {
@@ -148,17 +148,17 @@ export const partners: Partner[] = [
     logo: "/partners/singtel.jpg",
   },
   {
-    name: "Fingenesis",
+    name: "FinGenesis",
     description: "Fintech-focused organization working at the intersection of finance and technology.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/fingenesis/",
     logo: "/partners/fingenesis.jpg",
   },
   {
     name: "Asia AI Association",
     description: "Regional network supporting AI education, collaboration, and thought leadership.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/asia-ai-association/",
     logo: "/partners/asia-ai-association.jpg",
   },
   {
@@ -172,14 +172,14 @@ export const partners: Partner[] = [
     name: "Pantherpulse",
     description: "AI community and creative-tech platform exploring emerging AI applications.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/pantherpulse/",
     logo: "/partners/pantherpulse.jpg",
   },
   {
     name: "Singapore Youth AI",
     description: "AI ecosystem partner supporting community growth, learning, and builder collaboration.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/sgyouthai/",
     logo: "/partners/syai.jpg",
   },
   {
