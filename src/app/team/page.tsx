@@ -184,12 +184,12 @@ export default function TeamPage() {
                 key={advisor.name}
                 className="rounded-3xl border border-brand-soft bg-white p-5 shadow-[0_25px_50px_-40px_rgba(27,43,84,0.55)] sm:p-6"
               >
-                <div className="aspect-[3/4] w-full overflow-hidden rounded-xl bg-brand-soft">
+                <div className="aspect-[4/5] w-full overflow-hidden rounded-xl bg-brand-soft">
                   {advisor.photo ? (
                     <Image
                       src={advisor.photo}
                       alt={advisor.name}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover object-top"
                       width={640}
                       height={640}
                       sizes="(min-width: 640px) 40vw, 100vw"
