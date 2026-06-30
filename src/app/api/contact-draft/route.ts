@@ -113,28 +113,43 @@ async function generateDraftWithGemini(payload: Required<ContactDraftPayload>) {
     `Fallback subject if needed: ${fallback.subject}`,
   ].join("\n");
 
-  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+    {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-goog-api-key": apiKey,
     },
     body: JSON.stringify({
-      model: "gemini-3.5-flash",
-      input: prompt,
-      generation_config: {
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+      generationConfig: {
         temperature: 0.6,
-        thinking_level: "low",
+        responseMimeType: "application/json",
       },
     }),
-  });
+  },
+  );
 
   if (!response.ok) {
     return null;
   }
 
-  const data = (await response.json()) as { output_text?: string };
-  const parsed = extractJsonObject(data.output_text ?? "");
+  const data = (await response.json()) as {
+    candidates?: Array<{
+      content?: {
+        parts?: Array<{
+          text?: string;
+        }>;
+      };
+    }>;
+  };
+  const text = data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("") ?? "";
+  const parsed = extractJsonObject(text);
 
   if (!parsed?.message) {
     return null;

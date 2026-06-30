@@ -74,7 +74,7 @@ export const partners: Partner[] = [
     name: "Agnes AI",
     description: "AI partner supporting modern product experiences and applied AI initiatives.",
     website: "",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/company/agnesaisapiens/posts/?feedView=all",
     logo: "/partners/agnes-ai.jpg",
   },
   {

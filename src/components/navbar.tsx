@@ -50,14 +50,14 @@ export default function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand-deep-blue text-white backdrop-blur-xl">
-      <div className="relative mx-auto flex w-full max-w-[1380px] items-center justify-between px-5 py-4 lg:px-8">
-        <Link href="/" className="transition-transform duration-300 hover:scale-[1.02]">
+      <div className="relative mx-auto flex w-full max-w-[1380px] items-center justify-between px-5 py-4 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center lg:px-8">
+        <Link href="/" className="transition-transform duration-300 hover:scale-[1.02] md:justify-self-start">
           <BrandLogo />
         </Link>
 
         <nav
           ref={navRef}
-          className="relative hidden items-center gap-2 rounded-full border border-white/15 bg-white/6 p-1 md:flex"
+          className="relative hidden items-center gap-2 rounded-full border border-white/15 bg-white/6 p-1 md:flex md:justify-self-center"
         >
           <motion.span
             aria-hidden="true"
@@ -90,7 +90,7 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 md:flex md:justify-self-end">
           <a
             href="https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df"
             target="_blank"
