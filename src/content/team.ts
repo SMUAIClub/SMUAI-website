@@ -17,7 +17,7 @@ export type ExecutiveCommitteeByYear = {
   departments: DepartmentGroup[];
 };
 
-const exco2627Placeholder = "/team/exco/26-27/placeholder_profile_v2.webp";
+const exco2627Placeholder = "/team/exco/26-27/placeholder_profile_refresh.webp";
 
 export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> = {
   "26/27": {
