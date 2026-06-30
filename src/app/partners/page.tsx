@@ -194,13 +194,7 @@ export default function PartnersPage() {
     }
   };
 
-  const previewBody = useMemo(
-    () =>
-      [
-        contactForm.message || "Your message preview appears here.",
-      ].join("\n"),
-    [contactForm],
-  );
+  const hasDraftContent = Boolean(contactForm.subject.trim() || contactForm.message.trim());
 
   return (
     <>
@@ -350,35 +344,52 @@ export default function PartnersPage() {
                     type="submit"
                     className="inline-flex items-center rounded-full bg-brand-deep-blue px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-deep-blue/90"
                   >
-                    Compose Email
+                    Open In Email App
                   </button>
                 </div>
               </div>
             </form>
 
             <aside className="rounded-2xl border border-brand-soft bg-white p-4 text-brand-deep-blue shadow-[0_24px_40px_-34px_rgba(27,43,84,0.35)] sm:p-5">
-              <p className="text-xs uppercase tracking-[0.16em] text-brand-slate">Email Preview</p>
-              <p className="mt-3 text-sm text-brand-slate">
-                To: <span className="font-semibold text-brand-deep-blue">smuai@sa.smu.edu.sg</span>
-              </p>
-              <p className="mt-1 text-sm text-brand-slate">
-                Subject:{" "}
-                <span className="font-semibold text-brand-deep-blue">
-                  {contactForm.subject || `SMUAI ${contactForm.topic} Collaboration`}
-                </span>
-              </p>
-              <p className="mt-1 text-sm text-brand-slate">
-                Topic: <span className="font-semibold text-brand-deep-blue">{contactForm.topic}</span>
-              </p>
-              <p className="mt-1 text-sm text-brand-slate">
-                From:{" "}
-                <span className="font-semibold text-brand-deep-blue">
-                  {[contactForm.name, contactForm.email, contactForm.organization].filter(Boolean).join(" • ") || "—"}
-                </span>
-              </p>
-              <pre className="mt-4 max-h-[240px] overflow-auto whitespace-pre-wrap rounded-xl bg-brand-cloud p-3 text-sm leading-relaxed text-brand-deep-blue sm:max-h-[290px]">
-                {previewBody}
-              </pre>
+              <p className="text-xs uppercase tracking-[0.16em] text-brand-slate">How This Works</p>
+              <h3 className="mt-3 text-lg font-semibold text-brand-deep-blue">Draft with AI, then send in your own mailbox</h3>
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-brand-slate">
+                <p>
+                  Start by typing rough notes, goals, or bullet points in the message box. The more context you give,
+                  the better the AI draft will be.
+                </p>
+                <p>
+                  Click <span className="font-semibold text-brand-deep-blue">Smart Draft</span> to polish or expand
+                  what you wrote. If the message box is empty, it will generate a starter draft for you.
+                </p>
+                <p>
+                  When you are happy with the result, click{" "}
+                  <span className="font-semibold text-brand-deep-blue">Open In Email App</span>. This opens your own
+                  mail client with the subject and message prefilled, so you can review and send it yourself.
+                </p>
+              </div>
+
+              <div className="mt-5 rounded-2xl bg-brand-cloud p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-slate">Current Draft Status</p>
+                <p className="mt-3 text-sm text-brand-slate">
+                  To: <span className="font-semibold text-brand-deep-blue">smuai@sa.smu.edu.sg</span>
+                </p>
+                <p className="mt-1 text-sm text-brand-slate">
+                  Topic: <span className="font-semibold text-brand-deep-blue">{contactForm.topic}</span>
+                </p>
+                <p className="mt-1 text-sm text-brand-slate">
+                  Subject:{" "}
+                  <span className="font-semibold text-brand-deep-blue">
+                    {contactForm.subject || `SMUAI ${contactForm.topic} Collaboration`}
+                  </span>
+                </p>
+                <p className="mt-1 text-sm text-brand-slate">
+                  Draft:{" "}
+                  <span className="font-semibold text-brand-deep-blue">
+                    {hasDraftContent ? "Ready to review" : "Waiting for your notes"}
+                  </span>
+                </p>
+              </div>
             </aside>
           </div>
           </div>
