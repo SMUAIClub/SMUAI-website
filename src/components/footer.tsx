@@ -53,14 +53,12 @@ export default function Footer() {
             ))}
           </ul>
 
-          <a
-            href="https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df"
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            href="/membership"
             className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-brand-gold px-5 py-2.5 text-sm font-semibold text-brand-deep-blue transition hover:brightness-105"
           >
             Join as a Member
-          </a>
+          </Link>
         </div>
 
         <div className="lg:justify-self-center">

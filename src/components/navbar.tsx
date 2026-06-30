@@ -91,15 +91,13 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex md:justify-self-end">
-          <a
-            href="https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df"
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            href="/membership"
             className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
           >
             <Sparkles size={15} />
-            Join SMUAI
-          </a>
+            Join as a Member
+          </Link>
         </div>
 
         <button
@@ -125,15 +123,14 @@ export default function Navbar() {
             className="relative overflow-hidden border-t border-white/10 bg-brand-deep-blue/95 px-5 md:hidden"
           >
             <div className="space-y-2 py-4">
-              <a
-                href="https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df"
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href="/membership"
+                onClick={() => setMobileOpen(false)}
                 className="mb-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-gold px-4 py-3 text-sm font-semibold text-brand-deep-blue"
               >
                 <Sparkles size={15} />
-                Join SMUAI
-              </a>
+                Join as a Member
+              </Link>
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
