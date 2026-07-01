@@ -171,11 +171,14 @@ Structure:
 - `executiveCommitteeByYear["26/27"]`
 - `executiveCommitteeByYear["25/26"]`
 - `executiveCommitteeByYear["24/25"]`
+- `executiveCommitteeByYear["22/23"]`
+- `executiveCommitteeByYear["20/21"]`
+- `executiveCommitteeByYear["19/20"]`
 
 Each year contains:
 
 - `excoNumber`
-- `leadership` for Big 4
+- `leadership` for the leadership team
 - `departments`
 
 Each person can have:
@@ -202,15 +205,20 @@ ExCo images:
 - `public/team/exco/26-27/`
 - `public/team/exco/25-26/`
 - `public/team/exco/24-25/`
+- `public/team/exco/22-23/`
+- `public/team/exco/20-21/`
+- `public/team/exco/19-20/`
 
 Use lowercase filenames with hyphens.
 
 The current Team page supports:
 
+- leadership cards rendered first
 - one or multiple leads
 - multiple executives
 - mobile-friendly stacked cards
 - optional LinkedIn icons on member cards
+- fallback placeholder photos when `photo` is missing
 
 Current Team page behavior:
 
