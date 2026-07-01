@@ -25,15 +25,35 @@ export default function TeamPage() {
 
   const executiveCommittee = executiveCommitteeByYear[year];
   const executiveLabel = `AY${year} • ${executiveCommittee.excoNumber}`;
+  const leadershipGridClass =
+    executiveCommittee.leadership.length >= 4
+      ? "grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+      : executiveCommittee.leadership.length === 3
+        ? "mx-auto grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        : "mx-auto grid max-w-3xl gap-5 sm:grid-cols-2";
   const departmentGridClass =
     executiveCommittee.departments.length >= 4
       ? "grid gap-5 md:grid-cols-2 xl:grid-cols-4"
       : "grid gap-5 md:grid-cols-2 xl:grid-cols-3";
+  const hasAnyExecutives = executiveCommittee.departments.some(
+    (department) => department.executives.length > 0,
+  );
 
-  const renderFeaturedCard = (member: TeamMember, key: string, compact = false) => (
+  const renderFeaturedCard = (
+    member: TeamMember,
+    key: string,
+    compact = false,
+    tone: "default" | "primary" | "secondary" = "default",
+  ) => (
     <article
       key={key}
-      className="overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)]"
+      className={
+        tone === "primary"
+          ? "overflow-hidden rounded-3xl border border-brand-pale-gold bg-white shadow-[0_28px_55px_-40px_rgba(27,43,84,0.55)] ring-1 ring-brand-pale-gold/70"
+          : tone === "secondary"
+            ? "overflow-hidden rounded-3xl border border-brand-soft/70 bg-brand-cloud/55 shadow-[0_18px_36px_-34px_rgba(27,43,84,0.35)]"
+            : "overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)]"
+      }
     >
       <div className="aspect-square w-full overflow-hidden bg-brand-soft">
         {member.photo ? (
@@ -69,6 +89,11 @@ export default function TeamPage() {
           )}
         </div>
         <div className="text-sm text-brand-slate">{member.position}</div>
+        {tone !== "default" && (
+          <div className="pt-1 text-[11px] font-bold uppercase tracking-[0.2em] text-brand-slate">
+            {tone === "primary" ? "Core Leadership" : "Honorary Secretary"}
+          </div>
+        )}
       </div>
     </article>
   );
@@ -108,16 +133,23 @@ export default function TeamPage() {
           </div>
 
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Big 4</h2>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <h2 className="text-lg font-semibold">Leadership Team</h2>
+            <div className={leadershipGridClass}>
               {executiveCommittee.leadership.map((member, index) =>
-                renderFeaturedCard(member, `leadership-${member.position}-${index}`),
+                renderFeaturedCard(
+                  member,
+                  `leadership-${member.position}-${index}`,
+                  false,
+                  /president/i.test(member.position) ? "primary" : "secondary",
+                ),
               )}
             </div>
           </section>
 
           <section className="space-y-5">
-            <h2 className="text-lg font-semibold">Department Leads & Executives</h2>
+            <h2 className="text-lg font-semibold">
+              {hasAnyExecutives ? "Department Leads & Executives" : "Department Leads"}
+            </h2>
             <div className={departmentGridClass}>
               {executiveCommittee.departments.map((department) => (
                 <div key={department.name} className="rounded-3xl bg-brand-cloud p-5">
@@ -135,22 +167,18 @@ export default function TeamPage() {
                     )}
                   </div>
 
-                  <div className="mt-4 space-y-2">
-                    <div className="text-xs uppercase tracking-wide text-brand-slate">
-                      Executives ({department.executives.length})
-                    </div>
-                    {department.executives.length > 0 ? (
+                  {department.executives.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <div className="text-xs uppercase tracking-wide text-brand-slate">
+                        Executives ({department.executives.length})
+                      </div>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {department.executives.map((member, index) =>
                           renderFeaturedCard(member, `${department.name}-exec-${index}`, true),
                         )}
                       </div>
-                    ) : (
-                      <div className="rounded-2xl bg-white/75 p-3 text-sm text-brand-slate ring-1 ring-brand-soft/70">
-                        No executives for this ExCo year.
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

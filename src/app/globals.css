@@ -58,6 +58,21 @@ body {
   }
 }
 
+.countdown-ticker {
+  animation: countdown-pop 220ms ease-out;
+}
+
+@keyframes countdown-pop {
+  0% {
+    opacity: 0.35;
+    transform: translateY(10px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

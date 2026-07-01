@@ -64,7 +64,7 @@ function buildOrbitRings(items: Partner[]): OrbitRingConfig[] {
   const capacities = [10, 8, 5, 3];
   const iconSizes = [68, 68, 68, 68];
   const speeds = [0.42, 0.5, 0.58, 0.68];
-  const radii = [306, 236, 160, 60];
+  const radii = [300, 220, 140, 60];
   const rings: OrbitRingConfig[] = [];
   const innerRingPriority = ["AI Singapore", "Singapore Youth AI", "OpenClawSG"];
   const prioritized = innerRingPriority
