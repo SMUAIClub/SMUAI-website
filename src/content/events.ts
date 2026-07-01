@@ -82,6 +82,33 @@ export const eventsByYear: Record<string, EventItem[]> = {
       poster: "/events/26-27/2026-06-25-openclaw-singapore-agentic-night.jpg",
       lumaLink: "",
     },
+    {
+      title: "AWS x .HACK x SMUAI: Building AI Agents with Amazon Bedrock",
+      dateLabel: "Friday, 3 Jul 2026",
+      timeLabel: "6:30 PM - 9:00 PM",
+      startAt: "2026-07-03T18:30:00+08:00",
+      endAt: "2026-07-03T21:00:00+08:00",
+      poster: "/events/26-27/2026-07-03-aws-hack-smuai-building-ai-agents-amazon-bedrock.jpg",
+      lumaLink: "https://luma.com/ec1c6z10",
+    },
+    {
+      title: "Claude for Finance",
+      dateLabel: "Tuesday, 7 Jul 2026",
+      timeLabel: "6:00 PM - 9:00 PM",
+      startAt: "2026-07-07T18:00:00+08:00",
+      endAt: "2026-07-07T21:00:00+08:00",
+      poster: "/events/26-27/2026-07-07-claude-for-finance.jpg",
+      lumaLink: "https://luma.com/szbxv716",
+    },
+    {
+      title: "Alibaba Cloud x Qoder Hackathon Singapore 2026",
+      dateLabel: "Wednesday, 22 Jul 2026",
+      timeLabel: "10:00 AM - 5:00 PM",
+      startAt: "2026-07-22T10:00:00+08:00",
+      endAt: "2026-07-22T17:00:00+08:00",
+      poster: "/events/26-27/2026-07-22-alibaba-cloud-qoder-hackathon-singapore-2026.jpg",
+      lumaLink: "https://luma.com/92h6pyl1",
+    },
   ],
   "25/26": [
     {
