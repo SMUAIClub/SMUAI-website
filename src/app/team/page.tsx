@@ -38,6 +38,7 @@ export default function TeamPage() {
   const hasAnyExecutives = executiveCommittee.departments.some(
     (department) => department.executives.length > 0,
   );
+  const useCompactSingleLeadCards = ["22/23", "19/20"].includes(year);
 
   const renderFeaturedCard = (
     member: TeamMember,
@@ -157,14 +158,35 @@ export default function TeamPage() {
                   <div className="text-xs uppercase tracking-wide text-brand-slate">Lead</div>
                   <div
                     className={
-                      department.leads.length === 1
+                      department.leads.length === 1 && !useCompactSingleLeadCards
                         ? "mt-2"
                         : "mt-2 grid gap-3 sm:grid-cols-2"
                     }
                   >
-                    {department.leads.map((lead, index) =>
-                      renderFeaturedCard(lead, `${department.name}-lead-${index}`),
-                    )}
+                    {department.leads.map((lead, index) => (
+                      <div
+                        key={`${department.name}-lead-wrap-${index}`}
+                        className={
+                          department.leads.length === 1 && useCompactSingleLeadCards
+                            ? "sm:col-span-2 sm:flex sm:justify-center"
+                            : ""
+                        }
+                      >
+                        <div
+                          className={
+                            department.leads.length === 1 && useCompactSingleLeadCards
+                              ? "w-full sm:max-w-[calc(50%-0.375rem)]"
+                              : "w-full"
+                          }
+                        >
+                          {renderFeaturedCard(
+                            lead,
+                            `${department.name}-lead-${index}`,
+                            false,
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   {department.executives.length > 0 && (

@@ -17,7 +17,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-05-05T18:00:00+08:00",
       endAt: "2026-05-05T21:00:00+08:00",
       poster: "/events/26-27/2026-05-05-openclaw-singapore-lovable-edition.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/2d0tao6t",
     },
     {
       title: "Inside the Modern Lawyer’s AI Tech Stack: Claude, Copilot, OpenClaw and Legal AI in Practice",
@@ -26,7 +26,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-05-07T18:00:00+08:00",
       endAt: "2026-05-07T21:00:00+08:00",
       poster: "/events/26-27/2026-05-07-modern-lawyer-ai-tech-stack.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/lts2w30a",
     },
     {
       title: "Claude for Finance",
@@ -35,7 +35,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-06-04T18:00:00+08:00",
       endAt: "2026-06-04T21:00:00+08:00",
       poster: "/events/26-27/2026-06-04-claude-for-finance.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/zlc3dovw",
     },
     {
       title: "Hermes Agent Meetup",
@@ -44,7 +44,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-06-08T18:00:00+08:00",
       endAt: "2026-06-08T21:00:00+08:00",
       poster: "/events/26-27/2026-06-08-hermes-agent-meetup.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/mvpnuukl",
     },
     {
       title: "Go-to-Market Builders AI Build Lab - Singapore",
@@ -53,7 +53,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-06-12T18:00:00+08:00",
       endAt: "2026-06-12T21:00:00+08:00",
       poster: "/events/26-27/2026-06-12-go-to-market-builders-ai-build-lab-singapore.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/buildclub-nz66",
     },
     {
       title: "Agent Forge AI Hackathon: Build Production AI Systems",
@@ -62,7 +62,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-06-13T10:00:00+08:00",
       endAt: "2026-06-13T18:00:00+08:00",
       poster: "/events/26-27/2026-06-13-agent-forge-ai-hackathon.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/agentforgesg",
     },
     {
       title: "Agnes AI Hackathon @ SMU",
@@ -71,7 +71,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-06-15T09:00:00+08:00",
       endAt: "2026-06-15T18:00:00+08:00",
       poster: "/events/26-27/2026-06-15-agnes-ai-hackathon-smu.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/s9s8bjla",
     },
     {
       title: "OpenClaw Singapore Agentic Night",
@@ -80,7 +80,7 @@ export const eventsByYear: Record<string, EventItem[]> = {
       startAt: "2026-06-25T18:00:00+08:00",
       endAt: "2026-06-25T21:00:00+08:00",
       poster: "/events/26-27/2026-06-25-openclaw-singapore-agentic-night.jpg",
-      lumaLink: "",
+      lumaLink: "https://luma.com/dpd7ji1i",
     },
     {
       title: "AWS x .HACK x SMUAI: Building AI Agents with Amazon Bedrock",
