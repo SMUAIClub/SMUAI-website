@@ -20,7 +20,6 @@ export type ExecutiveCommitteeByYear = {
 const exco2627Root = "/team/exco/26-27";
 const exco2627Version = "20260702";
 const exco2627Photo = (file: string) => `${exco2627Root}/${file}?v=${exco2627Version}`;
-const exco2627Placeholder = exco2627Photo("placeholder_profile_refresh.webp");
 const exco2223Root = "/team/exco/22-23";
 const exco2021Root = "/team/exco/20-21";
 const exco1920Root = "/team/exco/19-20";

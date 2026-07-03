@@ -4,22 +4,31 @@ import { Quote } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { testimonials } from "@/content/home";
 
-const marqueeTestimonials = [...testimonials, ...testimonials, ...testimonials];
+const TESTIMONIAL_REPEAT_COUNT = 3;
+const TESTIMONIAL_SCROLL_SPEED = 0.045;
+const marqueeTestimonials = Array.from(
+  { length: TESTIMONIAL_REPEAT_COUNT },
+  () => testimonials,
+).flat();
+
+function getTestimonialsSegmentWidth(element: HTMLDivElement) {
+  return element.scrollWidth / TESTIMONIAL_REPEAT_COUNT;
+}
+
+function normalizeScrollPosition(element: HTMLDivElement) {
+  const segmentWidth = getTestimonialsSegmentWidth(element);
+
+  if (element.scrollLeft < segmentWidth * 0.5) {
+    element.scrollLeft += segmentWidth;
+  } else if (element.scrollLeft > segmentWidth * 1.5) {
+    element.scrollLeft -= segmentWidth;
+  }
+}
 
 export default function TestimonialsSection() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dragStateRef = useRef({ isDragging: false, startX: 0, startScrollLeft: 0 });
   const [isPaused, setIsPaused] = useState(false);
-
-  const normalizeScrollPosition = (element: HTMLDivElement) => {
-    const segmentWidth = element.scrollWidth / 3;
-
-    if (element.scrollLeft < segmentWidth * 0.5) {
-      element.scrollLeft += segmentWidth;
-    } else if (element.scrollLeft > segmentWidth * 1.5) {
-      element.scrollLeft -= segmentWidth;
-    }
-  };
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -28,11 +37,10 @@ export default function TestimonialsSection() {
       return;
     }
 
-    element.scrollLeft = element.scrollWidth / 3;
+    element.scrollLeft = getTestimonialsSegmentWidth(element);
 
     let frameId = 0;
     let lastTs = 0;
-    const speed = 0.045;
 
     const tick = (ts: number) => {
       if (!lastTs) {
@@ -43,7 +51,7 @@ export default function TestimonialsSection() {
       lastTs = ts;
 
       if (!isPaused && !dragStateRef.current.isDragging) {
-        element.scrollLeft += delta * speed;
+        element.scrollLeft += delta * TESTIMONIAL_SCROLL_SPEED;
         normalizeScrollPosition(element);
       }
 

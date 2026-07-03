@@ -1,14 +1,15 @@
 # SMUAI Website Handover Guide
 
-This README is for future ExCo members who need to update the SMUAI website quickly without digging through the whole codebase.
+This repo powers the SMUAI public site. Most updates are content and layout tweaks, so this guide is meant to help future ExCo members find the right file quickly.
 
-## Tech Stack
+## Stack
 
-- Next.js 16 (App Router)
+- Next.js 16 App Router
 - React 19
 - Tailwind CSS v4
+- Framer Motion for some animated sections
 
-## Run Locally
+## Local Setup
 
 ```bash
 npm install
@@ -17,100 +18,79 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Recommended Check Before Push / Deploy
+## Recommended Checks
 
 ```bash
 npm run build
 ```
 
-This catches both compile issues and most content/data mistakes.
+Use `npm run build` before pushing. It is currently the most reliable project health check.
 
-## Main Files To Know
+`npm run lint` should stay useful as a secondary check, but `npm run build` is still the better final verification for this repo because it catches both typing and App Router build issues.
+
+## Main Files
 
 Content:
 
-- Home content: `src/content/home.ts`
-- Events data: `src/content/events.ts`
-- Team / ExCo / advisors data: `src/content/team.ts`
-- Partners data: `src/content/partners.ts`
+- `src/content/home.ts`
+- `src/content/events.ts`
+- `src/content/team.ts`
+- `src/content/partners.ts`
 
-Pages:
+Top-level pages:
 
-- Home page: `src/app/page.tsx`
-- Events page: `src/app/events/page.tsx`
-- Team page: `src/app/team/page.tsx`
-- Partners page: `src/app/partners/page.tsx`
+- `src/app/page.tsx`
+- `src/app/events/page.tsx`
+- `src/app/team/page.tsx`
+- `src/app/partners/page.tsx`
+- `src/app/membership/page.tsx`
 
-Reusable UI:
+Shared layout:
 
-- Navbar: `src/components/navbar.tsx`
-- Footer: `src/components/footer.tsx`
-- Home hero: `src/components/home/hero-section.tsx`
-- Home mission/vision: `src/components/home/mission-vision-section.tsx`
-- Home testimonials: `src/components/home/testimonials-section.tsx`
-- Orbiting partners circles: `src/components/ui/orbiting-circles.tsx`
+- `src/app/layout.tsx`
+- `src/components/navbar.tsx`
+- `src/components/footer.tsx`
+- `src/app/globals.css`
 
-App shell:
+Home sections:
 
-- Layout / header spacing: `src/app/layout.tsx`
-- Global styles: `src/app/globals.css`
+- `src/components/home/hero-section.tsx`
+- `src/components/home/mission-vision-section.tsx`
+- `src/components/home/what-smuai-does-section.tsx`
+- `src/components/home/testimonials-section.tsx`
 
 ## Home Page
 
-Main home page sections:
+Home page sections are currently:
 
-- Hero logo + intro copy
-- Gallery strip
-- Mission and Vision
-- Testimonials
+- hero logo and intro
+- mobile swipe gallery / desktop rotating gallery
+- mission and vision
+- what SMUAI does
+- testimonials marquee
 
-Latest home intro copy is in:
+Hero images and testimonials come from `src/content/home.ts`.
 
-- `src/components/home/hero-section.tsx`
-
-Current positioning line:
-
-> SMUAI is a student-led AI community where students learn, build, and connect through innovation and industry.
-
-If you want to update the rotating gallery, edit:
-
-- `src/content/home.ts`
-
-Use:
+Key fields:
 
 - `heroGalleryImages`
 - `testimonials`
 
-## Membership Registration Link
+## Membership CTA
 
-The membership registration CTA is used in:
+The membership CTA is used in:
 
 - `src/components/navbar.tsx`
 - `src/components/footer.tsx`
+- `src/app/membership/page.tsx`
 
-Current button copy:
+Current label in both navbar and footer is `Join SMUAI`.
 
-- navbar: `Join SMUAI`
-- footer: `Join as a Member`
-
-Both currently point to the external registration survey link.
-
-If the registration link changes, update:
-
-- desktop navbar button
-- mobile navbar menu button
-- footer CTA button
+If the registration flow changes, update those buttons together.
 
 ## Events
 
-Edit:
-
-- `src/content/events.ts`
-
-Current academic year groups in the file:
-
-- `26/27`
-- `25/26`
+Events are maintained in `src/content/events.ts`.
 
 Each event uses:
 
@@ -122,86 +102,55 @@ Each event uses:
 - `poster`
 - `lumaLink`
 
-Important behavior on the Events page:
+Important behavior:
 
-- events are auto-sorted by `startAt` with latest first
-- signup buttons disable automatically after the event `endAt`
-- clicking an event opens a viewport-centered modal
+- events are sorted from their date data
+- the nearest future event becomes the featured event
+- ended events still keep their `lumaLink` so visitors can open the event page
+- clicking a card opens the preview modal
 
-ISO SG-time example:
+Time values should use ISO timestamps with `+08:00`, for example:
 
 ```ts
-startAt: "2026-06-25T18:00:00+08:00",
-endAt: "2026-06-25T21:00:00+08:00",
+startAt: "2026-07-03T18:30:00+08:00",
+endAt: "2026-07-03T21:00:00+08:00",
 ```
 
-### Event Poster Uploads
-
-Upload posters into:
+Poster folders:
 
 - `public/events/26-27/`
 - `public/events/25-26/`
 
-Use filename format:
+Suggested poster filename format:
 
 - `YYYY-MM-DD-short-slug.jpg`
 
-Example:
+## Team
 
-- `2026-06-25-openclaw-singapore-agentic-night.jpg`
+Team and advisors are maintained in `src/content/team.ts`.
 
-Then reference it like:
-
-```ts
-poster: "/events/26-27/2026-06-25-openclaw-singapore-agentic-night.jpg"
-```
-
-Square posters work well on mobile.
-
-## Team / ExCo / Advisors
-
-Edit:
-
-- `src/content/team.ts`
-
-The Team page reads all its content from that file.
-
-Structure:
-
-- `executiveCommitteeByYear["26/27"]`
-- `executiveCommitteeByYear["25/26"]`
-- `executiveCommitteeByYear["24/25"]`
-- `executiveCommitteeByYear["22/23"]`
-- `executiveCommitteeByYear["20/21"]`
-- `executiveCommitteeByYear["19/20"]`
-
-Each year contains:
+Each ExCo year contains:
 
 - `excoNumber`
-- `leadership` for the leadership team
+- `leadership`
 - `departments`
 
-Each person can have:
+Each person supports:
 
 - `name`
 - `position`
 - `photo`
 - `linkedin`
 
-Advisors are also maintained in the same file:
+Advisors are also stored there:
 
 - `advisors`
 - `advisorsIntro`
 - `advisorsProfileSummary`
 
-### Team Image Uploads
-
-Advisor images:
+Team image folders:
 
 - `public/team/advisors/`
-
-ExCo images:
-
 - `public/team/exco/26-27/`
 - `public/team/exco/25-26/`
 - `public/team/exco/24-25/`
@@ -209,28 +158,16 @@ ExCo images:
 - `public/team/exco/20-21/`
 - `public/team/exco/19-20/`
 
-Use lowercase filenames with hyphens.
+Notes:
 
-The current Team page supports:
-
-- leadership cards rendered first
-- one or multiple leads
-- multiple executives
-- mobile-friendly stacked cards
-- optional LinkedIn icons on member cards
-- fallback placeholder photos when `photo` is missing
-
-Current Team page behavior:
-
-- the year dropdown resets to the latest ExCo on refresh because it is local page state only
-- advisors use a centered 2-card layout
-- advisor cards and team cards show LinkedIn buttons when `linkedin` is present
+- the Team page defaults to the latest ExCo year on refresh
+- leadership renders before departments
+- mobile view currently uses 2-up card layouts for most people grids
+- LinkedIn buttons only show when a `linkedin` URL exists
 
 ## Partners
 
-Edit:
-
-- `src/content/partners.ts`
+Partners are maintained in `src/content/partners.ts`.
 
 Each partner currently uses:
 
@@ -242,21 +179,37 @@ Each partner currently uses:
 
 Partners page behavior:
 
-- mobile view uses a compact 3-column logo grid
-- desktop view uses orbiting logo rings
-- clicking a logo opens a viewport-centered modal
-- all orbit rings pause when hovering any logo
-- inner ring currently prioritizes `AI Singapore`, `Singapore Youth AI`, and `OpenClawSG`
-- partner modal now uses LinkedIn only, not website buttons
+- mobile uses a logo grid
+- desktop uses orbiting rings
+- clicking a logo opens a modal
+- orbit animations pause on hover and while a partner modal is open
+- the modal currently shows LinkedIn only
 
-Partner logo images live in:
+Partner logos live in:
 
 - `public/partners/`
 
-If a new logo file is added but does not appear:
+## Responsive Notes
 
-- make sure it is referenced in `src/content/partners.ts`
-- make sure the filename exactly matches the file in `public/partners/`
+The pages use a mix of normal contained layouts and full-bleed sections.
+
+If something looks clipped:
+
+- check `src/app/layout.tsx` first
+- then check whether the page uses `left-1/2 w-screen -translate-x-1/2`
+
+Recent pages that have custom mobile handling:
+
+- home hero
+- events featured section
+- team card grids
+- partners mobile logo grid
+
+## Maintenance Tips
+
+- Prefer editing content files before touching page logic.
+- When updating photos, keep filenames stable if possible and use version query strings only when cache busting is needed.
+- If a UI change affects both mobile and desktop, test both explicitly because several sections now have different layouts per breakpoint.
 
 ## Partners Contact Form / Smart Draft
 

@@ -11,6 +11,42 @@ import {
   executiveCommitteeByYear,
 } from "@/content/team";
 
+const COMPACT_SINGLE_LEAD_YEARS = new Set(["22/23", "19/20"]);
+
+function getLeadershipGridClass(memberCount: number) {
+  if (memberCount >= 4) {
+    return "grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4";
+  }
+
+  if (memberCount === 3) {
+    return "mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3";
+  }
+
+  return "mx-auto grid max-w-3xl grid-cols-2 gap-4 sm:gap-5";
+}
+
+function getDepartmentGridClass(departmentCount: number) {
+  return departmentCount >= 4
+    ? "grid gap-5 md:grid-cols-2 xl:grid-cols-4"
+    : "grid gap-5 md:grid-cols-2 xl:grid-cols-3";
+}
+
+function getSingleLeadWrapClass(leadCount: number) {
+  return leadCount === 1 ? "col-span-2 flex justify-center sm:block" : "";
+}
+
+function getSingleLeadWidthClass(leadCount: number, useCompactSingleLeadCards: boolean) {
+  if (leadCount !== 1) {
+    return "w-full";
+  }
+
+  if (useCompactSingleLeadCards) {
+    return "w-[calc(50%-0.375rem)] sm:w-full sm:max-w-[calc(50%-0.375rem)]";
+  }
+
+  return "w-[calc(50%-0.375rem)] sm:w-full";
+}
+
 export default function TeamPage() {
   const years = useMemo(
     () =>
@@ -25,20 +61,12 @@ export default function TeamPage() {
 
   const executiveCommittee = executiveCommitteeByYear[year];
   const executiveLabel = `AY${year} • ${executiveCommittee.excoNumber}`;
-  const leadershipGridClass =
-    executiveCommittee.leadership.length >= 4
-      ? "grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4"
-      : executiveCommittee.leadership.length === 3
-        ? "mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3"
-        : "mx-auto grid max-w-3xl grid-cols-2 gap-4 sm:gap-5";
-  const departmentGridClass =
-    executiveCommittee.departments.length >= 4
-      ? "grid gap-5 md:grid-cols-2 xl:grid-cols-4"
-      : "grid gap-5 md:grid-cols-2 xl:grid-cols-3";
+  const leadershipGridClass = getLeadershipGridClass(executiveCommittee.leadership.length);
+  const departmentGridClass = getDepartmentGridClass(executiveCommittee.departments.length);
   const hasAnyExecutives = executiveCommittee.departments.some(
     (department) => department.executives.length > 0,
   );
-  const useCompactSingleLeadCards = ["22/23", "19/20"].includes(year);
+  const useCompactSingleLeadCards = COMPACT_SINGLE_LEAD_YEARS.has(year);
 
   const renderFeaturedCard = (
     member: TeamMember,
@@ -162,20 +190,13 @@ export default function TeamPage() {
                     {department.leads.map((lead, index) => (
                       <div
                         key={`${department.name}-lead-wrap-${index}`}
-                        className={
-                          department.leads.length === 1
-                            ? "col-span-2 flex justify-center sm:block"
-                            : ""
-                        }
+                        className={getSingleLeadWrapClass(department.leads.length)}
                       >
                         <div
-                          className={
-                            department.leads.length === 1
-                              ? useCompactSingleLeadCards
-                                ? "w-[calc(50%-0.375rem)] sm:w-full sm:max-w-[calc(50%-0.375rem)]"
-                                : "w-[calc(50%-0.375rem)] sm:w-full"
-                              : "w-full"
-                          }
+                          className={getSingleLeadWidthClass(
+                            department.leads.length,
+                            useCompactSingleLeadCards,
+                          )}
                         >
                           {renderFeaturedCard(
                             lead,

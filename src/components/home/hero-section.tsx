@@ -6,6 +6,16 @@ import { useEffect, useRef, useState } from "react";
 import Gravity, { MatterBody } from "@/components/fancy/physics/cursor-attractor-and-gravity";
 import { heroGalleryImages } from "@/content/home";
 
+const HERO_SLOTS = [
+  { x: 7.5, y: -14 },
+  { x: 28, y: 8 },
+  { x: 50, y: 34 },
+  { x: 72, y: 8 },
+  { x: 92.5, y: -14 },
+] as const;
+
+const HERO_CAROUSEL_MS = 2600;
+
 const heroParticles = Array.from({ length: 80 }, (_, index) => {
   const seedX = (index * 37 + 11) % 100;
   const seedY = (index * 53 + 17) % 100;
@@ -18,19 +28,16 @@ const heroParticles = Array.from({ length: 80 }, (_, index) => {
   };
 });
 
+function getInitialCarouselItems() {
+  return heroGalleryImages
+    .slice(0, HERO_SLOTS.length)
+    .map((src, index) => ({ id: index + 1, src }));
+}
+
 export default function HeroSection() {
-  const slots = [
-    { x: 7.5, y: -14 },
-    { x: 28, y: 8 },
-    { x: 50, y: 34 },
-    { x: 72, y: 8 },
-    { x: 92.5, y: -14 },
-  ];
-  const [carouselItems, setCarouselItems] = useState(() =>
-    heroGalleryImages.slice(0, slots.length).map((src, index) => ({ id: index + 1, src }))
-  );
-  const nextImageRef = useRef(slots.length);
-  const idRef = useRef(slots.length + 1);
+  const [carouselItems, setCarouselItems] = useState(getInitialCarouselItems);
+  const nextImageRef = useRef(HERO_SLOTS.length);
+  const idRef = useRef(HERO_SLOTS.length + 1);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,7 +47,7 @@ export default function HeroSection() {
 
         return [...current.slice(1), { id: idRef.current++, src: nextSrc }];
       });
-    }, 2600);
+    }, HERO_CAROUSEL_MS);
 
     return () => clearInterval(interval);
   }, []);
@@ -115,15 +122,15 @@ export default function HeroSection() {
         <div className="mx-auto hidden h-[280px] w-full max-w-[1320px] px-2 sm:block sm:px-5 lg:h-[300px] lg:px-8">
           <AnimatePresence initial={false}>
             {carouselItems.map((item, slotIndex) => {
-              const slot = slots[slotIndex];
-              const isEdge = slotIndex === 0 || slotIndex === slots.length - 1;
+              const slot = HERO_SLOTS[slotIndex];
+              const isEdge = slotIndex === 0 || slotIndex === HERO_SLOTS.length - 1;
 
               return (
                 <motion.figure
                   key={item.id}
-                  initial={{ left: "106%", y: slots[slots.length - 1].y, opacity: 0.55 }}
+                  initial={{ left: "106%", y: HERO_SLOTS[HERO_SLOTS.length - 1].y, opacity: 0.55 }}
                   animate={{ left: `${slot.x}%`, y: slot.y, opacity: 1 }}
-                  exit={{ left: "-12%", y: slots[0].y, opacity: 0.5 }}
+                  exit={{ left: "-12%", y: HERO_SLOTS[0].y, opacity: 0.5 }}
                   transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                   className={`absolute top-8 -translate-x-1/2 overflow-hidden rounded-2xl border border-brand-soft bg-brand-cloud shadow-[0_25px_45px_-42px_rgba(27,43,84,0.5)] ${
                     isEdge ? "hidden md:block" : ""
