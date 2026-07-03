@@ -29,12 +29,12 @@ export default function MembershipPage() {
     <div className="relative left-1/2 w-screen -translate-x-1/2">
       <section className="bg-white px-5 py-8 text-brand-deep-blue lg:px-8 lg:py-10">
         <div className="mx-auto w-full max-w-[1320px]">
-          <div className="max-w-3xl">
+          <div className="w-full max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Membership</p>
-            <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
+            <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue max-sm:max-w-[10ch] max-sm:text-[2.15rem] max-sm:leading-[0.98] sm:text-4xl">
               Join SMUAI as a Member
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-brand-slate sm:text-lg">
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-brand-slate max-sm:max-w-[21rem] sm:text-lg">
               Becoming a member gives you a direct way to stay connected with the club and officially be part of the
               SMUAI community. Before opening the registration form, follow the steps below.
             </p>

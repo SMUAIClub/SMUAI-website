@@ -18,9 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className="overflow-x-hidden">
         <Navbar />
-        <main className="mx-auto w-full max-w-[1320px] px-5 pt-[72px] lg:px-8 lg:pt-[72px]">
+        <main className="w-full overflow-x-hidden pt-[calc(72px+env(safe-area-inset-top))] lg:pt-[72px]">
           {children}
         </main>
         <Footer />

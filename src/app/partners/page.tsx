@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import { Linkedin, Sparkles, X } from "lucide-react";
+import { CalendarDays, Handshake, Linkedin, Sparkles, Trophy, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { partners } from "@/content/partners";
 import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import type { Partner } from "@/content/partners";
@@ -15,6 +16,27 @@ const contactTopics = [
   "Campus Event",
   "General",
 ];
+
+const collaborationHighlights = [
+  {
+    icon: Handshake,
+    title: "Workshops & Build Sessions",
+    description:
+      "Hands-on sessions that help students move from curiosity to building.",
+  },
+  {
+    icon: CalendarDays,
+    title: "Hackathons & Community Events",
+    description:
+      "Events and challenges that bring students, builders, and industry together.",
+  },
+  {
+    icon: Trophy,
+    title: "Sponsorship & Ecosystem Support",
+    description:
+      "Support through prizes, credits, speakers, and programming that expands access.",
+  },
+] satisfies Array<{ icon: LucideIcon; title: string; description: string }>;
 
 function PartnerNode({
   partner,
@@ -117,6 +139,7 @@ export default function PartnersPage() {
     message: "",
   });
   const orbitRings = useMemo(() => buildOrbitRings(partners), []);
+  const areOrbitsPaused = orbitsPaused || Boolean(selectedPartner);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -201,197 +224,238 @@ export default function PartnersPage() {
       <div className="relative left-1/2 w-screen -translate-x-1/2">
         <section className="relative flex min-h-[calc(100svh-72px)] flex-col justify-start bg-brand-cloud px-5 pb-6 pt-6 lg:px-8 lg:pb-8 lg:pt-8">
           <div className="relative mx-auto w-full max-w-[1320px]">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Partners</p>
-            <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
-              Our Partner Network
-            </h1>
-            <p className="mt-3 text-sm text-brand-slate">Organizations we have collaborated with.</p>
-          </div>
+            <div className="w-full max-w-4xl">
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Partners</p>
+              <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
+                Our Partner Network
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-brand-slate">
+                Organizations we have collaborated with.
+              </p>
+            </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3 md:hidden">
-            {partners.map((partner) => (
-              <div
-                key={`${partner.name}-mobile`}
-                className="flex aspect-square items-center justify-center rounded-2xl bg-white p-2 text-center shadow-[0_24px_36px_-30px_rgba(27,43,84,0.35)]"
-              >
-                <PartnerNode partner={partner} onOpen={setSelectedPartner} compact />
-              </div>
-            ))}
-          </div>
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:hidden">
+              {partners.map((partner) => (
+                <div
+                  key={`${partner.name}-mobile`}
+                  className="flex aspect-square items-center justify-center rounded-2xl bg-white p-2 text-center shadow-[0_24px_36px_-30px_rgba(27,43,84,0.35)]"
+                >
+                  <PartnerNode partner={partner} onOpen={setSelectedPartner} compact />
+                </div>
+              ))}
+            </div>
 
-          <div className="relative mt-0 hidden h-[620px] w-full max-w-[1360px] overflow-visible md:block lg:h-[700px]">
-            {orbitRings.map((ring, ringIndex) => (
-              <OrbitingCircles
-                key={`orbit-ring-${ringIndex}`}
-                radius={ring.radius}
-                path
-                reverse={ring.reverse}
-                iconSize={ring.iconSize}
-                speed={ring.speed}
-                paused={orbitsPaused}
-                className="z-20"
-              >
-                {ring.partners.map((partner) => (
-                  <PartnerNode
-                    key={`${partner.name}-ring-${ringIndex}`}
-                    partner={partner}
-                    onOpen={setSelectedPartner}
-                    onHoverChange={setOrbitsPaused}
-                  />
-                ))}
-              </OrbitingCircles>
-            ))}
-          </div>
+            <div className="relative mt-6 hidden h-[620px] w-full max-w-[1360px] overflow-visible md:block lg:h-[700px]">
+              <aside className="absolute left-0 top-6 z-30 max-w-[280px] rounded-[1.5rem] border border-brand-soft/70 bg-white/85 p-4 shadow-[0_20px_36px_-30px_rgba(27,43,84,0.18)] backdrop-blur-sm">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-slate">Explore</p>
+                <p className="mt-2 text-sm leading-relaxed text-brand-slate">
+                  Hover or tap a circle to open a quick partner profile and see who SMUAI has collaborated with.
+                </p>
+              </aside>
+              {orbitRings.map((ring, ringIndex) => (
+                <OrbitingCircles
+                  key={`orbit-ring-${ringIndex}`}
+                  radius={ring.radius}
+                  path
+                  reverse={ring.reverse}
+                  iconSize={ring.iconSize}
+                  speed={ring.speed}
+                  paused={areOrbitsPaused}
+                  className="z-20"
+                >
+                  {ring.partners.map((partner) => (
+                    <PartnerNode
+                      key={`${partner.name}-ring-${ringIndex}`}
+                      partner={partner}
+                      onOpen={setSelectedPartner}
+                      onHoverChange={setOrbitsPaused}
+                    />
+                  ))}
+                </OrbitingCircles>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="bg-white px-5 py-10 lg:px-8">
+        <section className="bg-white px-5 py-12 lg:px-8 lg:py-14">
           <div className="mx-auto w-full max-w-[1320px]">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Contact</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">Reach Out To Us</h2>
-            <p className="mt-2 text-sm leading-relaxed text-brand-slate">
-              For partnerships, events, or collaboration opportunities, contact{" "}
-              <a
-                href="mailto:smuai@sa.smu.edu.sg"
-                className="font-semibold text-brand-deep-blue underline underline-offset-4"
-              >
-                smuai@sa.smu.edu.sg
-              </a>
-              . This sends via the visitor&apos;s own email app.
-            </p>
+            <div className="max-w-3xl">
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Collaboration</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
+                How We Work With Partners
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-brand-slate sm:text-base">
+                We partner with companies and communities on practical collaborations that help students learn, build, and connect with the AI ecosystem.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+              {collaborationHighlights.map((item) => (
+                <article
+                  key={item.title}
+                  className="group rounded-[1.75rem] border border-brand-soft/70 bg-brand-cloud/45 p-6 shadow-[0_22px_40px_-34px_rgba(27,43,84,0.12)] transition duration-300 hover:-translate-y-1 hover:border-brand-deep-blue/18 hover:bg-white hover:shadow-[0_30px_48px_-30px_rgba(27,43,84,0.18)] sm:min-h-[200px] sm:p-7"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-brand-soft bg-white text-brand-deep-blue shadow-[0_14px_26px_-22px_rgba(27,43,84,0.28)] transition duration-300 group-hover:-translate-y-0.5">
+                    <item.icon size={19} strokeWidth={2.1} />
+                  </div>
+                  <h3 className="text-lg font-semibold text-brand-deep-blue transition-colors duration-300 group-hover:text-brand-deep-blue">
+                    <span className="mt-4 block">
+                    {item.title}
+                    </span>
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-brand-slate sm:text-base">{item.description}</p>
+                </article>
+              ))}
+            </div>
           </div>
+        </section>
 
-          <div className="mt-6 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-            <form onSubmit={handleContactSubmit} className="rounded-2xl border border-brand-soft bg-white p-4 shadow-[0_24px_40px_-34px_rgba(27,43,84,0.35)] sm:p-5">
-              <div className="mb-4 flex flex-wrap gap-2">
-                {contactTopics.map((topic) => (
-                  <button
-                    key={topic}
-                    type="button"
-                    onClick={() =>
-                      setContactForm((prev) => ({
-                        ...prev,
-                        topic,
-                        subject:
-                          prev.subject && prev.subject !== `SMUAI ${prev.topic} Collaboration`
-                            ? prev.subject
-                            : `SMUAI ${topic} Collaboration`,
-                      }))
-                    }
-                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-                      contactForm.topic === topic
-                        ? "bg-brand-deep-blue text-white"
-                        : "bg-brand-cloud text-brand-slate hover:bg-brand-soft"
-                    }`}
-                  >
-                    {topic}
-                  </button>
-                ))}
-              </div>
+        <section className="bg-brand-cloud px-5 py-10 lg:px-8 lg:py-12">
+          <div className="mx-auto w-full max-w-[1320px]">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Contact</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">Reach Out To Us</h2>
+              <p className="mt-2 text-sm leading-relaxed text-brand-slate">
+                For partnerships, events, or collaboration opportunities, contact{" "}
+                <a
+                  href="mailto:smuai@sa.smu.edu.sg"
+                  className="font-semibold text-brand-deep-blue underline underline-offset-4"
+                >
+                  smuai@sa.smu.edu.sg
+                </a>
+                . This sends via the visitor&apos;s own email app.
+              </p>
+            </div>
 
-              <div className="grid gap-3">
-                <input
-                  type="text"
-                  required
-                  value={contactForm.name ?? ""}
-                  onChange={(e) => setContactForm((prev) => ({ ...prev, name: e.target.value }))}
-                  placeholder="Your name"
-                  className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
-                />
-                <input
-                  type="email"
-                  required
-                  value={contactForm.email ?? ""}
-                  onChange={(e) => setContactForm((prev) => ({ ...prev, email: e.target.value }))}
-                  placeholder="Your email"
-                  className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
-                />
-                <input
-                  type="text"
-                  value={contactForm.organization ?? ""}
-                  onChange={(e) => setContactForm((prev) => ({ ...prev, organization: e.target.value }))}
-                  placeholder="Organization (optional)"
-                  className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
-                />
-                <input
-                  type="text"
-                  value={contactForm.subject ?? ""}
-                  onChange={(e) => setContactForm((prev) => ({ ...prev, subject: e.target.value }))}
-                  placeholder="Subject"
-                  className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
-                />
-                <textarea
-                  required
-                  value={contactForm.message ?? ""}
-                  onChange={(e) => setContactForm((prev) => ({ ...prev, message: e.target.value }))}
-                  placeholder="How would you like to collaborate?"
-                  rows={6}
-                  className="w-full resize-y rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
-                />
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={handleGenerateDraft}
-                    disabled={isGeneratingDraft}
-                    className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-brand-cloud px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-soft"
-                  >
-                    <Sparkles size={15} />
-                    {isGeneratingDraft ? "Generating..." : "Smart Draft"}
-                  </button>
-                  <button
-                    type="submit"
-                    className="inline-flex items-center rounded-full bg-brand-deep-blue px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-deep-blue/90"
-                  >
-                    Open In Email App
-                  </button>
+            <div className="mt-6 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+              <form onSubmit={handleContactSubmit} className="rounded-2xl border border-brand-soft bg-white p-4 shadow-[0_24px_40px_-34px_rgba(27,43,84,0.35)] sm:p-5">
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {contactTopics.map((topic) => (
+                    <button
+                      key={topic}
+                      type="button"
+                      onClick={() =>
+                        setContactForm((prev) => ({
+                          ...prev,
+                          topic,
+                          subject:
+                            prev.subject && prev.subject !== `SMUAI ${prev.topic} Collaboration`
+                              ? prev.subject
+                              : `SMUAI ${topic} Collaboration`,
+                        }))
+                      }
+                      className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                        contactForm.topic === topic
+                          ? "bg-brand-deep-blue text-white"
+                          : "bg-brand-cloud text-brand-slate hover:bg-brand-soft"
+                      }`}
+                    >
+                      {topic}
+                    </button>
+                  ))}
                 </div>
-              </div>
-            </form>
 
-            <aside className="rounded-2xl border border-brand-soft bg-white p-4 text-brand-deep-blue shadow-[0_24px_40px_-34px_rgba(27,43,84,0.35)] sm:p-5">
-              <p className="text-xs uppercase tracking-[0.16em] text-brand-slate">How This Works</p>
-              <h3 className="mt-3 text-lg font-semibold text-brand-deep-blue">Draft with AI, then send in your own mailbox</h3>
-              <div className="mt-4 space-y-3 text-sm leading-relaxed text-brand-slate">
-                <p>
-                  Start by typing rough notes, goals, or bullet points in the message box. The more context you give,
-                  the better the AI draft will be.
-                </p>
-                <p>
-                  Click <span className="font-semibold text-brand-deep-blue">Smart Draft</span> to polish or expand
-                  what you wrote. If the message box is empty, it will generate a starter draft for you.
-                </p>
-                <p>
-                  When you are happy with the result, click{" "}
-                  <span className="font-semibold text-brand-deep-blue">Open In Email App</span>. This opens your own
-                  mail client with the subject and message prefilled, so you can review and send it yourself.
-                </p>
-              </div>
+                <div className="grid gap-3">
+                  <input
+                    type="text"
+                    required
+                    value={contactForm.name ?? ""}
+                    onChange={(e) => setContactForm((prev) => ({ ...prev, name: e.target.value }))}
+                    placeholder="Your name"
+                    className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
+                  />
+                  <input
+                    type="email"
+                    required
+                    value={contactForm.email ?? ""}
+                    onChange={(e) => setContactForm((prev) => ({ ...prev, email: e.target.value }))}
+                    placeholder="Your email"
+                    className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
+                  />
+                  <input
+                    type="text"
+                    value={contactForm.organization ?? ""}
+                    onChange={(e) => setContactForm((prev) => ({ ...prev, organization: e.target.value }))}
+                    placeholder="Organization (optional)"
+                    className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
+                  />
+                  <input
+                    type="text"
+                    value={contactForm.subject ?? ""}
+                    onChange={(e) => setContactForm((prev) => ({ ...prev, subject: e.target.value }))}
+                    placeholder="Subject"
+                    className="w-full rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
+                  />
+                  <textarea
+                    required
+                    value={contactForm.message ?? ""}
+                    onChange={(e) => setContactForm((prev) => ({ ...prev, message: e.target.value }))}
+                    placeholder="How would you like to collaborate?"
+                    rows={6}
+                    className="w-full resize-y rounded-xl border border-brand-soft bg-white px-3 py-2 text-sm text-brand-deep-blue outline-none transition focus:border-brand-deep-blue"
+                  />
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={handleGenerateDraft}
+                      disabled={isGeneratingDraft}
+                      className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-brand-cloud px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-soft"
+                    >
+                      <Sparkles size={15} />
+                      {isGeneratingDraft ? "Generating..." : "Smart Draft"}
+                    </button>
+                    <button
+                      type="submit"
+                      className="inline-flex items-center rounded-full bg-brand-deep-blue px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-deep-blue/90"
+                    >
+                      Open In Email App
+                    </button>
+                  </div>
+                </div>
+              </form>
 
-              <div className="mt-5 rounded-2xl bg-brand-cloud p-4">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-slate">Current Draft Status</p>
-                <p className="mt-3 text-sm text-brand-slate">
-                  To: <span className="font-semibold text-brand-deep-blue">smuai@sa.smu.edu.sg</span>
-                </p>
-                <p className="mt-1 text-sm text-brand-slate">
-                  Topic: <span className="font-semibold text-brand-deep-blue">{contactForm.topic}</span>
-                </p>
-                <p className="mt-1 text-sm text-brand-slate">
-                  Subject:{" "}
-                  <span className="font-semibold text-brand-deep-blue">
-                    {contactForm.subject || `SMUAI ${contactForm.topic} Collaboration`}
-                  </span>
-                </p>
-                <p className="mt-1 text-sm text-brand-slate">
-                  Draft:{" "}
-                  <span className="font-semibold text-brand-deep-blue">
-                    {hasDraftContent ? "Ready to review" : "Waiting for your notes"}
-                  </span>
-                </p>
-              </div>
-            </aside>
-          </div>
+              <aside className="rounded-2xl border border-brand-soft bg-white p-4 text-brand-deep-blue shadow-[0_24px_40px_-34px_rgba(27,43,84,0.35)] sm:p-5">
+                <p className="text-xs uppercase tracking-[0.16em] text-brand-slate">How This Works</p>
+                <h3 className="mt-3 text-lg font-semibold text-brand-deep-blue">Draft with AI, then send in your own mailbox</h3>
+                <div className="mt-4 space-y-3 text-sm leading-relaxed text-brand-slate">
+                  <p>
+                    Start by typing rough notes, goals, or bullet points in the message box. The more context you give,
+                    the better the AI draft will be.
+                  </p>
+                  <p>
+                    Click <span className="font-semibold text-brand-deep-blue">Smart Draft</span> to polish or expand
+                    what you wrote. If the message box is empty, it will generate a starter draft for you.
+                  </p>
+                  <p>
+                    When you are happy with the result, click{" "}
+                    <span className="font-semibold text-brand-deep-blue">Open In Email App</span>. This opens your own
+                    mail client with the subject and message prefilled, so you can review and send it yourself.
+                  </p>
+                </div>
+
+                <div className="mt-5 rounded-2xl bg-brand-cloud p-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-slate">Current Draft Status</p>
+                  <p className="mt-3 text-sm text-brand-slate">
+                    To: <span className="font-semibold text-brand-deep-blue">smuai@sa.smu.edu.sg</span>
+                  </p>
+                  <p className="mt-1 text-sm text-brand-slate">
+                    Topic: <span className="font-semibold text-brand-deep-blue">{contactForm.topic}</span>
+                  </p>
+                  <p className="mt-1 text-sm text-brand-slate">
+                    Subject:{" "}
+                    <span className="font-semibold text-brand-deep-blue">
+                      {contactForm.subject || `SMUAI ${contactForm.topic} Collaboration`}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-sm text-brand-slate">
+                    Draft:{" "}
+                    <span className="font-semibold text-brand-deep-blue">
+                      {hasDraftContent ? "Ready to review" : "Waiting for your notes"}
+                    </span>
+                  </p>
+                </div>
+              </aside>
+            </div>
           </div>
         </section>
       </div>
