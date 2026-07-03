@@ -113,18 +113,18 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="bg-brand-cloud px-5 py-20 text-brand-deep-blue lg:px-8">
+    <section className="bg-brand-cloud px-5 py-14 text-brand-deep-blue lg:px-8 lg:py-20">
       <div className="mx-auto w-full max-w-[1320px]">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Testimonials</p>
-          <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">What Our Community Says</h2>
-          <p className="mt-5 text-lg leading-relaxed text-brand-slate">
+          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-5xl">What Our Community Says</h2>
+          <p className="mt-4 text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
             Perspectives from EXCO members and participants across SMUAI&apos;s events, workshops, and projects.
           </p>
         </div>
       </div>
 
-      <div className="relative mt-12 w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
+      <div className="relative mt-10 w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
         <div
           ref={scrollRef}
           className="overflow-x-auto px-5 py-3 sm:px-6 lg:px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -143,15 +143,15 @@ export default function TestimonialsSection() {
             {marqueeTestimonials.map((testimonial, index) => (
               <div
                 key={`${testimonial.name}-${index}`}
-                className="w-[84vw] max-w-[420px] shrink-0 cursor-grab active:cursor-grabbing sm:w-[420px]"
+                className="w-[86vw] max-w-[360px] shrink-0 cursor-grab active:cursor-grabbing sm:w-[420px] sm:max-w-[420px]"
               >
-                <article className="h-full rounded-[28px] border border-brand-soft bg-white p-5 shadow-[0_28px_52px_-38px_rgba(27,43,84,0.28)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_34px_58px_-36px_rgba(27,43,84,0.34)] sm:p-6 lg:p-7">
-                  <Quote className="text-brand-deep-blue/75" size={26} />
-                  <p className="mt-4 text-base leading-relaxed text-brand-slate lg:text-lg">
+                <article className="h-full rounded-[24px] border border-brand-soft bg-white p-4 shadow-[0_28px_52px_-38px_rgba(27,43,84,0.28)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_34px_58px_-36px_rgba(27,43,84,0.34)] sm:rounded-[28px] sm:p-6 lg:p-7">
+                  <Quote className="text-brand-deep-blue/75" size={22} />
+                  <p className="mt-3 text-sm leading-relaxed text-brand-slate sm:mt-4 sm:text-base lg:text-lg">
                     &ldquo;{testimonial.quote}&rdquo;
                   </p>
-                  <div className="mt-6 border-t border-brand-soft pt-4">
-                    <p className="text-base font-bold text-brand-deep-blue">{testimonial.name}</p>
+                  <div className="mt-5 border-t border-brand-soft pt-4 sm:mt-6">
+                    <p className="text-sm font-bold text-brand-deep-blue sm:text-base">{testimonial.name}</p>
                     <p className="mt-1 text-xs font-medium uppercase tracking-[0.15em] text-brand-slate sm:text-sm">
                       {testimonial.role}
                     </p>

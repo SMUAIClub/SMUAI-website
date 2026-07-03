@@ -59,9 +59,7 @@ function PartnerNode({
       onFocus={() => onHoverChange?.(true)}
       onBlur={() => onHoverChange?.(false)}
       aria-label={name}
-      className={`flex items-center justify-center rounded-full p-2 text-center shadow-[0_18px_30px_-24px_rgba(27,43,84,0.6)] transition hover:scale-105 ${
-        compact ? "h-full w-full" : "h-full w-full"
-      }`}
+      className="flex h-full w-full items-center justify-center rounded-full p-2 text-center shadow-[0_18px_30px_-24px_rgba(27,43,84,0.6)] transition hover:scale-105"
     >
       {logo ? (
         <div className="relative h-full w-full overflow-hidden rounded-full">

@@ -37,12 +37,12 @@ const pillars = [
 
 export default function WhatSmuaiDoesSection() {
   return (
-    <section className="overflow-hidden bg-white px-5 py-16 text-brand-deep-blue lg:px-8 lg:py-20">
+    <section className="overflow-hidden bg-white px-5 py-14 text-brand-deep-blue lg:px-8 lg:py-20">
       <div className="mx-auto w-full max-w-[1320px]">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Activities</p>
-          <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">What SMUAI Does</h2>
-          <p className="mt-5 text-lg leading-relaxed text-brand-slate">
+          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-5xl">What SMUAI Does</h2>
+          <p className="mt-4 text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
             SMUAI gives students multiple entry points into AI, whether they want to learn, build, connect, or explore
             deeper questions.
           </p>
@@ -63,11 +63,11 @@ export default function WhatSmuaiDoesSection() {
                   <Icon size={24} strokeWidth={2.1} className="sm:h-7 sm:w-7" />
                 </div>
 
-                <div className="mt-5 sm:mt-8">
+                <div className="mt-4 sm:mt-8">
                   <h3 className="text-[1.1rem] font-black tracking-tight text-brand-deep-blue sm:text-[1.85rem]">
                     {pillar.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-brand-slate sm:mt-4 sm:text-[1.05rem]">
+                  <p className="mt-2.5 text-[0.84rem] leading-relaxed text-brand-slate sm:mt-4 sm:text-[1.05rem]">
                     {pillar.description}
                   </p>
                 </div>
