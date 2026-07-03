@@ -48,26 +48,26 @@ export default function WhatSmuaiDoesSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-4">
           {pillars.map((pillar) => {
             const Icon = pillar.icon;
 
             return (
               <article
                 key={pillar.title}
-                className={`group relative overflow-hidden rounded-[2rem] border border-brand-soft/70 ${pillar.surface} p-6 shadow-[0_24px_48px_-36px_rgba(27,43,84,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_56px_-34px_rgba(27,43,84,0.24)] sm:p-7`}
+                className={`group relative overflow-hidden rounded-[1.5rem] border border-brand-soft/70 ${pillar.surface} p-4 shadow-[0_24px_48px_-36px_rgba(27,43,84,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_56px_-34px_rgba(27,43,84,0.24)] sm:rounded-[2rem] sm:p-7`}
               >
                 <div className={`absolute inset-x-0 top-0 h-1.5 ${pillar.accent}`} />
 
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-brand-soft bg-white text-brand-deep-blue shadow-[0_18px_28px_-24px_rgba(27,43,84,0.24)] transition duration-300 group-hover:border-brand-deep-blue/20">
-                  <Icon size={28} strokeWidth={2.1} />
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-brand-soft bg-white text-brand-deep-blue shadow-[0_18px_28px_-24px_rgba(27,43,84,0.24)] transition duration-300 group-hover:border-brand-deep-blue/20 sm:h-14 sm:w-14">
+                  <Icon size={24} strokeWidth={2.1} className="sm:h-7 sm:w-7" />
                 </div>
 
-                <div className="mt-8">
-                  <h3 className="text-[1.85rem] font-black tracking-tight text-brand-deep-blue">
+                <div className="mt-5 sm:mt-8">
+                  <h3 className="text-[1.1rem] font-black tracking-tight text-brand-deep-blue sm:text-[1.85rem]">
                     {pillar.title}
                   </h3>
-                  <p className="mt-4 text-base leading-relaxed text-brand-slate sm:text-[1.05rem]">
+                  <p className="mt-3 text-sm leading-relaxed text-brand-slate sm:mt-4 sm:text-[1.05rem]">
                     {pillar.description}
                   </p>
                 </div>

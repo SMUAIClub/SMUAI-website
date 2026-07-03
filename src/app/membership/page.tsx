@@ -26,7 +26,7 @@ const steps = [
 
 export default function MembershipPage() {
   return (
-    <div className="relative left-1/2 w-screen -translate-x-1/2">
+    <div className="relative w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
       <section className="bg-white px-5 py-8 text-brand-deep-blue lg:px-8 lg:py-10">
         <div className="mx-auto w-full max-w-[1320px]">
           <div className="w-full max-w-3xl">

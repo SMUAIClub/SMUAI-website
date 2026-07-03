@@ -38,6 +38,14 @@ export default function TestimonialsSection() {
     }
 
     element.scrollLeft = getTestimonialsSegmentWidth(element);
+  }, []);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+
+    if (!element) {
+      return;
+    }
 
     let frameId = 0;
     let lastTs = 0;
@@ -116,7 +124,7 @@ export default function TestimonialsSection() {
         </div>
       </div>
 
-      <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2">
+      <div className="relative mt-12 w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
         <div
           ref={scrollRef}
           className="overflow-x-auto px-5 py-3 sm:px-6 lg:px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

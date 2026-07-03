@@ -5,7 +5,7 @@ import WhatSmuaiDoesSection from "@/components/home/what-smuai-does-section";
 
 export default function HomePage() {
   return (
-    <div className="relative left-1/2 w-screen -translate-x-1/2">
+    <div className="relative w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
       <HeroSection />
       <MissionVisionSection />
       <WhatSmuaiDoesSection />
