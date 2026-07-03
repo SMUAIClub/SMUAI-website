@@ -29,7 +29,7 @@ export const testimonials: Testimonial[] = [
     quote:
       "SMUAI has given me the opportunity to meet amazing people who share the same curiosity about AI and technology. Being part of the ExCo allowed me to contribute to initiatives that bring the AI community at SMU closer together, and it has been a truly fulfilling journey.",
     name: "Win Lei",
-    role: "ExCo | 8th Vice-President",
+    role: "ExCo | 8th Vice President, 7th Marketing Lead",
   },
   {
     quote:
@@ -42,5 +42,11 @@ export const testimonials: Testimonial[] = [
       "The AI startup showcases were incredibly inspiring. Learning how each company achieved growth and overcame challenges gave me practical insights and motivation for my own journey.",
     name: "Htet Shwe",
     role: "Participant | SYAI Monthly AI Meetup",
+  },
+  {
+    quote:
+      "What I enjoyed most was working with the team. They sharpened my leadership, and the memories we shared together are experiences I will always cherish. Being part of SMUAI also opened up many opportunities for holistic growth.",
+    name: "Darrius Ng",
+    role: "ExCo | 7th President",
   },
 ];

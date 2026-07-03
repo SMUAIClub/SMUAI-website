@@ -128,7 +128,7 @@ export default function TeamPage() {
   );
 
   return (
-    <div className="relative left-1/2 w-screen -translate-x-1/2">
+    <div className="relative w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
       <section className="bg-white px-5 py-6 text-brand-deep-blue lg:px-8 lg:py-8">
         <div className="mx-auto w-full max-w-[1320px] space-y-8">
           <div className="space-y-4">

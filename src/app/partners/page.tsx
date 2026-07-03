@@ -59,9 +59,7 @@ function PartnerNode({
       onFocus={() => onHoverChange?.(true)}
       onBlur={() => onHoverChange?.(false)}
       aria-label={name}
-      className={`flex items-center justify-center rounded-full p-2 text-center shadow-[0_18px_30px_-24px_rgba(27,43,84,0.6)] transition hover:scale-105 ${
-        compact ? "h-full w-full" : "h-full w-full"
-      }`}
+      className="flex h-full w-full items-center justify-center rounded-full p-2 text-center shadow-[0_18px_30px_-24px_rgba(27,43,84,0.6)] transition hover:scale-105"
     >
       {logo ? (
         <div className="relative h-full w-full overflow-hidden rounded-full">
@@ -138,6 +136,10 @@ export default function PartnersPage() {
     topic: "General",
     message: "",
   });
+  const mobilePartners = useMemo(
+    () => [...partners].sort((a, b) => a.name.localeCompare(b.name)),
+    [],
+  );
   const orbitRings = useMemo(() => buildOrbitRings(partners), []);
   const areOrbitsPaused = orbitsPaused || Boolean(selectedPartner);
 
@@ -221,7 +223,7 @@ export default function PartnersPage() {
 
   return (
     <>
-      <div className="relative left-1/2 w-screen -translate-x-1/2">
+      <div className="relative w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
         <section className="relative flex min-h-[calc(100svh-72px)] flex-col justify-start bg-brand-cloud px-5 pb-6 pt-6 lg:px-8 lg:pb-8 lg:pt-8">
           <div className="relative mx-auto w-full max-w-[1320px]">
             <div className="w-full max-w-4xl">
@@ -234,8 +236,12 @@ export default function PartnersPage() {
               </p>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:hidden">
-              {partners.map((partner) => (
+            <p className="mt-6 text-center text-xs font-semibold uppercase tracking-[0.18em] text-brand-slate md:hidden">
+              Arranged Alphabetically
+            </p>
+
+            <div className="mt-3 grid grid-cols-3 gap-3 md:hidden">
+              {mobilePartners.map((partner) => (
                 <div
                   key={`${partner.name}-mobile`}
                   className="flex aspect-square items-center justify-center rounded-2xl bg-white p-2 text-center shadow-[0_24px_36px_-30px_rgba(27,43,84,0.35)]"

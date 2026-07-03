@@ -15,6 +15,8 @@ const HERO_SLOTS = [
 ] as const;
 
 const HERO_CAROUSEL_MS = 2600;
+const MOBILE_HERO_REPEAT_COUNT = 3;
+const MOBILE_HERO_SCROLL_SPEED = 0.03;
 
 const heroParticles = Array.from({ length: 80 }, (_, index) => {
   const seedX = (index * 37 + 11) % 100;
@@ -34,8 +36,30 @@ function getInitialCarouselItems() {
     .map((src, index) => ({ id: index + 1, src }));
 }
 
+const mobileHeroGalleryImages = Array.from(
+  { length: MOBILE_HERO_REPEAT_COUNT },
+  () => heroGalleryImages,
+).flat();
+
+function getMobileHeroSegmentWidth(element: HTMLDivElement) {
+  return element.scrollWidth / MOBILE_HERO_REPEAT_COUNT;
+}
+
+function normalizeMobileHeroScrollPosition(element: HTMLDivElement) {
+  const segmentWidth = getMobileHeroSegmentWidth(element);
+
+  if (element.scrollLeft < segmentWidth * 0.5) {
+    element.scrollLeft += segmentWidth;
+  } else if (element.scrollLeft > segmentWidth * 1.5) {
+    element.scrollLeft -= segmentWidth;
+  }
+}
+
 export default function HeroSection() {
   const [carouselItems, setCarouselItems] = useState(getInitialCarouselItems);
+  const mobileScrollRef = useRef<HTMLDivElement | null>(null);
+  const mobileDragStateRef = useRef({ isDragging: false, startX: 0, startScrollLeft: 0 });
+  const [isMobilePaused, setIsMobilePaused] = useState(false);
   const nextImageRef = useRef(HERO_SLOTS.length);
   const idRef = useRef(HERO_SLOTS.length + 1);
 
@@ -51,6 +75,88 @@ export default function HeroSection() {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const element = mobileScrollRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    element.scrollLeft = getMobileHeroSegmentWidth(element);
+  }, []);
+
+  useEffect(() => {
+    const element = mobileScrollRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    let frameId = 0;
+    let lastTs = 0;
+
+    const tick = (ts: number) => {
+      if (!lastTs) {
+        lastTs = ts;
+      }
+
+      const delta = ts - lastTs;
+      lastTs = ts;
+
+      if (!isMobilePaused && !mobileDragStateRef.current.isDragging) {
+        element.scrollLeft += delta * MOBILE_HERO_SCROLL_SPEED;
+        normalizeMobileHeroScrollPosition(element);
+      }
+
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [isMobilePaused]);
+
+  const handleMobilePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    const element = mobileScrollRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    mobileDragStateRef.current = {
+      isDragging: true,
+      startX: event.clientX,
+      startScrollLeft: element.scrollLeft,
+    };
+
+    setIsMobilePaused(true);
+    element.setPointerCapture(event.pointerId);
+  };
+
+  const handleMobilePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const element = mobileScrollRef.current;
+
+    if (!element || !mobileDragStateRef.current.isDragging) {
+      return;
+    }
+
+    const deltaX = event.clientX - mobileDragStateRef.current.startX;
+    element.scrollLeft = mobileDragStateRef.current.startScrollLeft - deltaX;
+    normalizeMobileHeroScrollPosition(element);
+  };
+
+  const handleMobilePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    const element = mobileScrollRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    mobileDragStateRef.current.isDragging = false;
+    element.releasePointerCapture(event.pointerId);
+    setIsMobilePaused(false);
+  };
 
   return (
     <section className="relative flex min-h-0 flex-col justify-start overflow-hidden bg-white pb-8 pt-6 sm:pb-12 sm:pt-10 lg:min-h-[calc(100svh-78px)] lg:justify-center">
@@ -98,19 +204,26 @@ export default function HeroSection() {
           <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-brand-slate">
             Swipe Through Moments
           </p>
-          <div className="-mx-5 overflow-x-auto px-5 pb-2 pt-1 touch-pan-x overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex snap-x snap-mandatory gap-4">
-              {heroGalleryImages.map((src, index) => (
+          <div
+            ref={mobileScrollRef}
+            className="-mx-5 overflow-x-auto px-5 pb-2 pt-1 touch-pan-x overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            onPointerDown={handleMobilePointerDown}
+            onPointerMove={handleMobilePointerMove}
+            onPointerUp={handleMobilePointerUp}
+            onPointerCancel={handleMobilePointerUp}
+          >
+            <div className="flex w-max gap-4 px-1">
+              {mobileHeroGalleryImages.map((src, index) => (
                 <figure
                   key={`${src}-${index}`}
-                  className="relative aspect-[4/5] w-[78vw] min-w-[78vw] max-w-[320px] flex-none snap-center overflow-hidden rounded-[1.6rem] border border-brand-soft bg-brand-cloud shadow-[0_24px_40px_-30px_rgba(27,43,84,0.35)]"
+                  className="relative aspect-[5/4] w-[82vw] min-w-[82vw] max-w-[360px] flex-none overflow-hidden rounded-[1.6rem] border border-brand-soft bg-brand-cloud shadow-[0_24px_40px_-30px_rgba(27,43,84,0.35)]"
                 >
                   <Image
                     src={src}
                     alt="SMUAI gallery"
                     fill
                     draggable={false}
-                    sizes="(max-width: 640px) 78vw"
+                    sizes="(max-width: 640px) 82vw"
                     className="object-cover"
                   />
                 </figure>
