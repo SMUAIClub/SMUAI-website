@@ -67,10 +67,10 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
         ],
         executives: [
           {
-            name: "Palaash Jadav",
+            name: "Tan Ai Qi",
             position: "Partnerships Executive",
-            photo: exco2627Photo("palaash temp.jpg"),
-            linkedin: "https://sg.linkedin.com/in/palaash-jadav",
+            photo: exco2627Photo("aiqi-temp.jpg"),
+            linkedin: "https://www.linkedin.com/in/ai-qi-tan",
           },
           {
             name: "Makendra Prasad",
@@ -79,10 +79,10 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             linkedin: "https://www.linkedin.com/in/subramanian-makendra-prasad/",
           },
           {
-            name: "Tan Ai Qi",
+            name: "Palaash Jadav",
             position: "Partnerships Executive",
-            photo: exco2627Photo("aiqi-temp.jpg"),
-            linkedin: "https://www.linkedin.com/in/ai-qi-tan",
+            photo: exco2627Photo("palaash temp.jpg"),
+            linkedin: "https://sg.linkedin.com/in/palaash-jadav",
           },
           {
             name: "Liu Zihan",

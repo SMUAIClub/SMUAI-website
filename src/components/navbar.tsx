@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Sparkles, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import BrandLogo from "./brand-logo";
@@ -17,6 +17,7 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isMembershipPage = pathname === "/membership";
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
@@ -49,7 +50,7 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand-deep-blue text-white backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand-deep-blue pt-[env(safe-area-inset-top)] text-white backdrop-blur-xl">
       <div className="relative mx-auto flex w-full max-w-[1380px] items-center justify-between px-5 py-4 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center lg:px-8">
         <Link href="/" className="transition-transform duration-300 hover:scale-[1.02] md:justify-self-start">
           <BrandLogo />
@@ -80,11 +81,11 @@ export default function Navbar() {
                   itemRefs.current[item.href] = node;
                 }}
                 className={clsx(
-                  "relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors",
+                  "relative inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors",
                   isActive ? "text-brand-deep-blue" : "text-white hover:text-brand-gold"
                 )}
               >
-                <span className="relative z-10">{item.label}</span>
+                <span className="relative z-10 text-center leading-none">{item.label}</span>
               </Link>
             );
           })}
@@ -93,10 +94,17 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 md:flex md:justify-self-end">
           <Link
             href="/membership"
-            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
+            aria-current={isMembershipPage ? "page" : undefined}
+            className={clsx(
+              "inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-left transition",
+              isMembershipPage
+                ? "border-brand-gold/45 bg-white/14 text-white"
+                : "border-white/20 bg-white/10 text-white hover:border-brand-gold hover:bg-white/12"
+            )}
           >
-            <Sparkles size={15} />
-            Join as a Member
+            <span className="truncate text-sm font-medium text-white/80">
+              {isMembershipPage ? "Membership" : "Join SMUAI"}
+            </span>
           </Link>
         </div>
 
@@ -125,11 +133,16 @@ export default function Navbar() {
             <div className="space-y-2 py-4">
               <Link
                 href="/membership"
+                aria-current={isMembershipPage ? "page" : undefined}
                 onClick={() => setMobileOpen(false)}
-                className="mb-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-gold px-4 py-3 text-sm font-semibold text-brand-deep-blue"
+                className={clsx(
+                  "mb-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition",
+                  isMembershipPage
+                    ? "border border-brand-gold/40 bg-white/10 text-white"
+                    : "bg-brand-gold text-brand-deep-blue shadow-[0_14px_30px_-18px_rgba(255,204,0,0.85)]"
+                )}
               >
-                <Sparkles size={15} />
-                Join as a Member
+                {isMembershipPage ? "Membership Page" : "Join as a Member"}
               </Link>
               {navItems.map((item) => {
                 const isActive = pathname === item.href;

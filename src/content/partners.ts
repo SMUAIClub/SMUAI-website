@@ -22,7 +22,7 @@ export const partners: Partner[] = [
     logo: "/partners/manusai.jpg",
   },
   {
-    name: "Lytehouse",
+    name: "Lytehouse AI",
     description: "Technology and innovation partner supporting applied AI learning.",
     website: "",
     linkedin: "https://www.linkedin.com/company/lytehouse-ai-sg/",

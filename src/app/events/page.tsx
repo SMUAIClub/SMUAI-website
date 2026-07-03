@@ -3,7 +3,7 @@
 import NumberFlow from "@number-flow/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, CalendarDays, ChevronDown, Clock3, X } from "lucide-react";
+import { ArrowRight, ChevronDown, X } from "lucide-react";
 import { eventsByYear, type EventItem } from "@/content/events";
 
 type EventStatus = "upcoming" | "live" | "ended";
@@ -223,12 +223,12 @@ export default function EventsPage() {
         <section className="bg-white px-5 py-6 lg:px-8 lg:py-8">
           <div className="mx-auto w-full max-w-[1320px] space-y-8">
             <div className="space-y-4">
-              <div className="max-w-3xl">
+              <div className="w-full max-w-3xl">
                 <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Events</p>
-                <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
+                <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue max-sm:max-w-[10.5ch] max-sm:text-[2.05rem] max-sm:leading-[0.98] sm:text-4xl">
                   Build Nights, Workshops, Hackathons
                 </h1>
-                <p className="mt-3 text-sm text-brand-slate">
+                <p className="mt-3 text-sm text-brand-slate max-sm:max-w-[21rem]">
                   Catch what&apos;s happening next, register before spots fill.
                 </p>
               </div>
@@ -264,11 +264,14 @@ export default function EventsPage() {
                         <EventPill tone="accent">Next Event</EventPill>
                         <EventPill>{getUrgencyLabel(featuredEvent, nowTs)}</EventPill>
                       </div>
-                      <h2 className="mt-4 text-[2.05rem] font-black leading-[1.04] tracking-[-0.025em] text-brand-deep-blue sm:text-[2.45rem] lg:text-[2.8rem]">
+                      <h2 className="mt-4 text-[2.05rem] font-black leading-[1.04] tracking-[-0.025em] text-brand-deep-blue max-sm:text-[1.75rem] max-sm:leading-[1.02] sm:text-[2.45rem] lg:text-[2.8rem]">
                         {featuredEvent.title}
                       </h2>
-                      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-brand-slate sm:text-base">
+                      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-brand-slate max-sm:max-w-[21rem] sm:text-base">
                         {featuredEvent.dateLabel} • {featuredEvent.timeLabel}
+                      </p>
+                      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-brand-slate max-sm:max-w-[21rem]">
+                        Attendance is subject to approval, and SMUAI members are prioritized if slots are limited.
                       </p>
                       <div className="mt-5 flex flex-col items-start gap-3">
                         <div className="space-y-1 text-left">
@@ -371,7 +374,7 @@ export default function EventsPage() {
                                 <div className="flex flex-wrap items-center gap-2">
                                   <EventPill>{getUrgencyLabel(event, nowTs)}</EventPill>
                                 </div>
-                                <h3 className="text-base font-bold leading-tight text-brand-deep-blue">
+                                <h3 className="text-base font-semibold leading-tight text-brand-deep-blue">
                                   {event.title}
                                 </h3>
                                 <div className="space-y-1 text-sm text-brand-slate">
@@ -392,42 +395,6 @@ export default function EventsPage() {
               </section>
             )}
 
-            {featuredEvent && (
-              <section className="rounded-[1.75rem] border border-brand-soft/70 bg-white p-5 shadow-[0_26px_50px_-38px_rgba(27,43,84,0.18)]">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="max-w-3xl space-y-3">
-                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">
-                      Event Details
-                    </p>
-                    <div className="flex flex-col gap-2 text-sm text-brand-slate sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-                      <span className="inline-flex items-center gap-2">
-                        <CalendarDays size={16} />
-                        {featuredEvent.dateLabel}
-                      </span>
-                      <span className="inline-flex items-center gap-2">
-                        <Clock3 size={16} />
-                        {featuredEvent.timeLabel}
-                      </span>
-                    </div>
-                    <p className="text-sm leading-relaxed text-brand-slate">
-                      Attendance is subject to approval, and SMUAI members are prioritized if slots are limited.
-                    </p>
-                  </div>
-
-                  <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
-                    {renderSignupButton(featuredEvent)}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedEvent(featuredEvent)}
-                      className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-soft px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-cloud"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              </section>
-            )}
-
             <section className="space-y-4">
               <div className="flex items-end justify-between gap-4">
                 <div>
@@ -443,7 +410,7 @@ export default function EventsPage() {
                 </p>
               </div>
 
-              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3">
                 {pastEvents.map((event) => (
                   <article
                     key={`${event.title}-${event.startAt}`}
@@ -478,7 +445,7 @@ export default function EventsPage() {
                     </div>
 
                     <div className="space-y-3 p-5">
-                      <h3 className="text-lg font-bold leading-tight text-brand-deep-blue">
+                      <h3 className="text-lg font-semibold leading-tight text-brand-deep-blue">
                         {event.title}
                       </h3>
                       <div className="space-y-1 text-sm text-brand-slate">

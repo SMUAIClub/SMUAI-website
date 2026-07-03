@@ -53,12 +53,14 @@ export default function Footer() {
             ))}
           </ul>
 
-          <Link
-            href="/membership"
-            className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-brand-gold px-5 py-2.5 text-sm font-semibold text-brand-deep-blue transition hover:brightness-105"
-          >
-            Join as a Member
-          </Link>
+          <div className="mt-6 max-w-sm">
+            <Link
+              href="/membership"
+              className="inline-flex min-h-11 w-full items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-left text-white transition hover:border-brand-gold hover:bg-white/12"
+            >
+              <span className="truncate text-sm font-medium text-white/80">Join SMUAI</span>
+            </Link>
+          </div>
         </div>
 
         <div className="lg:justify-self-center">

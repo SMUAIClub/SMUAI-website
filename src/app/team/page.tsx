@@ -27,10 +27,10 @@ export default function TeamPage() {
   const executiveLabel = `AY${year} • ${executiveCommittee.excoNumber}`;
   const leadershipGridClass =
     executiveCommittee.leadership.length >= 4
-      ? "grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+      ? "grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4"
       : executiveCommittee.leadership.length === 3
-        ? "mx-auto grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3"
-        : "mx-auto grid max-w-3xl gap-5 sm:grid-cols-2";
+        ? "mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3"
+        : "mx-auto grid max-w-3xl grid-cols-2 gap-4 sm:gap-5";
   const departmentGridClass =
     executiveCommittee.departments.length >= 4
       ? "grid gap-5 md:grid-cols-2 xl:grid-cols-4"
@@ -50,10 +50,10 @@ export default function TeamPage() {
       key={key}
       className={
         tone === "primary"
-          ? "overflow-hidden rounded-3xl border border-brand-pale-gold bg-white shadow-[0_28px_55px_-40px_rgba(27,43,84,0.55)] ring-1 ring-brand-pale-gold/70"
+          ? "min-w-0 overflow-hidden rounded-3xl border border-brand-pale-gold/95 bg-white shadow-[0_28px_55px_-38px_rgba(27,43,84,0.52),0_0_0_1px_rgba(255,204,0,0.22)] ring-[1.5px] ring-brand-pale-gold/90"
           : tone === "secondary"
-            ? "overflow-hidden rounded-3xl border border-brand-soft/70 bg-brand-cloud/55 shadow-[0_18px_36px_-34px_rgba(27,43,84,0.35)]"
-            : "overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)]"
+            ? "min-w-0 overflow-hidden rounded-3xl border border-brand-soft/70 bg-brand-cloud/55 shadow-[0_18px_36px_-34px_rgba(27,43,84,0.35)]"
+            : "min-w-0 overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)]"
       }
     >
       <div className="aspect-square w-full overflow-hidden bg-brand-soft">
@@ -104,7 +104,7 @@ export default function TeamPage() {
       <section className="bg-white px-5 py-6 text-brand-deep-blue lg:px-8 lg:py-8">
         <div className="mx-auto w-full max-w-[1320px] space-y-8">
           <div className="space-y-4">
-            <div className="max-w-3xl">
+            <div className="w-full max-w-3xl">
               <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Team</p>
               <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
                 Executive Committee
@@ -157,25 +157,23 @@ export default function TeamPage() {
                   <div className="mb-3 text-base font-semibold">{department.name}</div>
                   <div className="text-xs uppercase tracking-wide text-brand-slate">Lead</div>
                   <div
-                    className={
-                      department.leads.length === 1 && !useCompactSingleLeadCards
-                        ? "mt-2"
-                        : "mt-2 grid gap-3 sm:grid-cols-2"
-                    }
+                    className="mt-2 grid grid-cols-2 gap-3"
                   >
                     {department.leads.map((lead, index) => (
                       <div
                         key={`${department.name}-lead-wrap-${index}`}
                         className={
-                          department.leads.length === 1 && useCompactSingleLeadCards
-                            ? "sm:col-span-2 sm:flex sm:justify-center"
+                          department.leads.length === 1
+                            ? "col-span-2 flex justify-center sm:block"
                             : ""
                         }
                       >
                         <div
                           className={
-                            department.leads.length === 1 && useCompactSingleLeadCards
-                              ? "w-full sm:max-w-[calc(50%-0.375rem)]"
+                            department.leads.length === 1
+                              ? useCompactSingleLeadCards
+                                ? "w-[calc(50%-0.375rem)] sm:w-full sm:max-w-[calc(50%-0.375rem)]"
+                                : "w-[calc(50%-0.375rem)] sm:w-full"
                               : "w-full"
                           }
                         >
@@ -194,7 +192,7 @@ export default function TeamPage() {
                       <div className="text-xs uppercase tracking-wide text-brand-slate">
                         Executives ({department.executives.length})
                       </div>
-                      <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="grid grid-cols-2 gap-3">
                         {department.executives.map((member, index) =>
                           renderFeaturedCard(member, `${department.name}-exec-${index}`, true),
                         )}
