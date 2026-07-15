@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronDown, Linkedin } from "lucide-react";
+import { ChevronDown, Globe, Linkedin } from "lucide-react";
 import { useMemo, useState } from "react";
 import {
   type TeamMember,
@@ -80,7 +80,7 @@ export default function TeamPage() {
         tone === "primary"
           ? "min-w-0 overflow-hidden rounded-3xl border border-brand-pale-gold/95 bg-white shadow-[0_28px_55px_-38px_rgba(27,43,84,0.52),0_0_0_1px_rgba(255,204,0,0.22)] ring-[1.5px] ring-brand-pale-gold/90"
           : tone === "secondary"
-            ? "min-w-0 overflow-hidden rounded-3xl border border-brand-soft/70 bg-brand-cloud/55 shadow-[0_18px_36px_-34px_rgba(27,43,84,0.35)]"
+            ? "min-w-0 overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_18px_36px_-34px_rgba(27,43,84,0.35)]"
             : "min-w-0 overflow-hidden rounded-3xl border border-brand-soft/70 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)]"
       }
     >
@@ -101,8 +101,20 @@ export default function TeamPage() {
         )}
       </div>
       <div className="space-y-1 px-4 py-3">
-        <div className={compact ? "space-y-2" : "flex items-start justify-between gap-3"}>
-          <div className="min-w-0 flex-1 text-[15px] font-semibold leading-snug text-balance sm:text-base">
+        <div
+          className={
+            compact
+              ? "flex items-start justify-between gap-3 lg:flex-col lg:items-start lg:gap-2"
+              : "flex items-start justify-between gap-3"
+          }
+        >
+          <div
+            className={
+              compact
+                ? "min-w-0 flex-1 text-[13px] font-semibold leading-snug tracking-[-0.01em] sm:text-sm lg:text-[13px] lg:leading-[1.15] xl:text-sm 2xl:text-[15px]"
+                : "min-w-0 flex-1 text-[15px] font-semibold leading-snug text-balance sm:text-base"
+            }
+          >
             {member.name}
           </div>
           {member.linkedin && (
@@ -111,7 +123,7 @@ export default function TeamPage() {
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} LinkedIn`}
-              className="inline-flex shrink-0 self-start rounded-xl border border-brand-soft p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
+              className="mt-0.5 inline-flex shrink-0 self-start rounded-xl border border-brand-soft p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold lg:mt-0"
             >
               <Linkedin size={16} />
             </a>
@@ -229,25 +241,124 @@ export default function TeamPage() {
 
       <section className="bg-brand-cloud px-5 py-12 text-brand-deep-blue lg:px-8">
         <div className="mx-auto w-full max-w-[1320px]">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-3xl text-center lg:hidden">
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Advisors</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue sm:text-4xl">
+            <h2 className="mx-auto mt-3 max-w-xl text-3xl font-black tracking-tight text-brand-deep-blue text-balance sm:text-4xl">
               Guided By IIE Leadership
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-brand-slate sm:text-base">
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-brand-slate text-pretty sm:text-base">
               {advisorsIntro}
             </p>
-            <a
-              href="https://iie.smu.edu.sg/"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 inline-flex rounded-full border border-brand-soft bg-white px-5 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
-            >
-              Learn More About IIE
-            </a>
+            <div className="mt-5 flex items-center justify-center gap-3">
+              <a
+                href="https://iie.smu.edu.sg/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="IIE website"
+                className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
+              >
+                <Globe size={16} />
+                Website
+              </a>
+              <a
+                href="https://www.linkedin.com/school/smuiie/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="IIE LinkedIn"
+                className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
+              >
+                <Linkedin size={16} />
+                LinkedIn
+              </a>
+            </div>
           </div>
 
-          <div className="mx-auto mt-8 grid max-w-5xl gap-6 sm:grid-cols-2">
+          <div className="hidden lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-10 xl:gap-14">
+            <div className="max-w-[34rem]">
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Advisors</p>
+              <h2 className="mt-3 max-w-lg text-4xl font-black tracking-tight text-brand-deep-blue text-balance xl:text-[2.6rem]">
+                Guided By IIE Leadership
+              </h2>
+              <p className="mt-4 max-w-[32rem] text-sm leading-7 text-brand-slate text-pretty xl:text-[15px]">
+                {advisorsIntro}
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <a
+                  href="https://iie.smu.edu.sg/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="IIE website"
+                  className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
+                >
+                  <Globe size={16} />
+                  Website
+                </a>
+                <a
+                  href="https://www.linkedin.com/school/smuiie/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="IIE LinkedIn"
+                  className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
+                >
+                  <Linkedin size={16} />
+                  LinkedIn
+                </a>
+              </div>
+
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 xl:gap-5">
+              {advisors.map((advisor) => (
+                <article
+                  key={`${advisor.name}-desktop-card`}
+                  className="rounded-[2rem] border border-brand-soft bg-white p-4 shadow-[0_24px_48px_-40px_rgba(27,43,84,0.5)]"
+                >
+                  <div className="aspect-[3/4] w-full overflow-hidden rounded-[1.35rem] bg-brand-soft">
+                    {advisor.photo ? (
+                      <Image
+                        src={advisor.photo}
+                        alt={advisor.name}
+                        className="h-full w-full object-cover object-top"
+                        width={640}
+                        height={640}
+                        sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 22vw, 100vw"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-xs text-brand-slate">
+                        Photo placeholder
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="text-[15px] font-semibold leading-snug text-brand-deep-blue">
+                          {advisor.name}
+                        </div>
+                        <div className="mt-1 text-sm text-brand-slate">{advisor.position}</div>
+                      </div>
+                      {advisor.linkedin && (
+                        <a
+                          href={advisor.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${advisor.name} LinkedIn`}
+                          className="inline-flex shrink-0 rounded-xl border border-brand-soft bg-white p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
+                        >
+                          <Linkedin size={16} />
+                        </a>
+                      )}
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-brand-slate">
+                      {advisorsProfileSummary[advisor.name]}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-auto mt-8 grid max-w-5xl gap-6 sm:grid-cols-2 lg:hidden">
             {advisors.map((advisor) => (
               <article
                 key={advisor.name}

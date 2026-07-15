@@ -50,6 +50,7 @@ Shared layout:
 - `src/app/layout.tsx`
 - `src/components/navbar.tsx`
 - `src/components/footer.tsx`
+- `src/components/site-chatbot.tsx`
 - `src/app/globals.css`
 
 Home sections:
@@ -75,6 +76,28 @@ Key fields:
 
 - `heroGalleryImages`
 - `testimonials`
+
+## SMUAI Bot
+
+The site includes a floating chatbot in the bottom-right corner.
+
+Files:
+
+- `src/components/site-chatbot.tsx`
+- `src/app/api/chat/route.ts`
+- `src/lib/site-chatbot.ts`
+
+Current behavior:
+
+- the bot appears site-wide through `src/app/layout.tsx`
+- it answers from curated SMUAI site content
+- it uses Gemini when `GEMINI_API_KEY` is available
+- if Gemini fails or is unavailable, it falls back to local replies for membership, events, team, partners, and contact info
+
+Branding:
+
+- chatbot launcher icon: `public/brand/smuai-assistant.png`
+- if you replace the assistant icon, keep the same filename unless you also update `src/components/site-chatbot.tsx`
 
 ## Membership CTA
 
@@ -211,6 +234,15 @@ Recent pages that have custom mobile handling:
 - When updating photos, keep filenames stable if possible and use version query strings only when cache busting is needed.
 - If a UI change affects both mobile and desktop, test both explicitly because several sections now have different layouts per breakpoint.
 
+## Gemini Features
+
+Two site features currently use Gemini server-side:
+
+- Partners `Smart Draft`
+- SMUAI Bot
+
+Keep the API key server-side only.
+
 ## Partners Contact Form / Smart Draft
 
 The Partners page includes a contact form with a `Smart Draft` button.
@@ -262,7 +294,7 @@ If you make major layout changes, re-check mobile view on:
 For Vercel:
 
 1. Push your latest code.
-2. Add `GEMINI_API_KEY` in Project Settings if Smart Draft should use Gemini.
+2. Add `GEMINI_API_KEY` in Project Settings if Smart Draft or the SMUAI Bot should use Gemini.
 3. Deploy.
 
 For the current project, no other secret is required.
