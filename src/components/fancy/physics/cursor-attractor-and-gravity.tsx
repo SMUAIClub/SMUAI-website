@@ -179,6 +179,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     const runner = useRef<Runner>(undefined)
     const bodiesMap = useRef(new Map<string, PhysicsBody>())
     const frameId = useRef<number>(undefined)
+    const beforeUpdateHandlerRef = useRef<(() => void) | null>(null)
     const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 })
     const mouseRef = useMousePositionRef(canvas)
 
@@ -362,7 +363,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       }
 
       // Add force application before update
-      Events.on(engine.current, "beforeUpdate", () => {
+      const beforeUpdateHandler = () => {
         const bodies = engine.current.world.bodies.filter(
           (body) => !body.isStatic
         )
@@ -404,22 +405,33 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
             }
           }
         })
-      })
+      }
+
+      beforeUpdateHandlerRef.current = beforeUpdateHandler
+      Events.on(engine.current, "beforeUpdate", beforeUpdateHandler)
     }, [updateElements, debug, autoStart, attractorPoint, attractorStrength, cursorStrength])
 
     // Clear the Matter.js world
     const clearRenderer = useCallback(() => {
       if (frameId.current) {
         cancelAnimationFrame(frameId.current)
+        frameId.current = undefined
+      }
+
+      if (beforeUpdateHandlerRef.current) {
+        Events.off(engine.current, "beforeUpdate", beforeUpdateHandlerRef.current)
+        beforeUpdateHandlerRef.current = null
       }
 
       if (render.current) {
         Render.stop(render.current)
         render.current.canvas.remove()
+        render.current = undefined
       }
 
       if (runner.current) {
         Runner.stop(runner.current)
+        runner.current = undefined
       }
 
       if (engine.current) {

@@ -18,7 +18,7 @@ export type ExecutiveCommitteeByYear = {
 };
 
 const exco2627Root = "/team/exco/26-27";
-const exco2627Version = "20260702";
+const exco2627Version = "20260715";
 const exco2627Photo = (file: string) => `${exco2627Root}/${file}?v=${exco2627Version}`;
 const exco2223Root = "/team/exco/22-23";
 const exco2021Root = "/team/exco/20-21";
@@ -150,6 +150,12 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Marketing Executive",
             photo: exco2627Photo("wunna-temp.jpg"),
             linkedin: "https://www.linkedin.com/in/wunna-aung/",
+          },
+          {
+            name: "Emilee Zheng",
+            position: "Marketing Executive",
+            photo: exco2627Photo("emilee-temp.jpg"),
+            linkedin: "https://www.linkedin.com/in/emileezheng/",
           },
         ],
       },
@@ -596,7 +602,7 @@ export const advisors: TeamMember[] = [
 ];
 
 export const advisorsIntro =
-  "This is the space to introduce the team and what makes it special. Describe the team culture and work philosophy. To help site visitors connect with the team, add details about team members’ experience and skills.";
+  "SMUAI Club is proudly supported by the SMU Institute of Innovation and Entrepreneurship (IIE), which champions selected interest clubs across the SMU student community. Through the guidance of its advisors, IIE helps shape the club's direction, strengthen its community, and create meaningful opportunities for members to learn, build, and grow.";
 
 export const advisorsProfileSummary: Record<string, string> = {
   "Huo Yasi":

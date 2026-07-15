@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import SiteChatbot from "@/components/site-chatbot";
 
 export const metadata: Metadata = {
   title: "SMUAI",
@@ -24,6 +25,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <SiteChatbot />
       </body>
     </html>
   );

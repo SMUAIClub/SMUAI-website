@@ -18,7 +18,7 @@ const HERO_CAROUSEL_MS = 2600;
 const MOBILE_HERO_REPEAT_COUNT = 3;
 const MOBILE_HERO_SCROLL_SPEED = 0.03;
 
-const heroParticles = Array.from({ length: 80 }, (_, index) => {
+const heroParticles = Array.from({ length: 56 }, (_, index) => {
   const seedX = (index * 37 + 11) % 100;
   const seedY = (index * 53 + 17) % 100;
   const size = (index % 3) + 4;
@@ -224,6 +224,7 @@ export default function HeroSection() {
                     fill
                     draggable={false}
                     sizes="(max-width: 640px) 82vw"
+                    quality={72}
                     className="object-cover"
                   />
                 </figure>
@@ -250,7 +251,14 @@ export default function HeroSection() {
                   }`}
                 >
                   <div className="relative h-44 w-60 md:h-48 md:w-72 lg:h-52 lg:w-80">
-                    <Image src={item.src} alt="SMUAI gallery" fill className="object-cover" />
+                    <Image
+                      src={item.src}
+                      alt="SMUAI gallery"
+                      fill
+                      sizes="(min-width: 1280px) 320px, (min-width: 768px) 288px, 240px"
+                      quality={72}
+                      className="object-cover"
+                    />
                   </div>
                 </motion.figure>
               );
