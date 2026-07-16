@@ -1,3 +1,5 @@
+import lumaGeneratedEventsByYear from "@/content/events.luma.generated.json";
+
 export type EventItem = {
   title: string;
   dateLabel: string;
@@ -8,7 +10,31 @@ export type EventItem = {
   lumaLink?: string;
 };
 
-export const eventsByYear: Record<string, EventItem[]> = {
+function getEventKey(event: EventItem) {
+  return event.lumaLink?.trim() || `${event.title}::${event.startAt}`;
+}
+
+function mergeEventLists(preferred: EventItem[], fallback: EventItem[]) {
+  const merged = new Map<string, EventItem>();
+
+  for (const event of fallback) {
+    merged.set(getEventKey(event), event);
+  }
+
+  for (const event of preferred) {
+    const existing = merged.get(getEventKey(event));
+    merged.set(getEventKey(event), {
+      ...existing,
+      ...event,
+    });
+  }
+
+  return [...merged.values()].sort(
+    (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
+  );
+}
+
+const manualEventsByYear: Record<string, EventItem[]> = {
   "26/27": [
     {
       title: "OpenClaw Singapore - Lovable Edition",
@@ -211,4 +237,15 @@ export const eventsByYear: Record<string, EventItem[]> = {
       lumaLink: "",
     },
   ],
+};
+
+const syncedEventsByYear =
+  lumaGeneratedEventsByYear as Partial<Record<string, EventItem[]>>;
+
+export const eventsByYear: Record<string, EventItem[]> = {
+  ...manualEventsByYear,
+  "26/27": mergeEventLists(
+    syncedEventsByYear["26/27"] ?? [],
+    manualEventsByYear["26/27"] ?? [],
+  ),
 };

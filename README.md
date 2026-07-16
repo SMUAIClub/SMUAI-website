@@ -107,13 +107,22 @@ The membership CTA is used in:
 - `src/components/footer.tsx`
 - `src/app/membership/page.tsx`
 
-Current label in both navbar and footer is `Join SMUAI`.
+Current labels vary slightly by placement:
+
+- navbar desktop: `Join SMUAI`
+- navbar mobile menu: `Join as a Member`
+- footer CTA: `Join SMUAI as a Member`
 
 If the registration flow changes, update those buttons together.
 
 ## Events
 
 Events are maintained in `src/content/events.ts`.
+
+Current-year Luma events are also synced into:
+
+- `src/content/events.luma.generated.json`
+- `scripts/sync-luma-events.mjs`
 
 Each event uses:
 
@@ -131,6 +140,7 @@ Important behavior:
 - the nearest future event becomes the featured event
 - ended events still keep their `lumaLink` so visitors can open the event page
 - clicking a card opens the preview modal
+- `src/content/events.ts` keeps the manual event history and merges in the generated Luma events for AY `26/27`
 
 Time values should use ISO timestamps with `+08:00`, for example:
 
@@ -147,6 +157,45 @@ Poster folders:
 Suggested poster filename format:
 
 - `YYYY-MM-DD-short-slug.jpg`
+
+### Luma Sync
+
+This repo does not require Luma Plus for event syncing.
+
+Instead, `npm run sync:events` reads the public SMUAI Luma organizer page, extracts the currently visible event cards, and writes them into `src/content/events.luma.generated.json`.
+
+Use it like this:
+
+```bash
+npm run sync:events
+```
+
+Optional environment variables:
+
+- `LUMA_USER_URL` to change the organizer page URL
+- `LUMA_TARGET_YEAR` to write into a different academic year bucket
+- `LUMA_CHROME_PATH` if Chrome or Chromium is installed in a non-standard location
+
+Notes:
+
+- the sync uses headless Chrome, so a local Chrome or Chromium install is required
+- it is best for the current academic year's visible public events
+- older historical events should still stay in `src/content/events.ts`
+
+### Automatic Sync
+
+The repo now includes a GitHub Actions workflow at `.github/workflows/luma-events-sync.yml`.
+
+Current behavior:
+
+- it runs every 6 hours
+- it can also be triggered manually from the GitHub Actions tab
+- if the public Luma event list changes, it commits the updated `src/content/events.luma.generated.json` file automatically
+- if your hosting provider deploys from `main` on push, the site will update after that automatic commit
+
+Practical note:
+
+- scheduled GitHub Actions only run automatically from the repository's default branch, which is `main`
 
 ## Team
 
@@ -227,12 +276,14 @@ Recent pages that have custom mobile handling:
 - events featured section
 - team card grids
 - partners mobile logo grid
+- footer shortcuts and social/contact layout
 
 ## Maintenance Tips
 
 - Prefer editing content files before touching page logic.
 - When updating photos, keep filenames stable if possible and use version query strings only when cache busting is needed.
 - If a UI change affects both mobile and desktop, test both explicitly because several sections now have different layouts per breakpoint.
+- The navbar, footer, and chatbot all contain club-facing links, so if a public link changes, update those together.
 
 ## Gemini Features
 
@@ -271,24 +322,6 @@ Important:
 - keep the API key server-side only
 - do not expose it with `NEXT_PUBLIC_`
 
-## Mobile / Responsive Notes
-
-The site has already been adjusted for mobile in these areas:
-
-- Home hero spacing
-- Events cards and modal
-- Team stacked card layout
-- Partners mobile logo grid and modal
-- Testimonial manual controls
-- Footer social/contact layout
-
-If you make major layout changes, re-check mobile view on:
-
-- Home
-- Team
-- Events
-- Partners
-
 ## Deployment
 
 For Vercel:
@@ -301,9 +334,10 @@ For the current project, no other secret is required.
 
 ## Quick Update Checklist
 
-1. Update upcoming or completed events in `src/content/events.ts`.
-2. Upload matching event posters into the correct `public/events/<ay>/` folder.
-3. Update ExCo names / roles / photos in `src/content/team.ts`.
-4. Update partner entries and logos in `src/content/partners.ts`.
-5. Check the `Join SMUAI` link in `src/components/navbar.tsx`.
-6. Run `npm run build` before pushing.
+1. Run `npm run sync:events` if the current AY event list should match the public Luma page.
+2. Update upcoming or completed events in `src/content/events.ts` if historical or manual entries need changes.
+3. Upload matching event posters into the correct `public/events/<ay>/` folder.
+4. Update ExCo names / roles / photos in `src/content/team.ts`.
+5. Update partner entries and logos in `src/content/partners.ts`.
+6. Check membership links and labels in `src/components/navbar.tsx`, `src/components/footer.tsx`, and `src/lib/site-chatbot.ts` if the sign-up flow changes.
+7. Run `npm run build` before pushing.
