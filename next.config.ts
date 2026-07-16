@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.lumacdn.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.lu.ma",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

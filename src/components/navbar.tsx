@@ -8,12 +8,25 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import BrandLogo from "./brand-logo";
 
+const LINKTREE_URL = "https://linktr.ee/smuai";
+
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/team", label: "Team" },
   { href: "/events", label: "Events" },
   { href: "/partners", label: "Partners" },
 ];
+
+function LinktreeMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[15px] w-[15px]">
+      <path
+        d="M10.58 3h2.84v6.18l5.37-5.37 2.01 2.01-5.37 5.37h6.18v2.84h-6.18l5.37 5.37-2.01 2.01-5.37-5.37V22h-2.84v-5.96l-5.37 5.37-2.01-2.01 5.37-5.37H2.38v-2.84h6.18L3.19 5.82l2.01-2.01 5.37 5.37z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -92,32 +105,89 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex md:justify-self-end">
-          <Link
-            href="/membership"
-            aria-current={isMembershipPage ? "page" : undefined}
-            className={clsx(
-              "inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-left transition",
-              isMembershipPage
-                ? "border-brand-gold/45 bg-white/14 text-white"
-                : "border-white/20 bg-white/10 text-white hover:border-brand-gold hover:bg-white/12"
-            )}
+          <a
+            href={LINKTREE_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="SMUAI Linktree"
+            title="SMUAI Linktree"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-brand-gold hover:bg-white/12 hover:text-brand-gold"
           >
-            <span className="truncate text-sm font-medium text-white/80">
-              {isMembershipPage ? "Membership" : "Join SMUAI"}
-            </span>
-          </Link>
+            <LinktreeMark />
+          </a>
+          <motion.div
+            animate={
+              isMembershipPage
+                ? { scale: 1, boxShadow: "0 0 0 rgba(255, 204, 0, 0)" }
+                : {
+                    scale: [1, 1.02, 1],
+                    boxShadow: [
+                      "0 10px 24px -18px rgba(255, 255, 255, 0.08)",
+                      "0 16px 34px -16px rgba(255, 255, 255, 0.18)",
+                      "0 10px 24px -18px rgba(255, 255, 255, 0.08)",
+                    ],
+                  }
+            }
+            transition={
+              isMembershipPage
+                ? { duration: 0.2 }
+                : { duration: 2.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+            }
+            className="rounded-full"
+          >
+            <Link
+              href="/membership"
+              aria-current={isMembershipPage ? "page" : undefined}
+              className={clsx(
+                "group relative inline-flex min-h-11 items-center overflow-hidden rounded-full border px-4 py-2 text-left transition",
+                isMembershipPage
+                  ? "border-brand-gold/45 bg-white/14 text-white"
+                  : "border-white/20 bg-white/10 text-white hover:-translate-y-0.5 hover:border-brand-gold hover:bg-white/12"
+              )}
+            >
+              {isMembershipPage ? null : (
+                <motion.span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 left-[-45%] w-[50%] skew-x-[-20deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.03),rgba(255,255,255,0.18),rgba(255,255,255,0.03),transparent)] blur-[1px]"
+                  animate={{ x: ["-150%", "240%"] }}
+                  transition={{ duration: 3.1, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1.1, ease: "easeInOut" }}
+                />
+              )}
+              <span
+                className={clsx(
+                  "relative z-10 truncate text-sm font-semibold",
+                  isMembershipPage ? "text-white/80" : "text-white/88"
+                )}
+              >
+                {isMembershipPage ? "Membership" : "Join SMUAI"}
+              </span>
+            </Link>
+          </motion.div>
         </div>
 
-        <button
-          type="button"
-          className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/8 p-2 md:hidden"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Toggle navigation menu"
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-nav"
-        >
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href={LINKTREE_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="SMUAI Linktree"
+            title="SMUAI Linktree"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/8 text-white transition hover:border-brand-gold hover:bg-white/12 hover:text-brand-gold"
+          >
+            <LinktreeMark />
+          </a>
+
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/8 p-2"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence initial={false}>
@@ -131,6 +201,16 @@ export default function Navbar() {
             className="relative overflow-hidden border-t border-white/10 bg-brand-deep-blue/95 px-5 md:hidden"
           >
             <div className="space-y-2 py-4">
+              <a
+                href={LINKTREE_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="mb-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/8 px-4 py-3 text-sm font-semibold text-white transition hover:border-brand-gold hover:text-brand-gold"
+              >
+                <LinktreeMark />
+                Linktree
+              </a>
               <Link
                 href="/membership"
                 aria-current={isMembershipPage ? "page" : undefined}
@@ -142,7 +222,12 @@ export default function Navbar() {
                     : "bg-brand-gold text-brand-deep-blue shadow-[0_14px_30px_-18px_rgba(255,204,0,0.85)]"
                 )}
               >
-                {isMembershipPage ? "Membership Page" : "Join as a Member"}
+                <motion.span
+                  animate={isMembershipPage ? { scale: 1 } : { scale: [1, 1.03, 1] }}
+                  transition={isMembershipPage ? { duration: 0.2 } : { duration: 2.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                >
+                  {isMembershipPage ? "Membership Page" : "Join as a Member"}
+                </motion.span>
               </Link>
               {navItems.map((item) => {
                 const isActive = pathname === item.href;

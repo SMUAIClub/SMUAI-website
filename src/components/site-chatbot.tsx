@@ -308,7 +308,7 @@ export default function SiteChatbot() {
                     }}
                     rows={1}
                     placeholder="Ask SMUAI Bot..."
-                    className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-brand-soft bg-brand-cloud/60 px-4 py-3 text-sm text-brand-deep-blue outline-none transition placeholder:text-brand-slate/75 focus:border-brand-deep-blue"
+                    className="max-h-28 min-h-11 flex-1 resize-none rounded-2xl border border-brand-soft bg-brand-cloud/60 px-4 py-3 text-[16px] text-brand-deep-blue outline-none transition placeholder:text-brand-slate/75 focus:border-brand-deep-blue md:text-sm"
                     disabled={isLoading}
                   />
                   <button

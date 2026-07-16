@@ -212,18 +212,18 @@ export default function HeroSection() {
             onPointerUp={handleMobilePointerUp}
             onPointerCancel={handleMobilePointerUp}
           >
-            <div className="flex w-max gap-4 px-1">
+            <div className="flex w-max gap-3 px-1">
               {mobileHeroGalleryImages.map((src, index) => (
                 <figure
                   key={`${src}-${index}`}
-                  className="relative aspect-[5/4] w-[82vw] min-w-[82vw] max-w-[360px] flex-none overflow-hidden rounded-[1.6rem] border border-brand-soft bg-brand-cloud shadow-[0_24px_40px_-30px_rgba(27,43,84,0.35)]"
+                  className="relative aspect-[5/4] w-[74vw] min-w-[74vw] max-w-[320px] flex-none overflow-hidden rounded-[1.5rem] border border-brand-soft bg-brand-cloud shadow-[0_24px_40px_-30px_rgba(27,43,84,0.35)]"
                 >
                   <Image
                     src={src}
                     alt="SMUAI gallery"
                     fill
                     draggable={false}
-                    sizes="(max-width: 640px) 82vw"
+                    sizes="(max-width: 640px) 74vw"
                     quality={72}
                     className="object-cover"
                   />

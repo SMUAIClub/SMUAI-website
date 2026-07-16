@@ -3,12 +3,13 @@
 import NumberFlow from "@number-flow/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, ChevronDown, X } from "lucide-react";
+import { ArrowRight, ChevronDown, ExternalLink, X } from "lucide-react";
 import { eventsByYear, type EventItem } from "@/content/events";
 
 type EventStatus = "upcoming" | "live" | "ended";
 
 const SINGAPORE_TIMEZONE = "Asia/Singapore";
+const SMUAI_LUMA_URL = "https://luma.com/user/smuai";
 const dayFormatter = new Intl.DateTimeFormat("en-CA", {
   timeZone: SINGAPORE_TIMEZONE,
   year: "numeric",
@@ -155,6 +156,50 @@ function CompactCountdown({ targetTs, nowTs }: { targetTs?: number | null; nowTs
   );
 }
 
+function EventPoster({
+  src,
+  title,
+  sizes,
+  className = "",
+  emptyLabel = "Poster coming soon",
+  innerClassName = "",
+  imageInsetClassName = "inset-0",
+  frameClassName = "",
+}: {
+  src?: string;
+  title: string;
+  sizes: string;
+  className?: string;
+  emptyLabel?: string;
+  innerClassName?: string;
+  imageInsetClassName?: string;
+  frameClassName?: string;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[inherit] border border-brand-soft/60 bg-white shadow-[0_24px_42px_-34px_rgba(27,43,84,0.22)] ${frameClassName} ${className}`}
+    >
+      {src ? (
+        <div
+          className={`absolute ${imageInsetClassName} overflow-hidden bg-brand-cloud ${innerClassName}`}
+        >
+          <div className={`relative h-full w-full overflow-hidden ${innerClassName}`}>
+            <Image
+              src={src}
+              alt={title}
+              fill
+              className={["object-cover", innerClassName].filter(Boolean).join(" ")}
+              sizes={sizes}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="flex h-full items-center justify-center text-sm text-brand-slate">{emptyLabel}</div>
+      )}
+    </div>
+  );
+}
+
 export default function EventsPage() {
   const years = useMemo(
     () =>
@@ -243,18 +288,32 @@ export default function EventsPage() {
         <section className="bg-white px-5 py-6 lg:px-8 lg:py-8">
           <div className="mx-auto w-full max-w-[1320px] space-y-8">
             <div className="space-y-4">
-              <div className="w-full max-w-3xl">
-                <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Events</p>
-                <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue max-sm:text-[2.05rem] max-sm:leading-[0.98] sm:text-4xl">
-                  Build Nights, Workshops, Hackathons
-                </h1>
-                <p className="mt-3 text-sm text-brand-slate max-sm:max-w-[21rem]">
-                  Catch what&apos;s happening next, register before spots fill.
-                </p>
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="w-full max-w-3xl">
+                  <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Events</p>
+                  <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-deep-blue max-sm:text-[2.05rem] max-sm:leading-[0.98] sm:text-4xl">
+                    Build Nights, Workshops, Hackathons
+                  </h1>
+                  <p className="mt-3 text-sm text-brand-slate max-sm:max-w-[21rem]">
+                    Catch what&apos;s happening next, register before spots fill.
+                  </p>
+                </div>
+
+                <a
+                  href={SMUAI_LUMA_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex w-fit items-center gap-2 self-start rounded-full border border-brand-soft bg-white px-3.5 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-cloud md:mt-10 md:self-auto"
+                >
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-brand-cloud text-brand-deep-blue">
+                    <ExternalLink size={14} />
+                  </span>
+                  <span>SMUAI Luma</span>
+                </a>
               </div>
 
               <div className="w-full max-w-xs md:ml-auto">
-                <div className="relative">
+                <div className="relative min-w-[140px]">
                   <select
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
@@ -321,22 +380,13 @@ export default function EventsPage() {
                       }}
                       className="group relative"
                     >
-                      <div className="relative aspect-[16/11] overflow-hidden rounded-[2rem] bg-brand-cloud shadow-[0_30px_60px_-40px_rgba(27,43,84,0.24)]">
-                        {featuredEvent.poster ? (
-                          <Image
-                            src={featuredEvent.poster}
-                            alt={featuredEvent.title}
-                            fill
-                            className="object-cover transition duration-500 group-hover:scale-[1.02]"
-                            sizes="(min-width: 1024px) 42vw, 100vw"
-                          />
-                        ) : (
-                          <div className="flex h-full items-center justify-center text-sm text-brand-slate">
-                            Poster coming soon
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#162856]/70 via-[#162856]/10 to-transparent" />
-                      </div>
+                      <EventPoster
+                        src={featuredEvent.poster}
+                        title={featuredEvent.title}
+                        sizes="(min-width: 1024px) 400px, (min-width: 640px) 62vw, 100vw"
+                        className="mx-auto aspect-[11/12] w-full max-w-[400px] rounded-[2.25rem]"
+                        innerClassName="rounded-[1.65rem]"
+                      />
                     </div>
                   </div>
 
@@ -367,21 +417,16 @@ export default function EventsPage() {
                             className="group overflow-hidden rounded-[1.5rem] border border-brand-soft/70 bg-white/85 shadow-[0_20px_40px_-36px_rgba(27,43,84,0.22)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-34px_rgba(27,43,84,0.3)]"
                           >
                             <div className="grid grid-cols-[92px_minmax(0,1fr)] gap-4 p-4 items-center sm:grid-cols-[116px_minmax(0,1fr)]">
-                              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-soft">
-                                {event.poster ? (
-                                  <Image
-                                    src={event.poster}
-                                    alt={event.title}
-                                    fill
-                                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                                    sizes="(min-width: 640px) 116px, 92px"
-                                  />
-                                ) : (
-                                  <div className="flex h-full items-center justify-center text-xs text-brand-slate">
-                                    Poster
-                                  </div>
-                                )}
-                              </div>
+                              <EventPoster
+                                src={event.poster}
+                                title={event.title}
+                                sizes="(min-width: 640px) 116px, 92px"
+                                className="aspect-[11/12] rounded-[1.35rem]"
+                                emptyLabel="Poster"
+                                innerClassName="rounded-[1rem]"
+                                imageInsetClassName="inset-0"
+                                frameClassName="border-0 bg-transparent shadow-none"
+                              />
 
                               <div className="min-w-0 space-y-3">
                                 <div className="flex flex-wrap items-center gap-2">
@@ -436,25 +481,19 @@ export default function EventsPage() {
                         setSelectedEvent(event);
                       }
                     }}
-                    className="group overflow-hidden rounded-[1.75rem] border border-brand-soft/80 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)] transition hover:-translate-y-1 hover:shadow-[0_30px_58px_-36px_rgba(27,43,84,0.48)]"
+                    className="group relative overflow-hidden rounded-[1.75rem] border border-brand-soft/80 bg-white shadow-[0_24px_45px_-38px_rgba(27,43,84,0.45)] transition hover:-translate-y-1 hover:shadow-[0_30px_58px_-36px_rgba(27,43,84,0.48)]"
                   >
-                    <div className="relative aspect-[4/3] overflow-hidden bg-brand-soft">
-                      {event.poster ? (
-                        <Image
-                          src={event.poster}
-                          alt={event.title}
-                          fill
-                          className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                          sizes="(min-width: 1280px) 28vw, (min-width: 768px) 42vw, 100vw"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-xs text-brand-slate">
-                          Poster
-                        </div>
-                      )}
-                      <div className="absolute inset-x-0 top-0 flex justify-between p-4">
-                        <EventPill>Archive</EventPill>
-                      </div>
+                    <EventPoster
+                      src={event.poster}
+                      title={event.title}
+                      sizes="(min-width: 1280px) 28vw, (min-width: 768px) 42vw, 100vw"
+                      className="aspect-[11/12] rounded-[1.45rem]"
+                      emptyLabel="Poster"
+                      innerClassName="rounded-[1.1rem]"
+                      imageInsetClassName="inset-[10px]"
+                    />
+                    <div className="absolute inset-x-0 top-0 flex justify-between p-4">
+                      <EventPill>Archive</EventPill>
                     </div>
 
                     <div className="space-y-3 p-5">
@@ -499,21 +538,14 @@ export default function EventsPage() {
             </div>
 
             <div className="grid gap-5 p-5 md:grid-cols-[240px_1fr]">
-              <div className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-2xl bg-brand-soft md:mx-0">
-                {selectedEvent.poster ? (
-                  <Image
-                    src={selectedEvent.poster}
-                    alt={selectedEvent.title}
-                    fill
-                    className="object-cover"
-                    sizes="240px"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-brand-slate">
-                    No poster
-                  </div>
-                )}
-              </div>
+              <EventPoster
+                src={selectedEvent.poster}
+                title={selectedEvent.title}
+                sizes="240px"
+                className="mx-auto aspect-[11/12] w-full max-w-[240px] rounded-[1.5rem] md:mx-0"
+                emptyLabel="No poster"
+                innerClassName="rounded-[1.1rem]"
+              />
 
               <div className="space-y-3">
                 <div className="flex flex-wrap gap-2">
