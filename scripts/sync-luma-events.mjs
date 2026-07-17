@@ -8,6 +8,7 @@ const execFileAsync = promisify(execFile);
 const ORGANIZER_URL = process.env.LUMA_USER_URL ?? "https://luma.com/user/smuai";
 const TARGET_YEAR = process.env.LUMA_TARGET_YEAR ?? "26/27";
 const OUTPUT_PATH = path.join(process.cwd(), "src/content/events.luma.generated.json");
+const ALLOW_NOOP_ON_FAILURE = process.env.LUMA_ALLOW_NOOP_ON_FAILURE === "1";
 const SINGAPORE_OFFSET = "+08:00";
 const DUMP_DOM_FLAGS = [
   "--headless",
@@ -228,20 +229,44 @@ async function writeGeneratedEventsFile(events) {
   await fs.writeFile(`${OUTPUT_PATH}`, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-async function main() {
-  const dom = await getRenderedOrganizerDom();
-  const rows = extractEventRows(dom);
-
-  if (rows.length === 0) {
-    throw new Error("No Luma event rows were found on the rendered organizer page.");
+async function keepExistingGeneratedEventsFile(error) {
+  try {
+    await fs.access(OUTPUT_PATH);
+  } catch {
+    throw error;
   }
 
-  const events = convertRowsToEvents(rows);
-  await writeGeneratedEventsFile(events);
-
+  const message = error instanceof Error ? error.message : String(error);
   process.stdout.write(
-    `Synced ${events.length} Luma events into ${path.relative(process.cwd(), OUTPUT_PATH)} for AY${TARGET_YEAR}.\n`,
+    `Warning: Luma sync skipped and kept the existing generated events file unchanged. ${message}\n`,
   );
+}
+
+async function main() {
+  try {
+    const dom = await getRenderedOrganizerDom();
+    const rows = extractEventRows(dom);
+
+    if (rows.length === 0) {
+      throw new Error(
+        "No Luma event rows were found on the rendered organizer page. The public page may be serving placeholder content or a Cloudflare challenge.",
+      );
+    }
+
+    const events = convertRowsToEvents(rows);
+    await writeGeneratedEventsFile(events);
+
+    process.stdout.write(
+      `Synced ${events.length} Luma events into ${path.relative(process.cwd(), OUTPUT_PATH)} for AY${TARGET_YEAR}.\n`,
+    );
+  } catch (error) {
+    if (ALLOW_NOOP_ON_FAILURE) {
+      await keepExistingGeneratedEventsFile(error);
+      return;
+    }
+
+    throw error;
+  }
 }
 
 main().catch((error) => {

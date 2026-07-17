@@ -32,26 +32,21 @@ export default function Navbar() {
   const pathname = usePathname();
   const isMembershipPage = pathname === "/membership";
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [pillStyle, setPillStyle] = useState({ width: 0, left: 0, opacity: 0 });
 
   useEffect(() => {
     const updatePill = () => {
       const activeItem = itemRefs.current[pathname];
-      const nav = navRef.current;
 
-      if (!activeItem || !nav) {
+      if (!activeItem) {
         setPillStyle((current) => ({ ...current, opacity: 0 }));
         return;
       }
 
-      const navRect = nav.getBoundingClientRect();
-      const itemRect = activeItem.getBoundingClientRect();
-
       setPillStyle({
-        width: itemRect.width,
-        left: itemRect.left - navRect.left,
+        width: activeItem.offsetWidth,
+        left: activeItem.offsetLeft,
         opacity: 1,
       });
     };
@@ -62,6 +57,19 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", updatePill);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!mobileOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand-deep-blue pt-[env(safe-area-inset-top)] text-white backdrop-blur-xl">
       <div className="relative mx-auto flex w-full max-w-[1380px] items-center justify-between px-5 py-4 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center lg:px-8">
@@ -70,12 +78,11 @@ export default function Navbar() {
         </Link>
 
         <nav
-          ref={navRef}
-          className="relative hidden h-11 items-center gap-1 rounded-full border border-white/15 bg-white/6 p-0.5 md:flex md:justify-self-center"
+          className="relative hidden h-[2.625rem] items-center gap-0.5 rounded-full border border-white/15 bg-white/6 p-0.5 md:flex md:justify-self-center"
         >
           <motion.span
             aria-hidden="true"
-            className="absolute inset-y-0.5 rounded-full bg-brand-gold"
+            className="absolute top-1/2 h-9 -translate-y-1/2 rounded-full bg-brand-gold"
             initial={false}
             animate={{
               left: pillStyle.left,
@@ -94,11 +101,13 @@ export default function Navbar() {
                   itemRefs.current[item.href] = node;
                 }}
                 className={clsx(
-                  "relative inline-flex h-10 items-center justify-center rounded-full px-4 text-sm font-semibold tracking-wide transition-colors",
+                  "relative inline-flex h-9 items-center justify-center rounded-full px-3.5 text-[13px] font-semibold tracking-[0.01em] transition-colors",
                   isActive ? "text-brand-deep-blue" : "text-white hover:text-brand-gold"
                 )}
               >
-                <span className="relative z-10 text-center leading-none">{item.label}</span>
+                <span className="relative z-10 inline-flex items-center justify-center text-center leading-none">
+                  {item.label}
+                </span>
               </Link>
             );
           })}
@@ -192,63 +201,104 @@ export default function Navbar() {
 
       <AnimatePresence initial={false}>
         {mobileOpen ? (
-          <motion.div
-            id="mobile-nav"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative overflow-hidden border-t border-white/10 bg-brand-deep-blue/95 px-5 md:hidden"
-          >
-            <div className="space-y-2 py-4">
-              <a
-                href={LINKTREE_URL}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setMobileOpen(false)}
-                className="mb-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/8 px-4 py-3 text-sm font-semibold text-white transition hover:border-brand-gold hover:text-brand-gold"
-              >
-                <LinktreeMark />
-                Linktree
-              </a>
-              <Link
-                href="/membership"
-                aria-current={isMembershipPage ? "page" : undefined}
-                onClick={() => setMobileOpen(false)}
-                className={clsx(
-                  "mb-3 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition",
-                  isMembershipPage
-                    ? "border border-brand-gold/40 bg-white/10 text-white"
-                    : "bg-brand-gold text-brand-deep-blue shadow-[0_14px_30px_-18px_rgba(255,204,0,0.85)]"
-                )}
-              >
-                <motion.span
-                  animate={isMembershipPage ? { scale: 1 } : { scale: [1, 1.03, 1] }}
-                  transition={isMembershipPage ? { duration: 0.2 } : { duration: 2.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-                >
-                  {isMembershipPage ? "Membership Page" : "Join as a Member"}
-                </motion.span>
-              </Link>
-              {navItems.map((item) => {
-                const isActive = pathname === item.href;
-                return (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close navigation menu"
+              onClick={() => setMobileOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-[rgba(7,14,32,0.34)] backdrop-blur-[2px] md:hidden"
+            />
+            <motion.aside
+              id="mobile-nav"
+              initial={{ opacity: 0, x: 28 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 28 }}
+              transition={{ duration: 0.24, ease: "easeOut" }}
+              className="fixed right-3 top-[calc(env(safe-area-inset-top)+5rem)] z-50 w-[min(21rem,calc(100vw-1.5rem))] overflow-hidden rounded-[1.75rem] border border-white/14 bg-brand-deep-blue/96 shadow-[0_32px_70px_-28px_rgba(7,14,32,0.72)] backdrop-blur-xl md:hidden"
+            >
+              <div className="border-b border-white/10 px-4 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">
+                      Navigate
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-white">SMUAI</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileOpen(false)}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white transition hover:bg-white/14"
+                    aria-label="Close navigation panel"
+                  >
+                    <X size={17} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-5 px-4 py-4">
+                <div className="space-y-2">
+                  {navItems.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={clsx(
+                          "flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors",
+                          isActive
+                            ? "bg-brand-gold text-brand-deep-blue"
+                            : "bg-white/6 text-white hover:bg-white/10 hover:text-brand-gold"
+                        )}
+                      >
+                        <span>{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+
+                <div className="space-y-2 border-t border-white/10 pt-4">
                   <Link
-                    key={item.href}
-                    href={item.href}
+                    href="/membership"
+                    aria-current={isMembershipPage ? "page" : undefined}
                     onClick={() => setMobileOpen(false)}
                     className={clsx(
-                      "block rounded-xl px-4 py-2 text-sm font-semibold transition-colors",
-                      isActive
-                        ? "bg-brand-gold text-brand-deep-blue"
-                        : "text-white hover:bg-white/10 hover:text-brand-gold"
+                      "inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition",
+                      isMembershipPage
+                        ? "border border-brand-gold/35 bg-white/10 text-white"
+                        : "border border-white/16 bg-white text-brand-deep-blue shadow-[0_18px_30px_-20px_rgba(255,255,255,0.55)]"
                     )}
                   >
-                    {item.label}
+                    <motion.span
+                      animate={isMembershipPage ? { scale: 1 } : { scale: [1, 1.025, 1] }}
+                      transition={
+                        isMembershipPage
+                          ? { duration: 0.2 }
+                          : { duration: 2.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+                      }
+                    >
+                      {isMembershipPage ? "Membership Page" : "Join as a Member"}
+                    </motion.span>
                   </Link>
-                );
-              })}
-            </div>
-          </motion.div>
+
+                  <a
+                    href={LINKTREE_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setMobileOpen(false)}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/14 bg-white/7 px-4 py-3 text-sm font-semibold text-white transition hover:border-brand-gold hover:text-brand-gold"
+                  >
+                    <LinktreeMark />
+                    Linktree
+                  </a>
+                </div>
+              </div>
+            </motion.aside>
+          </>
         ) : null}
       </AnimatePresence>
     </header>

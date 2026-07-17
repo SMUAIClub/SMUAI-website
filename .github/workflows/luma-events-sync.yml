@@ -18,12 +18,12 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -36,6 +36,7 @@ jobs:
       - name: Sync events from public Luma page
         env:
           LUMA_CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+          LUMA_ALLOW_NOOP_ON_FAILURE: "1"
         run: npm run sync:events
 
       - name: Commit updated generated events

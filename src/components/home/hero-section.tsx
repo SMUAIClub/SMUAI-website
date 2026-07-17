@@ -201,7 +201,7 @@ export default function HeroSection() {
 
       <div className="relative mt-6 w-full overflow-hidden py-3 sm:mt-14 sm:py-10">
         <div className="mx-auto block w-full max-w-[1320px] px-5 sm:hidden">
-          <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-brand-slate">
+          <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.14em] text-brand-slate/55">
             Swipe Through Moments
           </p>
           <div

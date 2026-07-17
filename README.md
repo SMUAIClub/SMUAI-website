@@ -192,6 +192,7 @@ Current behavior:
 - it can also be triggered manually from the GitHub Actions tab
 - if the public Luma event list changes, it commits the updated `src/content/events.luma.generated.json` file automatically
 - if your hosting provider deploys from `main` on push, the site will update after that automatic commit
+- if Luma temporarily serves placeholder content or blocks the scraper, the scheduled workflow now keeps the last generated file and exits without failing
 
 Practical note:
 

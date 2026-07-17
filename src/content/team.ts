@@ -20,6 +20,7 @@ export type ExecutiveCommitteeByYear = {
 const exco2627Root = "/team/exco/26-27";
 const exco2627Version = "20260715";
 const exco2627Photo = (file: string) => `${exco2627Root}/${file}?v=${exco2627Version}`;
+const excoPlaceholderPhoto = "/team/exco/placeholder_profile.webp";
 const exco2223Root = "/team/exco/22-23";
 const exco2021Root = "/team/exco/20-21";
 const exco1920Root = "/team/exco/19-20";
@@ -39,12 +40,6 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
         position: "Vice President",
         photo: exco2627Photo("winlei-temp.jpg"),
         linkedin: "https://www.linkedin.com/in/winleithawdar",
-      },
-      {
-        name: "Jasmine Cheong",
-        position: "Honorary General Secretary",
-        photo: exco2627Photo("jasmine temp.jpg"),
-        linkedin: "https://www.linkedin.com/in/jasmine-ch",
       },
       {
         name: "Su Myat Myat Htay (Sera)",
@@ -216,6 +211,31 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
     ],
     departments: [
       {
+        name: "Partnerships",
+        leads: [
+          {
+            name: "Anson Koh",
+            position: "Partnerships Lead",
+            photo: "/team/exco/25-26/partnerships-lead.jpg",
+            linkedin: "https://www.linkedin.com/in/ansonkohh/",
+          },
+        ],
+        executives: [
+          {
+            name: "Isaac Pua",
+            position: "Partnerships Executive",
+            photo: "/team/exco/25-26/partnerships-executive-1.jpg",
+            linkedin: "https://www.linkedin.com/in/isaacpua/",
+          },
+          {
+            name: "Saai Raja",
+            position: "Partnerships Executive",
+            photo: "/team/exco/25-26/partnerships-executive-2.jpg",
+            linkedin: "https://sg.linkedin.com/in/saaiaravindhraja",
+          },
+        ],
+      },
+      {
         name: "Programmes",
         leads: [
           {
@@ -243,31 +263,6 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Programmes Executive",
             photo: "/team/exco/25-26/programmes-executive-3.jpg",
             linkedin: "https://sg.linkedin.com/in/jayden-teoh",
-          },
-        ],
-      },
-      {
-        name: "Partnerships",
-        leads: [
-          {
-            name: "Anson Koh",
-            position: "Partnerships Lead",
-            photo: "/team/exco/25-26/partnerships-lead.jpg",
-            linkedin: "https://www.linkedin.com/in/ansonkohh/",
-          },
-        ],
-        executives: [
-          {
-            name: "Isaac Pua",
-            position: "Partnerships Executive",
-            photo: "/team/exco/25-26/partnerships-executive-1.jpg",
-            linkedin: "https://www.linkedin.com/in/isaacpua/",
-          },
-          {
-            name: "Saai Raja",
-            position: "Partnerships Executive",
-            photo: "/team/exco/25-26/partnerships-executive-2.jpg",
-            linkedin: "https://sg.linkedin.com/in/saaiaravindhraja",
           },
         ],
       },
@@ -328,24 +323,6 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
     ],
     departments: [
       {
-        name: "Programmes",
-        leads: [
-          {
-            name: "Jayden Teoh",
-            position: "Programmes Lead",
-            photo: "/team/exco/24-25/programmes-lead-1.jpg",
-            linkedin: "https://sg.linkedin.com/in/jayden-teoh",
-          },
-          {
-            name: "Lye Jia Jun",
-            position: "Programmes Lead",
-            photo: "/team/exco/24-25/programmes-lead-2.jpg",
-            linkedin: "https://www.linkedin.com/in/lyejiajun",
-          },
-        ],
-        executives: [],
-      },
-      {
         name: "Partnerships",
         leads: [
           {
@@ -359,6 +336,24 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Partnerships Lead",
             photo: "/team/exco/24-25/partnerships-lead-2.jpg",
             linkedin: "https://sg.linkedin.com/in/limshynru",
+          },
+        ],
+        executives: [],
+      },
+      {
+        name: "Programmes",
+        leads: [
+          {
+            name: "Jayden Teoh",
+            position: "Programmes Lead",
+            photo: "/team/exco/24-25/programmes-lead-1.jpg",
+            linkedin: "https://sg.linkedin.com/in/jayden-teoh",
+          },
+          {
+            name: "Lye Jia Jun",
+            position: "Programmes Lead",
+            photo: "/team/exco/24-25/programmes-lead-2.jpg",
+            linkedin: "https://www.linkedin.com/in/lyejiajun",
           },
         ],
         executives: [],
@@ -384,7 +379,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
     ],
   },
   "22/23": {
-    excoNumber: "3rd ExCo",
+    excoNumber: "4th ExCo",
     leadership: [
       {
         name: "Yap En Rui Andrea",
@@ -407,6 +402,18 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
     ],
     departments: [
       {
+        name: "Partnerships",
+        leads: [
+          {
+            name: "Lau Li Qing",
+            position: "Partnerships Lead",
+            photo: `${exco2223Root}/partnerships-lead.jpg`,
+            linkedin: "https://www.linkedin.com/in/lau-li-qing",
+          },
+        ],
+        executives: [],
+      },
+      {
         name: "Programmes",
         leads: [
           {
@@ -425,18 +432,6 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
         executives: [],
       },
       {
-        name: "Partnerships",
-        leads: [
-          {
-            name: "Lau Li Qing",
-            position: "Partnerships Lead",
-            photo: `${exco2223Root}/partnerships-lead.jpg`,
-            linkedin: "https://www.linkedin.com/in/lau-li-qing",
-          },
-        ],
-        executives: [],
-      },
-      {
         name: "Marketing",
         leads: [
           {
@@ -450,6 +445,71 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Marketing Lead",
             photo: `${exco2223Root}/marketing-lead-2.jpg`,
             linkedin: "https://www.linkedin.com/in/reuben-yang-zh224",
+          },
+        ],
+        executives: [],
+      },
+    ],
+  },
+  "21/22": {
+    excoNumber: "3rd ExCo",
+    leadership: [
+      {
+        name: "Vrinda Bahl",
+        position: "President",
+        photo: excoPlaceholderPhoto,
+      },
+      {
+        name: "Trudi Lim",
+        position: "Honorary General Secretary",
+        photo: excoPlaceholderPhoto,
+      },
+      {
+        name: "Ling Yin",
+        position: "Finance Lead",
+        photo: excoPlaceholderPhoto,
+      },
+    ],
+    departments: [
+      {
+        name: "Partnerships",
+        leads: [
+          {
+            name: "Constance Koh",
+            position: "Partnerships Lead",
+            photo: excoPlaceholderPhoto,
+          },
+          {
+            name: "Megan Thong",
+            position: "Partnerships Lead",
+            photo: excoPlaceholderPhoto,
+          },
+        ],
+        executives: [],
+      },
+      {
+        name: "Programmes",
+        leads: [
+          {
+            name: "Yash Chellani",
+            position: "Programmes Lead",
+            photo: excoPlaceholderPhoto,
+          },
+        ],
+        executives: [],
+      },
+      {
+        name: "Marketing",
+        leads: [
+          {
+            name: "Graciella Antonius",
+            position: "Marketing Lead",
+            photo: excoPlaceholderPhoto,
+          },
+          {
+            name: "Rachele Foo",
+            position: "Marketing Lead",
+            photo: excoPlaceholderPhoto,
           },
         ],
         executives: [],
@@ -480,18 +540,6 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
     ],
     departments: [
       {
-        name: "Programmes",
-        leads: [
-          {
-            name: "Hafil Zachiary",
-            position: "Programmes Lead",
-            photo: `${exco2021Root}/programmes-lead.jpg`,
-            linkedin: "https://www.linkedin.com/in/hafilnz/",
-          },
-        ],
-        executives: [],
-      },
-      {
         name: "Partnerships",
         leads: [
           {
@@ -499,6 +547,18 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Partnerships Lead",
             photo: `${exco2021Root}/partnerships-lead.jpg`,
             linkedin: "https://www.linkedin.com/in/lukastham/",
+          },
+        ],
+        executives: [],
+      },
+      {
+        name: "Programmes",
+        leads: [
+          {
+            name: "Hafil Zachiary",
+            position: "Programmes Lead",
+            photo: `${exco2021Root}/programmes-lead.jpg`,
+            linkedin: "https://www.linkedin.com/in/hafilnz/",
           },
         ],
         executives: [],
@@ -541,6 +601,18 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
     ],
     departments: [
       {
+        name: "Partnerships",
+        leads: [
+          {
+            name: "Jeremy Ang",
+            position: "Partnerships Lead",
+            photo: `${exco1920Root}/partnerships-lead.jpg`,
+            linkedin: "https://www.linkedin.com/in/jeremy-ang/",
+          },
+        ],
+        executives: [],
+      },
+      {
         name: "Programmes",
         leads: [
           {
@@ -554,18 +626,6 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Programmes Lead",
             photo: `${exco1920Root}/programmes-lead-2.jpg`,
             linkedin: "https://www.linkedin.com/in/johnathan-tan-kw/",
-          },
-        ],
-        executives: [],
-      },
-      {
-        name: "Partnerships",
-        leads: [
-          {
-            name: "Jeremy Ang",
-            position: "Partnerships Lead",
-            photo: `${exco1920Root}/partnerships-lead.jpg`,
-            linkedin: "https://www.linkedin.com/in/jeremy-ang/",
           },
         ],
         executives: [],
