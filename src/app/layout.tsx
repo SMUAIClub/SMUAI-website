@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import SiteChatbot from "@/components/site-chatbot";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "SMUAI",
@@ -26,6 +27,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <SiteChatbot />
+        <Analytics />
       </body>
     </html>
   );
