@@ -42,6 +42,12 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
         linkedin: "https://www.linkedin.com/in/winleithawdar",
       },
       {
+        name: "Ang Cheng Zuo (Alric)",
+        position: "Honorary General Secretary",
+        photo: `${exco2627Root}/cz-temp.jpg?v=20260722`,
+        linkedin: "https://www.linkedin.com/in/ang-cheng-zuo",
+      },
+      {
         name: "Su Myat Myat Htay (Sera)",
         position: "Honorary Finance Secretary",
         photo: exco2627Photo("sera-temp.jpg"),
@@ -73,16 +79,28 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             linkedin: "https://www.linkedin.com/in/subramanian-makendra-prasad/",
           },
           {
+            name: "Liu Zihan",
+            position: "Partnerships Executive",
+            photo: exco2627Photo("zihan-temp.jpg"),
+            linkedin: "https://www.linkedin.com/in/zihan-liu-bb2bba3b4",
+          },
+          {
             name: "Palaash Jadav",
             position: "Partnerships Executive",
             photo: exco2627Photo("palaash temp.jpg"),
             linkedin: "https://sg.linkedin.com/in/palaash-jadav",
           },
           {
-            name: "Liu Zihan",
+            name: "Ju Hyeseong",
             position: "Partnerships Executive",
-            photo: exco2627Photo("zihan-temp.jpg"),
-            linkedin: "https://www.linkedin.com/in/zihan-liu-bb2bba3b4",
+            photo: exco2627Photo("kyle-temp.jpg"),
+            linkedin: "https://www.linkedin.com/in/hyeseong-ju/",
+          },
+          {
+            name: "Lee Ze Xin",
+            position: "Partnerships Executive",
+            photo: exco2627Photo("zx-temp.jpg"),
+            linkedin: "https://www.linkedin.com/in/lee-ze-xin/",
           },
         ],
       },
@@ -104,22 +122,16 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             linkedin: "https://www.linkedin.com/in/whansel007",
           },
           {
-            name: "Ang Cheng Zuo (Alric)",
+            name: "Yang Dairu",
             position: "Programmes Executive",
-            photo: exco2627Photo("alric-temp.jpg"),
-            linkedin: "https://www.linkedin.com/in/ang-cheng-zuo",
+            photo: exco2627Photo("dairu-temp.jpg"),
+            linkedin: "https://www.linkedin.com/in/dairu/",
           },
           {
             name: "Chelsea Gaol",
             position: "Programmes Executive",
             photo: exco2627Photo("chelsea-temp.jpg"),
             linkedin: "https://www.linkedin.com/in/chelseamalg",
-          },
-          {
-            name: "Yang Dairu",
-            position: "Programmes Executive",
-            photo: exco2627Photo("dairu-temp.jpg"),
-            linkedin: "https://www.linkedin.com/in/dairu/",
           },
         ],
       },
@@ -372,6 +384,66 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
             position: "Marketing Lead",
             photo: "/team/exco/24-25/marketing-lead-2.jpg",
             linkedin: "https://www.linkedin.com/in/sandraykx/",
+          },
+        ],
+        executives: [],
+      },
+    ],
+  },
+  "23/24": {
+    excoNumber: "5th ExCo",
+    leadership: [
+      {
+        name: "Reuben Yang",
+        position: "President",
+        photo: excoPlaceholderPhoto,
+      },
+      {
+        name: "Harshita N Balaji",
+        position: "Honorary General Secretary",
+        photo: excoPlaceholderPhoto,
+      },
+      {
+        name: "Javan Chok",
+        position: "Honorary Finance Secretary",
+        photo: excoPlaceholderPhoto,
+      },
+    ],
+    departments: [
+      {
+        name: "Partnerships",
+        leads: [
+          {
+            name: "Vaishnavi Singh",
+            position: "Partnerships Lead",
+            photo: excoPlaceholderPhoto,
+          },
+        ],
+        executives: [],
+      },
+      {
+        name: "Programmes",
+        leads: [
+          {
+            name: "Yin Qiuhao (Ben)",
+            position: "Programmes Lead",
+            photo: excoPlaceholderPhoto,
+          },
+          {
+            name: "Nicole Daduya",
+            position: "Programmes Lead",
+            photo: excoPlaceholderPhoto,
+          },
+        ],
+        executives: [],
+      },
+      {
+        name: "Marketing",
+        leads: [
+          {
+            name: "Jezelei Manangan",
+            position: "Marketing Lead",
+            photo: excoPlaceholderPhoto,
           },
         ],
         executives: [],

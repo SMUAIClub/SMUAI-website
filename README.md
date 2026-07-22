@@ -93,6 +93,7 @@ Current behavior:
 - it answers from curated SMUAI site content
 - it uses Gemini when `GEMINI_API_KEY` is available
 - if Gemini fails or is unavailable, it falls back to local replies for membership, events, team, partners, and contact info
+- event answers use the same event data as the Events page
 
 Branding:
 
@@ -119,11 +120,6 @@ If the registration flow changes, update those buttons together.
 
 Events are maintained in `src/content/events.ts`.
 
-Current-year Luma events are also synced into:
-
-- `src/content/events.luma.generated.json`
-- `scripts/sync-luma-events.mjs`
-
 Each event uses:
 
 - `title`
@@ -140,7 +136,8 @@ Important behavior:
 - the nearest future event becomes the featured event
 - ended events still keep their `lumaLink` so visitors can open the event page
 - clicking a card opens the preview modal
-- `src/content/events.ts` keeps the manual event history and merges in the generated Luma events for AY `26/27`
+- `src/content/events.ts` is the single source of truth for all event entries
+- update event dates manually in `src/content/events.ts`; the site no longer auto-syncs from Luma
 
 Time values should use ISO timestamps with `+08:00`, for example:
 
@@ -157,46 +154,6 @@ Poster folders:
 Suggested poster filename format:
 
 - `YYYY-MM-DD-short-slug.jpg`
-
-### Luma Sync
-
-This repo does not require Luma Plus for event syncing.
-
-Instead, `npm run sync:events` reads the public SMUAI Luma organizer page, extracts the currently visible event cards, and writes them into `src/content/events.luma.generated.json`.
-
-Use it like this:
-
-```bash
-npm run sync:events
-```
-
-Optional environment variables:
-
-- `LUMA_USER_URL` to change the organizer page URL
-- `LUMA_TARGET_YEAR` to write into a different academic year bucket
-- `LUMA_CHROME_PATH` if Chrome or Chromium is installed in a non-standard location
-
-Notes:
-
-- the sync uses headless Chrome, so a local Chrome or Chromium install is required
-- it is best for the current academic year's visible public events
-- older historical events should still stay in `src/content/events.ts`
-
-### Automatic Sync
-
-The repo now includes a GitHub Actions workflow at `.github/workflows/luma-events-sync.yml`.
-
-Current behavior:
-
-- it runs every 6 hours
-- it can also be triggered manually from the GitHub Actions tab
-- if the public Luma event list changes, it commits the updated `src/content/events.luma.generated.json` file automatically
-- if your hosting provider deploys from `main` on push, the site will update after that automatic commit
-- if Luma temporarily serves placeholder content or blocks the scraper, the scheduled workflow now keeps the last generated file and exits without failing
-
-Practical note:
-
-- scheduled GitHub Actions only run automatically from the repository's default branch, which is `main`
 
 ## Team
 

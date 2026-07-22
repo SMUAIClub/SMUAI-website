@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "sync:events": "node scripts/sync-luma-events.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

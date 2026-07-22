@@ -1,5 +1,3 @@
-import lumaGeneratedEventsByYear from "@/content/events.luma.generated.json";
-
 export type EventItem = {
   title: string;
   dateLabel: string;
@@ -10,28 +8,26 @@ export type EventItem = {
   lumaLink?: string;
 };
 
-function getEventKey(event: EventItem) {
-  return event.lumaLink?.trim() || `${event.title}::${event.startAt}`;
+const SINGAPORE_OFFSET = "+08:00";
+
+function getFallbackEndAt(startAt: string) {
+  const [datePart] = startAt.split("T");
+  return `${datePart}T23:59:59${SINGAPORE_OFFSET}`;
 }
 
-function mergeEventLists(preferred: EventItem[], fallback: EventItem[]) {
-  const merged = new Map<string, EventItem>();
+function normalizeEvent(event: EventItem): EventItem {
+  return {
+    ...event,
+    endAt: event.endAt ?? getFallbackEndAt(event.startAt),
+  };
+}
 
-  for (const event of fallback) {
-    merged.set(getEventKey(event), event);
-  }
+export function getEventEndTimestamp(event: Pick<EventItem, "startAt" | "endAt">) {
+  return new Date(event.endAt ?? getFallbackEndAt(event.startAt)).getTime();
+}
 
-  for (const event of preferred) {
-    const existing = merged.get(getEventKey(event));
-    merged.set(getEventKey(event), {
-      ...existing,
-      ...event,
-    });
-  }
-
-  return [...merged.values()].sort(
-    (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
-  );
+function normalizeEvents(items: EventItem[]) {
+  return items.map(normalizeEvent);
 }
 
 const manualEventsByYear: Record<string, EventItem[]> = {
@@ -134,6 +130,22 @@ const manualEventsByYear: Record<string, EventItem[]> = {
       endAt: "2026-07-22T17:00:00+08:00",
       poster: "/events/26-27/2026-07-22-alibaba-cloud-qoder-hackathon-singapore-2026.jpg",
       lumaLink: "https://luma.com/92h6pyl1",
+    },
+    {
+      title: "SMUAIxKOMOSxSG한인AI빌더 Meetup #1",
+      dateLabel: "Thursday, 23 Jul 2026",
+      timeLabel: "6:00 PM",
+      startAt: "2026-07-23T18:00:00+08:00",
+      poster: "https://images.lumacdn.com/uploads/20/5b0d5279-f76f-4bfa-b4e2-80e41110ffd5.png",
+      lumaLink: "https://luma.com/kjgl8lsa",
+    },
+    {
+      title: "Building the Agentic AI Infrastructure",
+      dateLabel: "Wednesday, 5 Aug 2026",
+      timeLabel: "6:00 PM",
+      startAt: "2026-08-05T18:00:00+08:00",
+      poster: "https://images.lumacdn.com/uploads/n9/02dd154f-c569-4a58-8824-e3c20b9ff605.png",
+      lumaLink: "https://luma.com/u40ccs9i",
     },
   ],
   "25/26": [
@@ -239,13 +251,9 @@ const manualEventsByYear: Record<string, EventItem[]> = {
   ],
 };
 
-const syncedEventsByYear =
-  lumaGeneratedEventsByYear as Partial<Record<string, EventItem[]>>;
-
-export const eventsByYear: Record<string, EventItem[]> = {
-  ...manualEventsByYear,
-  "26/27": mergeEventLists(
-    syncedEventsByYear["26/27"] ?? [],
-    manualEventsByYear["26/27"] ?? [],
-  ),
-};
+export const eventsByYear: Record<string, EventItem[]> = Object.fromEntries(
+  Object.entries(manualEventsByYear).map(([year, items]) => [
+    year,
+    normalizeEvents(items),
+  ]),
+) as Record<string, EventItem[]>;

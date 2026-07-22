@@ -1,4 +1,4 @@
-import { eventsByYear } from "@/content/events";
+import { eventsByYear, getEventEndTimestamp } from "@/content/events";
 import { partners } from "@/content/partners";
 import { advisors, advisorsProfileSummary, executiveCommitteeByYear } from "@/content/team";
 
@@ -28,6 +28,7 @@ type FlattenedEvent = {
   dateLabel: string;
   timeLabel: string;
   startAt: string;
+  endAt?: string;
   lumaLink?: string;
 };
 
@@ -44,6 +45,7 @@ function flattenEvents() {
             dateLabel: item.dateLabel,
             timeLabel: item.timeLabel,
             startAt: item.startAt,
+            endAt: item.endAt,
             lumaLink: item.lumaLink,
           }) satisfies FlattenedEvent,
       ),
@@ -53,7 +55,7 @@ function flattenEvents() {
 
 function getUpcomingEvents(limit = 5) {
   const now = Date.now();
-  const futureEvents = flattenEvents().filter((event) => new Date(event.startAt).getTime() >= now);
+  const futureEvents = flattenEvents().filter((event) => getEventEndTimestamp(event) >= now);
   return futureEvents.slice(0, limit);
 }
 
