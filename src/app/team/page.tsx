@@ -11,7 +11,7 @@ import {
   executiveCommitteeByYear,
 } from "@/content/team";
 
-const COMPACT_SINGLE_LEAD_YEARS = new Set(["22/23", "21/22", "19/20"]);
+const COMPACT_SINGLE_LEAD_YEARS = new Set(["23/24", "22/23", "21/22", "19/20"]);
 
 function getLeadershipGridClass(memberCount: number) {
   if (memberCount >= 4) {

@@ -4,7 +4,7 @@ import NumberFlow from "@number-flow/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, ChevronDown, ExternalLink, X } from "lucide-react";
-import { eventsByYear, type EventItem } from "@/content/events";
+import { eventsByYear, getEventEndTimestamp, type EventItem } from "@/content/events";
 
 type EventStatus = "upcoming" | "live" | "ended";
 
@@ -18,7 +18,7 @@ const dayFormatter = new Intl.DateTimeFormat("en-CA", {
 });
 
 function getEventEndTime(event: EventItem) {
-  return new Date(event.endAt ?? event.startAt).getTime();
+  return getEventEndTimestamp(event);
 }
 
 function getEventStartTime(event: EventItem) {
@@ -333,8 +333,12 @@ export default function EventsPage() {
               </div>
             </div>
 
-            {featuredEvent && (
-              <section className="relative overflow-hidden rounded-[2.25rem] bg-white px-5 py-6 sm:px-6 sm:py-8 lg:min-h-[calc(100svh-220px)] lg:px-8 lg:py-8">
+            {featuredEvent ? (
+              <section
+                className={`relative overflow-hidden rounded-[2.25rem] bg-white px-5 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-8 ${
+                  remainingUpcomingEvents.length > 0 ? "lg:min-h-[calc(100svh-220px)]" : ""
+                }`}
+              >
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(27,43,84,0.06),transparent_38%),radial-gradient(circle_at_82%_72%,rgba(81,97,133,0.08),transparent_42%)]" />
                 <div className="relative flex h-full flex-col justify-center gap-6 lg:gap-8">
                   <div className="mx-auto grid w-full max-w-6xl items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:gap-8">
@@ -449,6 +453,69 @@ export default function EventsPage() {
                       </div>
                     </div>
                   )}
+                </div>
+              </section>
+            ) : (
+              <section className="relative overflow-hidden rounded-[2.25rem] bg-white px-5 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-8">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(27,43,84,0.06),transparent_38%),radial-gradient(circle_at_82%_72%,rgba(81,97,133,0.08),transparent_42%)]" />
+                <div className="relative grid items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:gap-8">
+                  <div className="text-left">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <EventPill tone="accent">Upcoming</EventPill>
+                      <EventPill>No live listing</EventPill>
+                    </div>
+                    <h2 className="mt-4 text-[2rem] font-black leading-[1.04] tracking-[-0.025em] text-brand-deep-blue max-sm:text-[1.7rem] max-sm:leading-[1.02] sm:text-[2.35rem]">
+                      No upcoming events are listed right now.
+                    </h2>
+                    <p className="mt-4 max-w-2xl text-sm leading-relaxed text-brand-slate sm:text-base">
+                      Fresh workshops, build nights, and hackathons will show up here once the next event is published.
+                      You can still browse the archive below or check the SMUAI Luma page for the latest listings.
+                    </p>
+                    <div className="mt-5 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+                      <a
+                        href={SMUAI_LUMA_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-deep-blue px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-deep-blue/90 sm:w-auto"
+                      >
+                        View SMUAI Luma
+                        <ArrowRight size={15} />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[2rem] border border-brand-soft/80 bg-[linear-gradient(180deg,#ffffff_0%,#f5f8fd_100%)] p-5 shadow-[0_24px_42px_-34px_rgba(27,43,84,0.18)] sm:p-6">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="rounded-[1.4rem] border border-brand-soft/70 bg-white px-4 py-4">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-slate">
+                          Archive
+                        </p>
+                        <p className="mt-2 text-3xl font-black tracking-[-0.05em] text-brand-deep-blue">
+                          {pastEvents.length}
+                        </p>
+                        <p className="mt-1 text-sm text-brand-slate">
+                          past event{pastEvents.length === 1 ? "" : "s"}
+                        </p>
+                      </div>
+                      <div className="rounded-[1.4rem] border border-brand-soft/70 bg-white px-4 py-4">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-slate">
+                          Season
+                        </p>
+                        <p className="mt-2 text-3xl font-black tracking-[-0.05em] text-brand-deep-blue">
+                          AY{year}
+                        </p>
+                        <p className="mt-1 text-sm text-brand-slate">
+                          selected view
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-[1.4rem] border border-dashed border-brand-soft/90 bg-white/85 px-4 py-5 text-center">
+                      <p className="text-sm font-semibold text-brand-deep-blue">Next event slot will appear here.</p>
+                      <p className="mt-2 text-sm leading-relaxed text-brand-slate">
+                        Once a new event is added, this section will switch back to the featured upcoming layout automatically.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </section>
             )}
