@@ -3,11 +3,10 @@ import { partners } from "@/content/partners";
 import { advisors, advisorsProfileSummary, executiveCommitteeByYear } from "@/content/team";
 
 export const chatbotLinks = {
-  membershipPage: "/membership",
   teamPage: "/team",
   eventsPage: "/events",
   partnersPage: "/partners",
-  registrationForm: "https://smu.opine.asia/survey?id=88173c31-3ce0-419d-a811-72783811d5df",
+  registrationForm: "https://forms.gle/7UeUbNhu4fPJqCbs9",
   opine: "https://smu.opine.asia/",
   email: "mailto:smuai@sa.smu.edu.sg",
   linkedin: "https://linkedin.com/company/smuai",
@@ -124,7 +123,6 @@ export function buildSiteChatContext() {
     "What SMUAI does: workshops, hackathons, networking, and research.",
     "",
     "Membership:",
-    "Membership page: /membership",
     `Opine account: ${chatbotLinks.opine}`,
     `Registration form: ${chatbotLinks.registrationForm}`,
     "Membership fee: S$15 one-time lifetime membership fee via PayNow.",
@@ -181,12 +179,11 @@ export function buildFallbackChatReply(message: string) {
     question.includes("fee")
   ) {
     return [
-      "You can join SMUAI as a member through the membership flow on the site.",
+      "You can join SMUAI as a member through the registration form.",
       `1. Create your Opine account: ${chatbotLinks.opine}`,
       `2. Open the registration form: ${chatbotLinks.registrationForm}`,
       "3. Pay the one-time S$15 lifetime membership fee via PayNow.",
       "4. Wait for the confirmation email.",
-      `You can also check ${chatbotLinks.membershipPage} for the full checklist.`,
     ].join("\n");
   }
 
@@ -243,6 +240,6 @@ export function buildFallbackChatReply(message: string) {
   return [
     "I can help with information that is currently on the SMUAI site.",
     "Try asking about membership, upcoming events, the team, advisors, partners, or contact links.",
-    `Useful pages: ${chatbotLinks.membershipPage}, ${chatbotLinks.eventsPage}, ${chatbotLinks.teamPage}, ${chatbotLinks.partnersPage}`,
+    `Useful pages: ${chatbotLinks.eventsPage}, ${chatbotLinks.teamPage}, ${chatbotLinks.partnersPage}`,
   ].join("\n");
 }

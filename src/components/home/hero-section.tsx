@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Gravity, { MatterBody } from "@/components/fancy/physics/cursor-attractor-and-gravity";
 import { heroGalleryImages } from "@/content/home";
@@ -56,12 +56,41 @@ function normalizeMobileHeroScrollPosition(element: HTMLDivElement) {
 }
 
 export default function HeroSection() {
+  const heroRef = useRef<HTMLElement | null>(null);
   const [carouselItems, setCarouselItems] = useState(getInitialCarouselItems);
   const mobileScrollRef = useRef<HTMLDivElement | null>(null);
   const mobileDragStateRef = useRef({ isDragging: false, startX: 0, startScrollLeft: 0 });
   const [isMobilePaused, setIsMobilePaused] = useState(false);
   const nextImageRef = useRef(HERO_SLOTS.length);
   const idRef = useRef(HERO_SLOTS.length + 1);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 24,
+    mass: 0.3,
+  });
+  const backdropOpacity = useTransform(smoothProgress, [0, 0.85], [1, 0.62]);
+  const backdropScale = useTransform(smoothProgress, [0, 1], [1, 1.04]);
+  const glowOpacity = useTransform(smoothProgress, [0, 0.8], [0.7, 0.2]);
+  const glowY = useTransform(smoothProgress, [0, 1], [0, -40]);
+  const particlesOpacity = useTransform(smoothProgress, [0, 0.8], [0.62, 0.14]);
+  const particlesY = useTransform(smoothProgress, [0, 1], [0, -42]);
+  const heroCopyY = useTransform(smoothProgress, [0, 1], [0, -54]);
+  const heroCopyOpacity = useTransform(smoothProgress, [0, 0.72, 1], [1, 0.64, 0.24]);
+  const heroCopyScale = useTransform(smoothProgress, [0, 1], [1, 0.97]);
+  const heroCopyBlur = useTransform(smoothProgress, [0, 1], [0, 8]);
+  const heroCopyFilter = useTransform(heroCopyBlur, (value) => `blur(${value}px)`);
+  const galleryY = useTransform(smoothProgress, [0, 1], [0, -34]);
+  const galleryOpacity = useTransform(smoothProgress, [0, 0.75, 1], [1, 0.72, 0.34]);
+  const galleryScale = useTransform(smoothProgress, [0, 1], [1, 1.015]);
+  const galleryBlur = useTransform(smoothProgress, [0, 1], [0, 6]);
+  const galleryFilter = useTransform(galleryBlur, (value) => `blur(${value}px)`);
+  const indicatorOpacity = useTransform(smoothProgress, [0, 0.2, 0.42], [0, 0.85, 0]);
+  const indicatorY = useTransform(smoothProgress, [0, 0.42], [0, -14]);
+  const sectionOpacity = useTransform(smoothProgress, [0, 0.92, 1], [1, 0.98, 0.95]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -159,9 +188,20 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative flex min-h-0 flex-col justify-start overflow-hidden bg-white pb-8 pt-6 sm:pb-12 sm:pt-10 lg:min-h-[calc(100svh-78px)] lg:justify-center">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(27,43,84,0.06),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(81,97,133,0.08),transparent_44%)]" />
-      <div className="absolute inset-0 hidden opacity-80 sm:block">
+    <motion.section
+      ref={heroRef}
+      style={{ opacity: sectionOpacity }}
+      className="relative flex min-h-0 flex-col justify-start overflow-hidden bg-white pb-8 pt-6 sm:pb-12 sm:pt-10 lg:min-h-[calc(100svh-78px)] lg:justify-center"
+    >
+      <motion.div
+        style={{ opacity: backdropOpacity, scale: backdropScale }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(27,43,84,0.06),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(81,97,133,0.08),transparent_44%)]"
+      />
+      <motion.div
+        style={{ opacity: glowOpacity, y: glowY }}
+        className="pointer-events-none absolute inset-x-0 top-10 h-56 bg-[radial-gradient(circle_at_50%_45%,rgba(255,209,1,0.18),rgba(255,209,1,0.08)_24%,transparent_64%)] blur-3xl sm:top-16 sm:h-72"
+      />
+      <motion.div style={{ opacity: particlesOpacity, y: particlesY }} className="absolute inset-0 hidden sm:block">
         <Gravity attractorStrength={0} cursorStrength={0.00032} cursorFieldRadius={180} className="h-full w-full" addTopWall={false}>
           {heroParticles.map((particle, index) => (
             <MatterBody
@@ -175,9 +215,17 @@ export default function HeroSection() {
             </MatterBody>
           ))}
         </Gravity>
-      </div>
+      </motion.div>
 
-      <div className="relative mx-auto flex w-full max-w-[1320px] flex-col items-center px-5 text-center lg:px-8">
+      <motion.div
+        style={{
+          y: heroCopyY,
+          opacity: heroCopyOpacity,
+          scale: heroCopyScale,
+          filter: heroCopyFilter,
+        }}
+        className="relative mx-auto flex w-full max-w-[1320px] flex-col items-center px-5 text-center lg:px-8"
+      >
         <div className="w-full max-w-4xl">
           <div className="relative mx-auto inline-flex overflow-hidden rounded-[24px] border border-brand-soft/80 px-4 py-3 shadow-[0_28px_60px_-48px_rgba(27,43,84,0.55)] sm:rounded-[28px] sm:px-5 sm:py-4">
             <Image
@@ -197,9 +245,17 @@ export default function HeroSection() {
             IIE).
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="relative mt-6 w-full overflow-hidden py-3 sm:mt-14 sm:py-10">
+      <motion.div
+        style={{
+          y: galleryY,
+          opacity: galleryOpacity,
+          scale: galleryScale,
+          filter: galleryFilter,
+        }}
+        className="relative mt-6 w-full overflow-hidden py-3 sm:mt-14 sm:py-10"
+      >
         <div className="mx-auto block w-full max-w-[1320px] px-5 sm:hidden">
           <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.14em] text-brand-slate/55">
             Swipe Through Moments
@@ -265,7 +321,19 @@ export default function HeroSection() {
             })}
           </AnimatePresence>
         </div>
-      </div>
-    </section>
+      </motion.div>
+
+      <motion.div
+        style={{ opacity: indicatorOpacity, y: indicatorY }}
+        className="pointer-events-none absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-3 rounded-full border border-brand-soft/80 bg-white/82 px-4 py-2 shadow-[0_18px_36px_-28px_rgba(27,43,84,0.22)] backdrop-blur sm:flex"
+      >
+        <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/80">Scroll</span>
+        <motion.span
+          animate={{ y: [0, 5, 0], opacity: [0.65, 1, 0.65] }}
+          transition={{ duration: 1.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+          className="block h-8 w-px bg-brand-deep-blue/30"
+        />
+      </motion.div>
+    </motion.section>
   );
 }

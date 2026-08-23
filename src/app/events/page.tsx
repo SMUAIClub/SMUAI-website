@@ -512,7 +512,7 @@ export default function EventsPage() {
                     <div className="mt-4 rounded-[1.4rem] border border-dashed border-brand-soft/90 bg-white/85 px-4 py-5 text-center">
                       <p className="text-sm font-semibold text-brand-deep-blue">Next event slot will appear here.</p>
                       <p className="mt-2 text-sm leading-relaxed text-brand-slate">
-                        Once a new event is added, this section will switch back to the featured upcoming layout automatically.
+                        Check back soon for the next SMUAI event.
                       </p>
                     </div>
                   </div>
