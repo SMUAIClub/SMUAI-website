@@ -111,7 +111,9 @@ export default function TeamPage() {
           <div
             className={
               compact
-                ? "min-w-0 flex-1 text-[13px] font-semibold leading-snug tracking-[-0.01em] sm:text-sm lg:text-[13px] lg:leading-[1.15] xl:text-sm 2xl:text-[15px]"
+                ? `min-w-0 flex-1 text-[13px] font-semibold leading-snug tracking-[-0.01em] sm:text-sm lg:text-[13px] lg:leading-[1.15] xl:text-sm 2xl:text-[15px]${
+                    member.name === "Phoebe Wong" ? " whitespace-nowrap" : ""
+                  }`
                 : "min-w-0 flex-1 text-[15px] font-semibold leading-snug text-balance sm:text-base"
             }
           >
