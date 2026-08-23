@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { CalendarDays, Github, Instagram, Linkedin, Mail, Send } from "lucide-react";
 
+const MEMBERSHIP_FORM_URL = "https://forms.gle/7UeUbNhu4fPJqCbs9";
+
 const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/team", label: "Team" },
@@ -51,8 +53,10 @@ export default function Footer() {
             Get updates on events, workshops, hackathons, and member opportunities with a one-time sign-up.
           </p>
           <div className="mt-5 w-full max-w-sm">
-            <Link
-              href="/membership"
+            <a
+              href={MEMBERSHIP_FORM_URL}
+              target="_blank"
+              rel="noreferrer"
               style={
                 {
                   "--spread": "90deg",
@@ -73,7 +77,7 @@ export default function Footer() {
               <span className="relative z-10 text-sm font-semibold text-white">Join SMUAI as a Member</span>
               <div className="absolute inset-0 size-full rounded-full shadow-[inset_0_-8px_10px_rgba(255,255,255,0.12)] transition-all duration-300 ease-in-out group-hover:shadow-[inset_0_-6px_10px_rgba(255,255,255,0.2)] group-active:shadow-[inset_0_-10px_10px_rgba(255,255,255,0.2)]" />
               <div className="absolute inset-[var(--cut)] -z-20 rounded-full bg-[var(--bg)]" />
-            </Link>
+            </a>
           </div>
         </div>
       </div>

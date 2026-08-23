@@ -9,6 +9,7 @@ import clsx from "clsx";
 import BrandLogo from "./brand-logo";
 
 const LINKTREE_URL = "https://linktr.ee/smuai";
+const MEMBERSHIP_FORM_URL = "https://forms.gle/7UeUbNhu4fPJqCbs9";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -30,7 +31,6 @@ function LinktreeMark() {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isMembershipPage = pathname === "/membership";
   const [mobileOpen, setMobileOpen] = useState(false);
   const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [pillStyle, setPillStyle] = useState({ width: 0, left: 0, opacity: 0 });
@@ -125,52 +125,34 @@ export default function Navbar() {
             <LinktreeMark />
           </a>
           <motion.div
-            animate={
-              isMembershipPage
-                ? { scale: 1, boxShadow: "0 0 0 rgba(255, 204, 0, 0)" }
-                : {
-                    scale: [1, 1.02, 1],
-                    boxShadow: [
-                      "0 10px 24px -18px rgba(255, 255, 255, 0.08)",
-                      "0 16px 34px -16px rgba(255, 255, 255, 0.18)",
-                      "0 10px 24px -18px rgba(255, 255, 255, 0.08)",
-                    ],
-                  }
-            }
-            transition={
-              isMembershipPage
-                ? { duration: 0.2 }
-                : { duration: 2.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
-            }
+            animate={{
+              scale: [1, 1.02, 1],
+              boxShadow: [
+                "0 10px 24px -18px rgba(255, 255, 255, 0.08)",
+                "0 16px 34px -16px rgba(255, 255, 255, 0.18)",
+                "0 10px 24px -18px rgba(255, 255, 255, 0.08)",
+              ],
+            }}
+            transition={{ duration: 2.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
             className="rounded-full"
           >
-            <Link
-              href="/membership"
-              aria-current={isMembershipPage ? "page" : undefined}
+            <a
+              href={MEMBERSHIP_FORM_URL}
+              target="_blank"
+              rel="noreferrer"
               className={clsx(
                 "group relative inline-flex min-h-11 items-center overflow-hidden rounded-full border px-4 py-2 text-left transition",
-                isMembershipPage
-                  ? "border-brand-gold/45 bg-white/14 text-white"
-                  : "border-white/20 bg-white/10 text-white hover:-translate-y-0.5 hover:border-brand-gold hover:bg-white/12"
+                "border-white/20 bg-white/10 text-white hover:-translate-y-0.5 hover:border-brand-gold hover:bg-white/12"
               )}
             >
-              {isMembershipPage ? null : (
-                <motion.span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 left-[-45%] w-[50%] skew-x-[-20deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.03),rgba(255,255,255,0.18),rgba(255,255,255,0.03),transparent)] blur-[1px]"
-                  animate={{ x: ["-150%", "240%"] }}
-                  transition={{ duration: 3.1, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1.1, ease: "easeInOut" }}
-                />
-              )}
-              <span
-                className={clsx(
-                  "relative z-10 truncate text-sm font-semibold",
-                  isMembershipPage ? "text-white/80" : "text-white/88"
-                )}
-              >
-                {isMembershipPage ? "Membership" : "Join SMUAI"}
-              </span>
-            </Link>
+              <motion.span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-[-45%] w-[50%] skew-x-[-20deg] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.03),rgba(255,255,255,0.18),rgba(255,255,255,0.03),transparent)] blur-[1px]"
+                animate={{ x: ["-150%", "240%"] }}
+                transition={{ duration: 3.1, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1.1, ease: "easeInOut" }}
+              />
+              <span className="relative z-10 truncate text-sm font-semibold text-white/88">Join SMUAI</span>
+            </a>
           </motion.div>
         </div>
 
@@ -262,28 +244,23 @@ export default function Navbar() {
                 </div>
 
                 <div className="space-y-2 border-t border-white/10 pt-4">
-                  <Link
-                    href="/membership"
-                    aria-current={isMembershipPage ? "page" : undefined}
+                  <a
+                    href={MEMBERSHIP_FORM_URL}
+                    target="_blank"
+                    rel="noreferrer"
                     onClick={() => setMobileOpen(false)}
                     className={clsx(
                       "inline-flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition",
-                      isMembershipPage
-                        ? "border border-brand-gold/35 bg-white/10 text-white"
-                        : "border border-white/16 bg-white text-brand-deep-blue shadow-[0_18px_30px_-20px_rgba(255,255,255,0.55)]"
+                      "border border-white/16 bg-white text-brand-deep-blue shadow-[0_18px_30px_-20px_rgba(255,255,255,0.55)]"
                     )}
                   >
                     <motion.span
-                      animate={isMembershipPage ? { scale: 1 } : { scale: [1, 1.025, 1] }}
-                      transition={
-                        isMembershipPage
-                          ? { duration: 0.2 }
-                          : { duration: 2.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
-                      }
+                      animate={{ scale: [1, 1.025, 1] }}
+                      transition={{ duration: 2.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
                     >
-                      {isMembershipPage ? "Membership Page" : "Join as a Member"}
+                      Join as a Member
                     </motion.span>
-                  </Link>
+                  </a>
 
                   <a
                     href={LINKTREE_URL}
