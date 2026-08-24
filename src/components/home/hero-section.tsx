@@ -88,8 +88,8 @@ export default function HeroSection() {
   const galleryScale = useTransform(smoothProgress, [0, 1], [1, 1.015]);
   const galleryBlur = useTransform(smoothProgress, [0, 1], [0, 6]);
   const galleryFilter = useTransform(galleryBlur, (value) => `blur(${value}px)`);
-  const indicatorOpacity = useTransform(smoothProgress, [0, 0.2, 0.42], [0, 0.85, 0]);
-  const indicatorY = useTransform(smoothProgress, [0, 0.42], [0, -14]);
+  const indicatorOpacity = useTransform(smoothProgress, [0, 0.08, 0.18], [0.82, 0.6, 0]);
+  const indicatorY = useTransform(smoothProgress, [0, 0.18], [0, -16]);
   const sectionOpacity = useTransform(smoothProgress, [0, 0.92, 1], [1, 0.98, 0.95]);
 
   useEffect(() => {
@@ -325,14 +325,18 @@ export default function HeroSection() {
 
       <motion.div
         style={{ opacity: indicatorOpacity, y: indicatorY }}
-        className="pointer-events-none absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-3 rounded-full border border-brand-soft/80 bg-white/82 px-4 py-2 shadow-[0_18px_36px_-28px_rgba(27,43,84,0.22)] backdrop-blur sm:flex"
+        className="pointer-events-none absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 sm:bottom-6"
       >
-        <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-slate/80">Scroll</span>
-        <motion.span
-          animate={{ y: [0, 5, 0], opacity: [0.65, 1, 0.65] }}
-          transition={{ duration: 1.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-          className="block h-8 w-px bg-brand-deep-blue/30"
-        />
+        <div className="flex h-8 w-5 items-start justify-center rounded-full border border-brand-deep-blue/20 bg-white/32 p-1 shadow-[0_10px_24px_-18px_rgba(27,43,84,0.3)] backdrop-blur-[2px] sm:h-9 sm:w-6">
+          <motion.span
+            animate={{ y: [0, 8, 0], opacity: [0.95, 0.35, 0.95] }}
+            transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            className="block h-2.5 w-1 rounded-full bg-brand-deep-blue/55"
+          />
+        </div>
+        <span className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-slate/65 sm:text-[11px]">
+          Scroll
+        </span>
       </motion.div>
     </motion.section>
   );
