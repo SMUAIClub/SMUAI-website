@@ -36,7 +36,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
         linkedin: "https://www.linkedin.com/in/law-eric/",
       },
       {
-        name: "Win Lei Thawdar",
+        name: "Win Lei Thawdar (Winnie)",
         position: "Vice President",
         photo: exco2627Photo("vp-winlei.jpg"),
         linkedin: "https://www.linkedin.com/in/winleithawdar",
@@ -44,14 +44,14 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
       {
         name: "Ang Cheng Zuo (Alric)",
         position: "Honorary General Secretary",
-        photo: exco2627Photo("hgs-cz.jpg"),
+        photo: exco2627Photo("hgs-alric.jpg"),
         linkedin: "https://www.linkedin.com/in/ang-cheng-zuo",
       },
       {
         name: "Su Myat Myat Htay (Sera)",
         position: "Honorary Finance Secretary",
         photo: exco2627Photo("hfs-serasu.jpg"),
-        linkedin: "https://www.linkedin.com/in/su-myat-myat-htay-7342a3271/",
+        linkedin: "https://www.linkedin.com/in/sumyatmyathtay/",
       },
     ],
     departments: [

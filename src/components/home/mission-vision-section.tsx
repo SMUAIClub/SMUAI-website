@@ -18,7 +18,7 @@ const pillars = [
 export default function MissionVisionSection() {
   return (
     <section className="bg-brand-cloud px-5 py-14 text-brand-deep-blue lg:px-8 lg:py-20">
-      <div className="relative mx-auto w-full max-w-[1320px]">
+      <div className="mx-auto w-full max-w-[1320px]">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Purpose</p>
           <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-5xl">Mission And Vision</h2>
