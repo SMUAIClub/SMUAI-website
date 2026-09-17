@@ -17,6 +17,17 @@ const dayFormatter = new Intl.DateTimeFormat("en-CA", {
   day: "2-digit",
 });
 
+function getYearFromUrl(years: string[], fallback: string) {
+  const urlYear = new URLSearchParams(window.location.search).get("year")?.replace("-", "/");
+  return urlYear && years.includes(urlYear) ? urlYear : fallback;
+}
+
+function updateYearUrl(year: string) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("year", year.replace("/", "-"));
+  window.history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
 function getEventEndTime(event: EventItem) {
   return getEventEndTimestamp(event);
 }
@@ -214,6 +225,24 @@ export default function EventsPage() {
   const [nowTs, setNowTs] = useState(() => Date.now());
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
 
+  useEffect(() => {
+    const syncYearFromUrl = () => {
+      setYear(getYearFromUrl(years, years[0]));
+      setSelectedEvent(null);
+    };
+
+    syncYearFromUrl();
+    window.addEventListener("popstate", syncYearFromUrl);
+
+    return () => window.removeEventListener("popstate", syncYearFromUrl);
+  }, [years]);
+
+  const handleYearChange = (nextYear: string) => {
+    setYear(nextYear);
+    setSelectedEvent(null);
+    updateYearUrl(nextYear);
+  };
+
   const events = useMemo(
     () => [...(eventsByYear[year] ?? [])].sort((a, b) => getEventStartTime(a) - getEventStartTime(b)),
     [year],
@@ -237,6 +266,7 @@ export default function EventsPage() {
     ? upcomingEvents.filter((event) => event !== featuredEvent)
     : [];
   const hasUpcomingEvents = upcomingEvents.length > 0;
+  const isCurrentAcademicYear = year === years[0];
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -256,6 +286,19 @@ export default function EventsPage() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (!selectedEvent) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [selectedEvent]);
 
   const renderSignupButton = (event: EventItem, inverse = false) => {
     const status = getEventStatus(event, nowTs);
@@ -316,7 +359,7 @@ export default function EventsPage() {
                 <div className="relative min-w-[140px]">
                   <select
                     value={year}
-                    onChange={(e) => setYear(e.target.value)}
+                    onChange={(e) => handleYearChange(e.target.value)}
                     className="w-full appearance-none rounded-xl border border-brand-soft bg-white px-3 py-2 pr-11 text-sm text-brand-deep-blue outline-none"
                   >
                     {years.map((y) => (
@@ -455,7 +498,7 @@ export default function EventsPage() {
                   )}
                 </div>
               </section>
-            ) : (
+            ) : isCurrentAcademicYear ? (
               <section className="relative overflow-hidden rounded-[2.25rem] bg-white px-5 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-8">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(27,43,84,0.06),transparent_38%),radial-gradient(circle_at_82%_72%,rgba(81,97,133,0.08),transparent_42%)]" />
                 <div className="relative grid items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:gap-8">
@@ -518,7 +561,7 @@ export default function EventsPage() {
                   </div>
                 </div>
               </section>
-            )}
+            ) : null}
 
             <section className="space-y-4">
               <div className="flex items-end justify-between gap-4">
@@ -535,7 +578,7 @@ export default function EventsPage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4">
                 {pastEvents.map((event) => (
                   <article
                     key={`${event.title}-${event.startAt}`}
@@ -553,7 +596,7 @@ export default function EventsPage() {
                     <EventPoster
                       src={event.poster}
                       title={event.title}
-                      sizes="(min-width: 1280px) 28vw, (min-width: 768px) 42vw, 100vw"
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 42vw, 50vw"
                       className="aspect-[11/12] rounded-[1.45rem]"
                       emptyLabel="Poster"
                       innerClassName="rounded-[1.1rem]"
@@ -585,6 +628,9 @@ export default function EventsPage() {
 
       {selectedEvent && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${selectedEvent.title} details`}
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/45 p-4"
           onClick={() => setSelectedEvent(null)}
         >

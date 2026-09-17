@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChevronDown, Globe, Linkedin } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   type TeamMember,
   advisors,
@@ -12,6 +12,17 @@ import {
 } from "@/content/team";
 
 const COMPACT_SINGLE_LEAD_YEARS = new Set(["23/24", "22/23", "21/22", "19/20"]);
+
+function getYearFromUrl(years: string[], fallback: string) {
+  const urlYear = new URLSearchParams(window.location.search).get("year")?.replace("-", "/");
+  return urlYear && years.includes(urlYear) ? urlYear : fallback;
+}
+
+function updateYearUrl(year: string) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("year", year.replace("/", "-"));
+  window.history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
+}
 
 function getLeadershipGridClass(memberCount: number) {
   if (memberCount >= 4) {
@@ -58,6 +69,20 @@ export default function TeamPage() {
     [],
   );
   const [year, setYear] = useState(years[0]);
+
+  useEffect(() => {
+    const syncYearFromUrl = () => setYear(getYearFromUrl(years, years[0]));
+
+    syncYearFromUrl();
+    window.addEventListener("popstate", syncYearFromUrl);
+
+    return () => window.removeEventListener("popstate", syncYearFromUrl);
+  }, [years]);
+
+  const handleYearChange = (nextYear: string) => {
+    setYear(nextYear);
+    updateYearUrl(nextYear);
+  };
 
   const executiveCommittee = executiveCommitteeByYear[year];
   const executiveLabel = `AY${year} • ${executiveCommittee.excoNumber}`;
@@ -158,7 +183,7 @@ export default function TeamPage() {
               <div className="relative">
                 <select
                   value={year}
-                  onChange={(e) => setYear(e.target.value)}
+                  onChange={(e) => handleYearChange(e.target.value)}
                   className="w-full appearance-none rounded-xl border bg-white px-3 py-2 pr-11 text-sm"
                 >
                   {years.map((y) => (

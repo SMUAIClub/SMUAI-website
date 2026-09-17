@@ -18,7 +18,7 @@ export type ExecutiveCommitteeByYear = {
 };
 
 const exco2627Root = "/team/exco/26-27";
-const exco2627Version = "20260715";
+const exco2627Version = "20260917";
 const exco2627Photo = (file: string) => `${exco2627Root}/${file}?v=${exco2627Version}`;
 const excoPlaceholderPhoto = "/team/exco/placeholder_profile.webp";
 const exco2223Root = "/team/exco/22-23";
@@ -32,7 +32,7 @@ export const executiveCommitteeByYear: Record<string, ExecutiveCommitteeByYear> 
       {
         name: "Eric Law",
         position: "President",
-        photo: exco2627Photo("president-eric.jpg"),
+        photo: exco2627Photo("president-ericlaw.jpg"),
         linkedin: "https://www.linkedin.com/in/law-eric/",
       },
       {
