@@ -12,7 +12,7 @@ This repo powers the SMUAI public site. Most updates are content and layout twea
 ## Local Setup
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -21,12 +21,14 @@ Open `http://localhost:3000`.
 ## Recommended Checks
 
 ```bash
+npm run lint
+npx tsc --noEmit
 npm run build
 ```
 
-Use `npm run build` before pushing. It is currently the most reliable project health check.
+Run these before pushing, then check the affected pages at phone and desktop widths. There is currently no automated UI test suite.
 
-`npm run lint` should stay useful as a secondary check, but `npm run build` is still the better final verification for this repo because it catches both typing and App Router build issues.
+If the default Turbopack build stalls locally, use `npm run build -- --webpack` to check the production build with Webpack.
 
 ## Main Files
 
@@ -56,26 +58,47 @@ Shared layout:
 Home sections:
 
 - `src/components/home/hero-section.tsx`
+- `src/components/home/hero-gallery.tsx`
 - `src/components/home/mission-vision-section.tsx`
 - `src/components/home/what-smuai-does-section.tsx`
 - `src/components/home/testimonials-section.tsx`
 
 ## Home Page
 
-Home page sections are currently:
+The homepage has four sections:
 
-- hero logo and intro
-- mobile swipe gallery / desktop rotating gallery
-- mission and vision
-- what SMUAI does
-- testimonials marquee
+1. **Hero:** logo, introduction, draggable photo strip, and linked SMU IIE acknowledgement. The gold particles respond to the pointer and clicks on desktop.
+2. **Find your place in AI:** current ExCo group photo, links for students getting started, and the official mission and vision.
+3. **What SMUAI Does:** four selectable categories with an animated photo stack and a featured event for each.
+4. **Testimonials:** a sliding marquee with dragging and a “Pause to read” control.
 
-Hero images and testimonials come from `src/content/home.ts`.
+### Editing content
 
-Key fields:
+- Hero photos: `heroGalleryImages` in `src/content/home.ts`.
+- Hero introduction and SMU IIE link: `src/components/home/hero-section.tsx`.
+- Starting-point links, mission, vision, and ExCo photo: `src/components/home/mission-vision-section.tsx`.
+- Activity descriptions and featured highlights: the `activities` array in `src/components/home/what-smuai-does-section.tsx`. These highlights are curated separately from the Events page.
+- Testimonial names, roles, and quotes: `testimonials` in `src/content/home.ts`.
 
-- `heroGalleryImages`
-- `testimonials`
+### Homepage images
+
+Replace these files to update the current photos. Paths used in components omit the `public` prefix.
+
+| Placement | File | Display crop |
+| --- | --- | --- |
+| ExCo group photo | `public/team/exco/26-27/group-portrait.jpg` | 3:4 portrait |
+| Workshops — Claude101 Workshop | `public/activities/workshops.jpg` | 4:3 landscape |
+| Hackathons — Tencent Cloud “AI CAN DO IT” Hackathon | `public/activities/hackathon.jpg` | 4:3 landscape |
+| Networking — OpenClaw Agentic Night | `public/activities/networking.jpg` | 4:3 landscape |
+| Research — Early Research Opportunity Program (EROP) | `public/activities/research.jpg` | 4:3, slightly above centre |
+
+The hackathon filename is singular. Images use `object-cover`, so the source can have a different ratio but edges may be cropped. Research uses `object-position: center 40%`; adjust that class if a replacement needs a different focal point. Update alt text and the ExCo year caption when replacing photos.
+
+### Gallery and activity interactions
+
+`hero-gallery.tsx` handles the photo strip sizing, automatic movement, drag speed, and centring after release. Left/right arrow keys move the gallery when focused. Automatic movement pauses during dragging and keyboard focus; reduced-motion preferences disable automatic movement.
+
+Activity tabs support arrow keys, Home, and End. All four tabs stay in one row on phones, with the image stack below the text. Desktop also has previous/next controls. Stack transitions respect reduced-motion preferences.
 
 ## SMUAI Bot
 
@@ -136,7 +159,7 @@ Important behavior:
 - the nearest future event becomes the featured event
 - ended events still keep their `lumaLink` so visitors can open the event page
 - clicking a card opens the preview modal
-- `src/content/events.ts` is the single source of truth for all event entries
+- `src/content/events.ts` is the source of truth for the Events page and chatbot event answers
 - update event dates manually in `src/content/events.ts`; the site no longer auto-syncs from Luma
 
 Time values should use ISO timestamps with `+08:00`, for example:
@@ -192,7 +215,7 @@ Notes:
 
 - the Team page defaults to the latest ExCo year on refresh
 - leadership renders before departments
-- mobile view currently uses 2-up card layouts for most people grids
+- mobile view uses two-column advisor cards as well as most people grids
 - LinkedIn buttons only show when a `linkedin` URL exists
 
 ## Partners
@@ -222,6 +245,10 @@ Partner logos live in:
 ## Responsive Notes
 
 The pages use a mix of normal contained layouts and full-bleed sections.
+
+- Shared header height is set by `--site-header-height` in `src/app/layout.tsx`; the main content offset and mobile menu use the same value.
+- Keep `overflow-x-clip` on the homepage and shared layout wrappers. Replacing it with `overflow-x-hidden` can create a nested scroll container and make the first scroll gesture appear stuck.
+- The hero strip uses different card widths and staggering on phones and desktops. Its layout is owned by `hero-gallery.tsx`.
 
 If something looks clipped:
 
@@ -292,10 +319,11 @@ For the current project, no other secret is required.
 
 ## Quick Update Checklist
 
-1. Run `npm run sync:events` if the current AY event list should match the public Luma page.
-2. Update upcoming or completed events in `src/content/events.ts` if historical or manual entries need changes.
-3. Upload matching event posters into the correct `public/events/<ay>/` folder.
-4. Update ExCo names / roles / photos in `src/content/team.ts`.
+1. Update upcoming or completed events manually in `src/content/events.ts`.
+2. Upload matching posters into `public/events/<ay>/`.
+3. Update homepage featured highlights and photos separately when needed.
+4. Update ExCo names, roles, and individual photos in `src/content/team.ts`; update the homepage group photo and caption for a new committee.
 5. Update partner entries and logos in `src/content/partners.ts`.
-6. Check membership links and labels in `src/components/navbar.tsx`, `src/components/footer.tsx`, and `src/lib/site-chatbot.ts` if the sign-up flow changes.
-7. Run `npm run build` before pushing.
+6. Check membership links in the navbar, footer, membership page, and chatbot if the sign-up flow changes.
+7. Run lint, TypeScript, and a production build. Check mobile and desktop layouts, navigation, gallery dragging, activity tabs, and testimonial pause controls.
+8. Review `git diff --check` and `git status --short`. Include new image assets and components, and keep environment files and generated build output out of the commit.

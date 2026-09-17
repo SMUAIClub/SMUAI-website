@@ -1,6 +1,6 @@
 "use client";
 
-import { Quote } from "lucide-react";
+import { Pause, Play, Quote } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { testimonials } from "@/content/home";
 
@@ -29,6 +29,7 @@ export default function TestimonialsSection() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dragStateRef = useRef({ isDragging: false, startX: 0, startScrollLeft: 0 });
   const [isPaused, setIsPaused] = useState(false);
+  const [manualPause, setManualPause] = useState(false);
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -58,7 +59,7 @@ export default function TestimonialsSection() {
       const delta = ts - lastTs;
       lastTs = ts;
 
-      if (!isPaused && !dragStateRef.current.isDragging) {
+      if (!isPaused && !manualPause && !dragStateRef.current.isDragging) {
         element.scrollLeft += delta * TESTIMONIAL_SCROLL_SPEED;
         normalizeScrollPosition(element);
       }
@@ -69,7 +70,7 @@ export default function TestimonialsSection() {
     frameId = window.requestAnimationFrame(tick);
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [isPaused]);
+  }, [isPaused, manualPause]);
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     const element = scrollRef.current;
@@ -108,26 +109,30 @@ export default function TestimonialsSection() {
     }
 
     dragStateRef.current.isDragging = false;
-    element.releasePointerCapture(event.pointerId);
+    if (element.hasPointerCapture(event.pointerId)) {
+      element.releasePointerCapture(event.pointerId);
+    }
     setIsPaused(false);
   };
 
   return (
-    <section className="bg-brand-cloud px-5 py-14 text-brand-deep-blue lg:px-8 lg:py-20">
-      <div className="mx-auto w-full max-w-[1320px]">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Testimonials</p>
-          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-5xl">What Our Community Says</h2>
-          <p className="mt-4 text-base leading-relaxed text-brand-slate sm:mt-5 sm:text-lg">
-            Perspectives from EXCO members and participants across SMUAI&apos;s events, workshops, and projects.
-          </p>
+    <section aria-labelledby="testimonials-heading" className="overflow-x-clip bg-brand-cloud py-14 text-brand-deep-blue lg:py-16">
+      <div className="mx-auto flex w-full max-w-[1264px] flex-col gap-5 px-5 sm:flex-row sm:items-end sm:justify-between lg:px-8">
+        <div className="max-w-3xl">
+          <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Our community</p>
+          <h2 id="testimonials-heading" className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">In their own words.</h2>
+          <p className="mt-3 text-base leading-relaxed text-brand-slate">The experiences that stay with our members and participants.</p>
         </div>
+        <button type="button" onClick={() => setManualPause((paused) => !paused)} aria-label={manualPause ? "Resume testimonials" : "Pause testimonials"} className="inline-flex min-h-11 shrink-0 items-center gap-2 self-start rounded-full border border-brand-deep-blue/20 px-4 text-xs font-semibold transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-deep-blue sm:self-auto">
+          {manualPause ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}
+          {manualPause ? "Resume" : "Pause to read"}
+        </button>
       </div>
 
-      <div className="relative mt-10 w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
+      <div className="relative mt-7 w-full sm:mt-8">
         <div
           ref={scrollRef}
-          className="overflow-x-auto px-5 py-3 sm:px-6 lg:px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="touch-pan-y overflow-x-auto px-5 py-3 sm:px-6 lg:px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => {
             if (!dragStateRef.current.isDragging) {
@@ -139,22 +144,25 @@ export default function TestimonialsSection() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
-          <div className="flex w-max gap-5 px-1 sm:px-2">
+          <div className="flex w-max gap-5 px-1 sm:gap-6 sm:px-2">
             {marqueeTestimonials.map((testimonial, index) => (
               <div
                 key={`${testimonial.name}-${index}`}
-                className="w-[86vw] max-w-[360px] shrink-0 cursor-grab active:cursor-grabbing sm:w-[420px] sm:max-w-[420px]"
+                className="w-[85vw] max-w-[380px] shrink-0 cursor-grab active:cursor-grabbing sm:w-[440px] sm:max-w-[440px]"
               >
-                <article className="h-full rounded-[24px] border border-brand-soft bg-white p-4 shadow-[0_28px_52px_-38px_rgba(27,43,84,0.28)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_34px_58px_-36px_rgba(27,43,84,0.34)] sm:rounded-[28px] sm:p-6 lg:p-7">
-                  <Quote className="text-brand-deep-blue/75" size={22} />
-                  <p className="mt-3 text-sm leading-relaxed text-brand-slate sm:mt-4 sm:text-base lg:text-lg">
-                    &ldquo;{testimonial.quote}&rdquo;
-                  </p>
-                  <div className="mt-5 border-t border-brand-soft pt-4 sm:mt-6">
-                    <p className="text-sm font-bold text-brand-deep-blue sm:text-base">{testimonial.name}</p>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-[0.15em] text-brand-slate sm:text-sm">
-                      {testimonial.role}
-                    </p>
+                <article className="flex h-full flex-col rounded-[1.5rem] border border-brand-deep-blue/10 bg-white p-6 sm:rounded-[2rem] sm:p-8">
+                  <Quote aria-hidden="true" className="text-brand-gold" size={30} strokeWidth={2.5} />
+                  <blockquote className="mb-7 mt-4 flex-1 text-base font-medium leading-[1.75] text-brand-deep-blue">
+                    <p>{testimonial.quote}</p>
+                  </blockquote>
+                  <div className="flex items-center gap-3 border-t border-brand-soft pt-5">
+                    <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-cloud text-xs font-bold text-brand-deep-blue">
+                      {testimonial.name.split(" ").map((part) => part[0]).slice(0, 2).join("")}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-brand-deep-blue">{testimonial.name}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-brand-slate">{testimonial.role}</p>
+                    </div>
                   </div>
                 </article>
               </div>

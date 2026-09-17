@@ -10,6 +10,7 @@ import {
   useEffect,
   useId,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -64,6 +65,7 @@ type GravityProps = {
   attractorStrength?: number
   cursorStrength?: number
   cursorFieldRadius?: number
+  clickImpulse?: number
   resetOnResize?: boolean
   addTopWall?: boolean
   autoStart?: boolean
@@ -88,6 +90,15 @@ type MatterBodyProps = {
   className?: string
 }
 
+const DEFAULT_BODY_OPTIONS: Matter.IBodyDefinition = {
+  friction: 0.1,
+  restitution: 0.1,
+  density: 0.001,
+  isStatic: false,
+}
+
+const DEFAULT_ATTRACTOR_POINT = { x: 0.5, y: 0.5 }
+
 export type GravityRef = {
   start: () => void
   stop: () => void
@@ -106,12 +117,7 @@ const GravityContext = createContext<{
 export const MatterBody = ({
   children,
   className,
-  matterBodyOptions = {
-    friction: 0.1,
-    restitution: 0.1,
-    density: 0.001,
-    isStatic: false,
-  },
+  matterBodyOptions = DEFAULT_BODY_OPTIONS,
   bodyType = "rectangle",
   isDraggable = true,
   sampleLength = 15,
@@ -141,7 +147,7 @@ export const MatterBody = ({
     })
 
     return () => context.unregisterElement(id)
-  }, [props, children, matterBodyOptions, isDraggable])
+  }, [context, matterBodyOptions, bodyType, sampleLength, isDraggable, x, y, angle])
 
   return (
     <div
@@ -161,10 +167,11 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     {
       children,
       debug = false,
-      attractorPoint = { x: 0.5, y: 0.5 },
+      attractorPoint = DEFAULT_ATTRACTOR_POINT,
       attractorStrength = 0.001,
       cursorStrength = 0.0005,
       cursorFieldRadius = 100,
+      clickImpulse = 0,
       resetOnResize = true,
       addTopWall = true,
       autoStart = true,
@@ -294,16 +301,20 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       engine.current.gravity.x = 0
       engine.current.gravity.y = 0
 
-      render.current = Render.create({
-        element: canvas.current,
-        engine: engine.current,
-        options: {
-          width,
-          height,
-          wireframes: false,
-          background: "#00000000",
-        },
-      })
+      // The visible particles are DOM elements. Only create Matter's canvas
+      // renderer when debug outlines are explicitly requested.
+      if (debug) {
+        render.current = Render.create({
+          element: canvas.current,
+          engine: engine.current,
+          options: {
+            width,
+            height,
+            wireframes: false,
+            background: "#00000000",
+          },
+        })
+      }
 
       // Add walls
       const walls = [
@@ -352,7 +363,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       World.add(engine.current.world, [...walls])
 
       runner.current = Runner.create()
-      Render.run(render.current)
+      if (render.current) {
+        Render.run(render.current)
+      }
       updateElements()
       runner.current.enabled = false
 
@@ -391,7 +404,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
           }
 
           // Apply cursor force if mouse is present
-          if (mouseRef.current?.x && mouseRef.current?.y && mouseRef.current.x > 0 && mouseRef.current.y > 0) {
+          if (mouseRef.current?.x && mouseRef.current?.y && mouseRef.current.x > 0 && mouseRef.current.y > 0 && mouseRef.current.x < width && mouseRef.current.y < height) {
             const mdx = mouseRef.current.x - body.position.x
             const mdy = mouseRef.current.y - body.position.y
             const mouseDistance = Math.sqrt(mdx * mdx + mdy * mdy)
@@ -409,7 +422,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       beforeUpdateHandlerRef.current = beforeUpdateHandler
       Events.on(engine.current, "beforeUpdate", beforeUpdateHandler)
-    }, [updateElements, debug, autoStart, attractorPoint, attractorStrength, cursorStrength])
+    }, [updateElements, debug, autoStart, addTopWall, attractorPoint, attractorStrength, cursorStrength, cursorFieldRadius, mouseRef])
 
     // Clear the Matter.js world
     const clearRenderer = useCallback(() => {
@@ -447,15 +460,23 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       const newWidth = canvas.current.offsetWidth
       const newHeight = canvas.current.offsetHeight
+      const registeredBodies = Array.from(bodiesMap.current.entries()).map(
+        ([id, { element, props }]) => ({ id, element, props })
+      )
 
       setCanvasSize({ width: newWidth, height: newHeight })
 
-      // Clear and reinitialize
+      // Rebuild the physics world without losing registered DOM particles.
       clearRenderer()
       initializeRenderer()
-    }, [clearRenderer, initializeRenderer, resetOnResize])
+      registeredBodies.forEach(({ id, element, props }) => {
+        registerElement(id, element, props)
+      })
+    }, [clearRenderer, initializeRenderer, registerElement, resetOnResize])
 
     const startEngine = useCallback(() => {
+      if (isRunning.current) return
+
       if (runner.current) {
         runner.current.enabled = true
 
@@ -479,6 +500,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       }
       if (frameId.current) {
         cancelAnimationFrame(frameId.current)
+        frameId.current = undefined
       }
       isRunning.current = false
     }, [])
@@ -516,6 +538,37 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     )
 
     useEffect(() => {
+      if (!clickImpulse) return
+
+      const scatter = (event: PointerEvent) => {
+        if (!canvas.current || !isRunning.current || !event.isPrimary || event.button !== 0) return
+        // Leave navigation and gallery dragging untouched.
+        if (event.target instanceof Element && event.target.closest("a, button, input, textarea, select, [role='region']")) return
+        const rect = canvas.current.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        if (x < 0 || y < 0 || x > rect.width || y > rect.height) return
+
+        bodiesMap.current.forEach(({ body }) => {
+          const dx = body.position.x - x
+          const dy = body.position.y - y
+          const distance = Math.hypot(dx, dy)
+          const radius = cursorFieldRadius * 1.4
+          if (distance >= radius) return
+          const angle = distance > 0 ? Math.atan2(dy, dx) : body.id * 2.4
+          const speed = clickImpulse * (1 - distance / radius)
+          Body.setVelocity(body, {
+            x: Math.cos(angle) * speed,
+            y: Math.sin(angle) * speed,
+          })
+        })
+      }
+
+      window.addEventListener("pointerdown", scatter, { passive: true })
+      return () => window.removeEventListener("pointerdown", scatter)
+    }, [clickImpulse, cursorFieldRadius])
+
+    useEffect(() => {
       if (!resetOnResize) return
 
       const debouncedResize = debounceFn(handleResize, 500)
@@ -532,8 +585,31 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       return clearRenderer
     }, [initializeRenderer, clearRenderer])
 
+    useEffect(() => {
+      if (!canvas.current || !autoStart) return
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            startEngine()
+          } else {
+            stopEngine()
+          }
+        },
+        { threshold: 0.01 }
+      )
+
+      observer.observe(canvas.current)
+      return () => observer.disconnect()
+    }, [autoStart, startEngine, stopEngine])
+
+    const contextValue = useMemo(
+      () => ({ registerElement, unregisterElement }),
+      [registerElement, unregisterElement]
+    )
+
     return (
-      <GravityContext.Provider value={{ registerElement, unregisterElement }}>
+      <GravityContext.Provider value={contextValue}>
         <div
           ref={canvas}
           className={cn(className, "absolute top-0 left-0 w-full h-full")}

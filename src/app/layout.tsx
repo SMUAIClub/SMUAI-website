@@ -19,10 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body suppressHydrationWarning className="overflow-x-hidden">
+    <html lang="en" className="[--site-header-height:80px] md:[--site-header-height:84px]">
+      <body suppressHydrationWarning className="overflow-x-clip">
         <Navbar />
-        <main className="w-full overflow-x-hidden pt-[calc(72px+env(safe-area-inset-top))] lg:pt-[72px]">
+        <main className="w-full overflow-x-clip pt-[calc(var(--site-header-height)+env(safe-area-inset-top))]">
           {children}
         </main>
         <Footer />

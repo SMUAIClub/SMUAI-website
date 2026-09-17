@@ -6,7 +6,7 @@ import ScrollReveal from "@/components/ui/scroll-reveal";
 
 export default function HomePage() {
   return (
-    <div className="relative w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
+    <div className="relative w-full overflow-x-clip">
       <HeroSection />
       <ScrollReveal>
         <MissionVisionSection />
