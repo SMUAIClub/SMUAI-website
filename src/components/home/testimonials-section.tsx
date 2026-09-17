@@ -108,7 +108,9 @@ export default function TestimonialsSection() {
     }
 
     dragStateRef.current.isDragging = false;
-    element.releasePointerCapture(event.pointerId);
+    if (element.hasPointerCapture(event.pointerId)) {
+      element.releasePointerCapture(event.pointerId);
+    }
     setIsPaused(false);
   };
 
@@ -127,7 +129,7 @@ export default function TestimonialsSection() {
       <div className="relative mt-10 w-full sm:left-1/2 sm:w-screen sm:-translate-x-1/2">
         <div
           ref={scrollRef}
-          className="overflow-x-auto px-5 py-3 sm:px-6 lg:px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="touch-pan-y overflow-x-auto px-5 py-3 sm:px-6 lg:px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => {
             if (!dragStateRef.current.isDragging) {

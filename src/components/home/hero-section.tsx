@@ -1,22 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Gravity, { MatterBody } from "@/components/fancy/physics/cursor-attractor-and-gravity";
 import { heroGalleryImages } from "@/content/home";
 
 const HERO_SLOTS = [
-  { x: 7.5, y: -14 },
-  { x: 28, y: 8 },
+  { x: 8.5, y: -14 },
+  { x: 29.5, y: 8 },
   { x: 50, y: 34 },
-  { x: 72, y: 8 },
-  { x: 92.5, y: -14 },
+  { x: 70.5, y: 8 },
+  { x: 91.5, y: -14 },
 ] as const;
 
 const HERO_CAROUSEL_MS = 2600;
-const MOBILE_HERO_REPEAT_COUNT = 3;
-const MOBILE_HERO_SCROLL_SPEED = 0.03;
+const HERO_STARTUP_IDLE_MS = 900;
+const HERO_PARTICLE_BODY_OPTIONS = {
+  friction: 0.5,
+  restitution: 0.28,
+  density: 0.0007,
+};
 
 const heroParticles = Array.from({ length: 56 }, (_, index) => {
   const seedX = (index * 37 + 11) % 100;
@@ -36,61 +40,12 @@ function getInitialCarouselItems() {
     .map((src, index) => ({ id: index + 1, src }));
 }
 
-const mobileHeroGalleryImages = Array.from(
-  { length: MOBILE_HERO_REPEAT_COUNT },
-  () => heroGalleryImages,
-).flat();
-
-function getMobileHeroSegmentWidth(element: HTMLDivElement) {
-  return element.scrollWidth / MOBILE_HERO_REPEAT_COUNT;
-}
-
-function normalizeMobileHeroScrollPosition(element: HTMLDivElement) {
-  const segmentWidth = getMobileHeroSegmentWidth(element);
-
-  if (element.scrollLeft < segmentWidth * 0.5) {
-    element.scrollLeft += segmentWidth;
-  } else if (element.scrollLeft > segmentWidth * 1.5) {
-    element.scrollLeft -= segmentWidth;
-  }
-}
-
 export default function HeroSection() {
-  const heroRef = useRef<HTMLElement | null>(null);
   const [carouselItems, setCarouselItems] = useState(getInitialCarouselItems);
-  const mobileScrollRef = useRef<HTMLDivElement | null>(null);
-  const mobileDragStateRef = useRef({ isDragging: false, startX: 0, startScrollLeft: 0 });
-  const [isMobilePaused, setIsMobilePaused] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [enableHeroPhysics, setEnableHeroPhysics] = useState(false);
   const nextImageRef = useRef(HERO_SLOTS.length);
   const idRef = useRef(HERO_SLOTS.length + 1);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 110,
-    damping: 24,
-    mass: 0.3,
-  });
-  const backdropOpacity = useTransform(smoothProgress, [0, 0.85], [1, 0.62]);
-  const backdropScale = useTransform(smoothProgress, [0, 1], [1, 1.04]);
-  const glowOpacity = useTransform(smoothProgress, [0, 0.8], [0.7, 0.2]);
-  const glowY = useTransform(smoothProgress, [0, 1], [0, -40]);
-  const particlesOpacity = useTransform(smoothProgress, [0, 0.8], [0.62, 0.14]);
-  const particlesY = useTransform(smoothProgress, [0, 1], [0, -42]);
-  const heroCopyY = useTransform(smoothProgress, [0, 1], [0, -54]);
-  const heroCopyOpacity = useTransform(smoothProgress, [0, 0.72, 1], [1, 0.64, 0.24]);
-  const heroCopyScale = useTransform(smoothProgress, [0, 1], [1, 0.97]);
-  const heroCopyBlur = useTransform(smoothProgress, [0, 1], [0, 8]);
-  const heroCopyFilter = useTransform(heroCopyBlur, (value) => `blur(${value}px)`);
-  const galleryY = useTransform(smoothProgress, [0, 1], [0, -34]);
-  const galleryOpacity = useTransform(smoothProgress, [0, 0.75, 1], [1, 0.72, 0.34]);
-  const galleryScale = useTransform(smoothProgress, [0, 1], [1, 1.015]);
-  const galleryBlur = useTransform(smoothProgress, [0, 1], [0, 6]);
-  const galleryFilter = useTransform(galleryBlur, (value) => `blur(${value}px)`);
-  const indicatorOpacity = useTransform(smoothProgress, [0, 0.08, 0.18], [0.82, 0.6, 0]);
-  const indicatorY = useTransform(smoothProgress, [0, 0.18], [0, -16]);
-  const sectionOpacity = useTransform(smoothProgress, [0, 0.92, 1], [1, 0.98, 0.95]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -106,127 +61,100 @@ export default function HeroSection() {
   }, []);
 
   useEffect(() => {
-    const element = mobileScrollRef.current;
+    let cancelled = false;
+    let timeoutId: number | null = null;
+    const canUseIdleCallback =
+      typeof window !== "undefined" &&
+      typeof window.requestIdleCallback === "function" &&
+      typeof window.cancelIdleCallback === "function";
 
-    if (!element) {
-      return;
+    const activate = () => {
+      if (!cancelled) {
+        setEnableHeroPhysics(true);
+      }
+    };
+
+    if (canUseIdleCallback) {
+      const idleId = window.requestIdleCallback(activate, { timeout: HERO_STARTUP_IDLE_MS });
+
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(idleId);
+      };
     }
 
-    element.scrollLeft = getMobileHeroSegmentWidth(element);
+    timeoutId = window.setTimeout(activate, HERO_STARTUP_IDLE_MS);
+
+    return () => {
+      cancelled = true;
+      if (timeoutId != null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    const element = mobileScrollRef.current;
-
-    if (!element) {
-      return;
-    }
-
-    let frameId = 0;
-    let lastTs = 0;
-
-    const tick = (ts: number) => {
-      if (!lastTs) {
-        lastTs = ts;
-      }
-
-      const delta = ts - lastTs;
-      lastTs = ts;
-
-      if (!isMobilePaused && !mobileDragStateRef.current.isDragging) {
-        element.scrollLeft += delta * MOBILE_HERO_SCROLL_SPEED;
-        normalizeMobileHeroScrollPosition(element);
-      }
-
-      frameId = window.requestAnimationFrame(tick);
+    const updateScrollState = () => {
+      setHasScrolled(window.scrollY > 24);
     };
 
-    frameId = window.requestAnimationFrame(tick);
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
 
-    return () => window.cancelAnimationFrame(frameId);
-  }, [isMobilePaused]);
-
-  const handleMobilePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const element = mobileScrollRef.current;
-
-    if (!element) {
-      return;
-    }
-
-    mobileDragStateRef.current = {
-      isDragging: true,
-      startX: event.clientX,
-      startScrollLeft: element.scrollLeft,
-    };
-
-    setIsMobilePaused(true);
-    element.setPointerCapture(event.pointerId);
-  };
-
-  const handleMobilePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const element = mobileScrollRef.current;
-
-    if (!element || !mobileDragStateRef.current.isDragging) {
-      return;
-    }
-
-    const deltaX = event.clientX - mobileDragStateRef.current.startX;
-    element.scrollLeft = mobileDragStateRef.current.startScrollLeft - deltaX;
-    normalizeMobileHeroScrollPosition(element);
-  };
-
-  const handleMobilePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    const element = mobileScrollRef.current;
-
-    if (!element) {
-      return;
-    }
-
-    mobileDragStateRef.current.isDragging = false;
-    element.releasePointerCapture(event.pointerId);
-    setIsMobilePaused(false);
-  };
+    return () => window.removeEventListener("scroll", updateScrollState);
+  }, []);
 
   return (
-    <motion.section
-      ref={heroRef}
-      style={{ opacity: sectionOpacity }}
-      className="relative flex min-h-0 flex-col justify-start overflow-hidden bg-white pb-8 pt-6 sm:pb-12 sm:pt-10 lg:min-h-[calc(100svh-78px)] lg:justify-center"
-    >
-      <motion.div
-        style={{ opacity: backdropOpacity, scale: backdropScale }}
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(27,43,84,0.06),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(81,97,133,0.08),transparent_44%)]"
-      />
-      <motion.div
-        style={{ opacity: glowOpacity, y: glowY }}
-        className="pointer-events-none absolute inset-x-0 top-10 h-56 bg-[radial-gradient(circle_at_50%_45%,rgba(255,209,1,0.18),rgba(255,209,1,0.08)_24%,transparent_64%)] blur-3xl sm:top-16 sm:h-72"
-      />
-      <motion.div style={{ opacity: particlesOpacity, y: particlesY }} className="absolute inset-0 hidden sm:block">
-        <Gravity attractorStrength={0} cursorStrength={0.00032} cursorFieldRadius={180} className="h-full w-full" addTopWall={false}>
-          {heroParticles.map((particle, index) => (
-            <MatterBody
-              key={`hero-particle-${index}`}
-              bodyType="circle"
-              x={particle.x}
-              y={particle.y}
-              matterBodyOptions={{ friction: 0.5, restitution: 0.28, density: 0.0007 }}
-            >
-              <div className="rounded-full bg-brand-gold/70" style={{ width: `${particle.size}px`, height: `${particle.size}px` }} />
-            </MatterBody>
-          ))}
-        </Gravity>
-      </motion.div>
+    <section className="relative overflow-hidden bg-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(27,43,84,0.06),transparent_42%),radial-gradient(circle_at_80%_70%,rgba(81,97,133,0.08),transparent_44%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-10 h-56 bg-[radial-gradient(circle_at_50%_45%,rgba(255,209,1,0.18),rgba(255,209,1,0.08)_24%,transparent_64%)] blur-3xl sm:top-16 sm:h-72" />
+      <div className="pointer-events-none absolute inset-0 hidden sm:block">
+        {enableHeroPhysics ? (
+          <Gravity
+            attractorStrength={0}
+            cursorStrength={0.00032}
+            cursorFieldRadius={180}
+            className="pointer-events-none h-full w-full select-none"
+            addTopWall={false}
+          >
+            {heroParticles.map((particle, index) => (
+              <MatterBody
+                key={`hero-particle-${index}`}
+                bodyType="circle"
+                x={particle.x}
+                y={particle.y}
+                matterBodyOptions={HERO_PARTICLE_BODY_OPTIONS}
+              >
+                <div
+                  className="pointer-events-none rounded-full bg-brand-gold/70"
+                  style={{ width: `${particle.size}px`, height: `${particle.size}px` }}
+                />
+              </MatterBody>
+            ))}
+          </Gravity>
+        ) : (
+          heroParticles.map((particle, index) => (
+            <span
+              key={`hero-particle-static-${index}`}
+              className="absolute rounded-full bg-brand-gold/70"
+              style={{
+                left: particle.x,
+                top: particle.y,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+              }}
+            />
+          ))
+        )}
+      </div>
 
-      <motion.div
-        style={{
-          y: heroCopyY,
-          opacity: heroCopyOpacity,
-          scale: heroCopyScale,
-          filter: heroCopyFilter,
-        }}
-        className="relative mx-auto flex w-full max-w-[1320px] flex-col items-center px-5 text-center lg:px-8"
-      >
-        <div className="w-full max-w-4xl">
+      <div className="relative mx-auto flex min-h-[calc(100svh-72px)] w-full max-w-[1320px] flex-col px-5 pb-20 pt-12 text-center sm:pb-24 sm:pt-16 lg:px-8 lg:pb-28 lg:pt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto flex w-full max-w-4xl flex-col items-center pt-6 sm:pt-10"
+        >
           <div className="relative mx-auto inline-flex overflow-hidden rounded-[24px] border border-brand-soft/80 px-4 py-3 shadow-[0_28px_60px_-48px_rgba(27,43,84,0.55)] sm:rounded-[28px] sm:px-5 sm:py-4">
             <Image
               src="/brand/smuai_navy_logo.png"
@@ -244,100 +172,63 @@ export default function HeroSection() {
             We are proudly supported by the Singapore Management University&apos;s Institute of Innovation and Entrepreneurship (SMU
             IIE).
           </p>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      <motion.div
-        style={{
-          y: galleryY,
-          opacity: galleryOpacity,
-          scale: galleryScale,
-          filter: galleryFilter,
-        }}
-        className="relative mt-6 w-full overflow-hidden py-3 sm:mt-14 sm:py-10"
-      >
-        <div className="mx-auto block w-full max-w-[1320px] px-5 sm:hidden">
-          <p className="mb-2 text-center text-[10px] font-medium uppercase tracking-[0.14em] text-brand-slate/55">
-            Swipe Through Moments
-          </p>
-          <div
-            ref={mobileScrollRef}
-            className="-mx-5 overflow-x-auto px-5 pb-2 pt-1 touch-pan-x overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            onPointerDown={handleMobilePointerDown}
-            onPointerMove={handleMobilePointerMove}
-            onPointerUp={handleMobilePointerUp}
-            onPointerCancel={handleMobilePointerUp}
-          >
-            <div className="flex w-max gap-3 px-1">
-              {mobileHeroGalleryImages.map((src, index) => (
-                <figure
-                  key={`${src}-${index}`}
-                  className="relative aspect-[5/4] w-[74vw] min-w-[74vw] max-w-[320px] flex-none overflow-hidden rounded-[1.5rem] border border-brand-soft bg-brand-cloud shadow-[0_24px_40px_-30px_rgba(27,43,84,0.35)]"
-                >
-                  <Image
-                    src={src}
-                    alt="SMUAI gallery"
-                    fill
-                    draggable={false}
-                    sizes="(max-width: 640px) 74vw"
-                    quality={72}
-                    className="object-cover"
-                  />
-                </figure>
-              ))}
-            </div>
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.78, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-10 w-full sm:mt-14"
+        >
+          <div className="relative left-1/2 h-[250px] w-screen -translate-x-1/2 overflow-hidden sm:h-[280px] lg:h-[300px]">
+            <AnimatePresence initial={false}>
+              {carouselItems.map((item, slotIndex) => {
+                const slot = HERO_SLOTS[slotIndex];
+                const isEdge = slotIndex === 0 || slotIndex === HERO_SLOTS.length - 1;
+
+                return (
+                  <motion.figure
+                    key={item.id}
+                    initial={{ left: "106%", y: HERO_SLOTS[HERO_SLOTS.length - 1].y, opacity: 0.55 }}
+                    animate={{ left: `${slot.x}%`, y: slot.y, opacity: 1 }}
+                    exit={{ left: "-12%", y: HERO_SLOTS[0].y, opacity: 0.5 }}
+                    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                    className={`absolute top-8 -translate-x-1/2 overflow-hidden rounded-[1.9rem] border border-brand-soft bg-brand-cloud shadow-[0_25px_45px_-42px_rgba(27,43,84,0.5)] ${isEdge ? "hidden md:block" : ""}`}
+                  >
+                    <div className="relative h-40 w-56 sm:h-44 sm:w-60 md:h-48 md:w-[18rem] lg:h-52 lg:w-[20rem]">
+                      <Image
+                        src={item.src}
+                        alt="SMUAI gallery"
+                        fill
+                        sizes="(min-width: 1280px) 320px, (min-width: 768px) 288px, 224px"
+                        quality={72}
+                        className="object-cover"
+                      />
+                    </div>
+                  </motion.figure>
+                );
+              })}
+            </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="mx-auto hidden h-[280px] w-full max-w-[1320px] px-2 sm:block sm:px-5 lg:h-[300px] lg:px-8">
-          <AnimatePresence initial={false}>
-            {carouselItems.map((item, slotIndex) => {
-              const slot = HERO_SLOTS[slotIndex];
-              const isEdge = slotIndex === 0 || slotIndex === HERO_SLOTS.length - 1;
-
-              return (
-                <motion.figure
-                  key={item.id}
-                  initial={{ left: "106%", y: HERO_SLOTS[HERO_SLOTS.length - 1].y, opacity: 0.55 }}
-                  animate={{ left: `${slot.x}%`, y: slot.y, opacity: 1 }}
-                  exit={{ left: "-12%", y: HERO_SLOTS[0].y, opacity: 0.5 }}
-                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  className={`absolute top-8 -translate-x-1/2 overflow-hidden rounded-2xl border border-brand-soft bg-brand-cloud shadow-[0_25px_45px_-42px_rgba(27,43,84,0.5)] ${
-                    isEdge ? "hidden md:block" : ""
-                  }`}
-                >
-                  <div className="relative h-44 w-60 md:h-48 md:w-72 lg:h-52 lg:w-80">
-                    <Image
-                      src={item.src}
-                      alt="SMUAI gallery"
-                      fill
-                      sizes="(min-width: 1280px) 320px, (min-width: 768px) 288px, 240px"
-                      quality={72}
-                      className="object-cover"
-                    />
-                  </div>
-                </motion.figure>
-              );
-            })}
-          </AnimatePresence>
-        </div>
-      </motion.div>
-
-      <motion.div
-        style={{ opacity: indicatorOpacity, y: indicatorY }}
-        className="pointer-events-none absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 sm:bottom-6"
-      >
-        <div className="flex h-8 w-5 items-start justify-center rounded-full border border-brand-deep-blue/20 bg-white/32 p-1 shadow-[0_10px_24px_-18px_rgba(27,43,84,0.3)] backdrop-blur-[2px] sm:h-9 sm:w-6">
-          <motion.span
-            animate={{ y: [0, 8, 0], opacity: [0.95, 0.35, 0.95] }}
-            transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            className="block h-2.5 w-1 rounded-full bg-brand-deep-blue/55"
-          />
-        </div>
-        <span className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-slate/65 sm:text-[11px]">
-          Scroll
-        </span>
-      </motion.div>
-    </motion.section>
+        <motion.div
+          animate={hasScrolled ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: "easeOut" }}
+          className="pointer-events-none absolute inset-x-0 bottom-5 flex flex-col items-center gap-2 sm:bottom-6"
+        >
+          <div className="flex h-8 w-5 items-start justify-center rounded-full border border-brand-deep-blue/20 bg-white/32 p-1 shadow-[0_10px_24px_-18px_rgba(27,43,84,0.3)] backdrop-blur-[2px] sm:h-9 sm:w-6">
+            <motion.span
+              animate={{ y: [0, 8, 0], opacity: [0.95, 0.35, 0.95] }}
+              transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              className="block h-2.5 w-1 rounded-full bg-brand-deep-blue/55"
+            />
+          </div>
+          <span className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-slate/65 sm:text-[11px]">
+            Scroll
+          </span>
+        </motion.div>
+      </div>
+    </section>
   );
 }

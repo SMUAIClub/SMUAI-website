@@ -251,34 +251,36 @@ export default function PartnersPage() {
               ))}
             </div>
 
-            <div className="relative mt-6 hidden h-[620px] w-full max-w-[1360px] overflow-visible md:block lg:h-[700px]">
-              <aside className="absolute left-0 top-6 z-30 max-w-[280px] rounded-[1.5rem] border border-brand-soft/70 bg-white/85 p-4 shadow-[0_20px_36px_-30px_rgba(27,43,84,0.18)] backdrop-blur-sm">
+            <div className="relative mt-6 hidden h-[760px] w-full max-w-[1360px] overflow-visible md:block lg:h-[700px]">
+              <aside className="absolute left-1/2 top-0 z-30 w-full max-w-[480px] -translate-x-1/2 rounded-[1.5rem] border border-brand-soft/70 bg-white/85 p-4 text-center shadow-[0_20px_36px_-30px_rgba(27,43,84,0.18)] backdrop-blur-sm lg:left-0 lg:top-6 lg:max-w-[280px] lg:translate-x-0 lg:text-left">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-slate">Explore</p>
                 <p className="mt-2 text-sm leading-relaxed text-brand-slate">
                   Hover or tap a circle to open a quick partner profile and see who SMUAI has collaborated with.
                 </p>
               </aside>
-              {orbitRings.map((ring, ringIndex) => (
-                <OrbitingCircles
-                  key={`orbit-ring-${ringIndex}`}
-                  radius={ring.radius}
-                  path
-                  reverse={ring.reverse}
-                  iconSize={ring.iconSize}
-                  speed={ring.speed}
-                  paused={areOrbitsPaused}
-                  className="z-20"
-                >
-                  {ring.partners.map((partner) => (
-                    <PartnerNode
-                      key={`${partner.name}-ring-${ringIndex}`}
-                      partner={partner}
-                      onOpen={setSelectedPartner}
-                      onHoverChange={setOrbitsPaused}
-                    />
-                  ))}
-                </OrbitingCircles>
-              ))}
+              <div className="absolute inset-x-0 bottom-0 h-[620px] lg:inset-0 lg:h-auto">
+                {orbitRings.map((ring, ringIndex) => (
+                  <OrbitingCircles
+                    key={`orbit-ring-${ringIndex}`}
+                    radius={ring.radius}
+                    path
+                    reverse={ring.reverse}
+                    iconSize={ring.iconSize}
+                    speed={ring.speed}
+                    paused={areOrbitsPaused}
+                    className="z-20"
+                  >
+                    {ring.partners.map((partner) => (
+                      <PartnerNode
+                        key={`${partner.name}-ring-${ringIndex}`}
+                        partner={partner}
+                        onOpen={setSelectedPartner}
+                        onHoverChange={setOrbitsPaused}
+                      />
+                    ))}
+                  </OrbitingCircles>
+                ))}
+              </div>
             </div>
           </div>
         </section>

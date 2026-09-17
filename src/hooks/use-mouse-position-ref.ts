@@ -30,7 +30,7 @@ export const useMousePositionRef = (
 
     // Listen for both mouse and touch events
     window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("touchmove", handleTouchMove)
+    window.addEventListener("touchmove", handleTouchMove, { passive: true })
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)

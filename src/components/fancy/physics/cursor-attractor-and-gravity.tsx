@@ -10,6 +10,7 @@ import {
   useEffect,
   useId,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -88,6 +89,15 @@ type MatterBodyProps = {
   className?: string
 }
 
+const DEFAULT_BODY_OPTIONS: Matter.IBodyDefinition = {
+  friction: 0.1,
+  restitution: 0.1,
+  density: 0.001,
+  isStatic: false,
+}
+
+const DEFAULT_ATTRACTOR_POINT = { x: 0.5, y: 0.5 }
+
 export type GravityRef = {
   start: () => void
   stop: () => void
@@ -106,12 +116,7 @@ const GravityContext = createContext<{
 export const MatterBody = ({
   children,
   className,
-  matterBodyOptions = {
-    friction: 0.1,
-    restitution: 0.1,
-    density: 0.001,
-    isStatic: false,
-  },
+  matterBodyOptions = DEFAULT_BODY_OPTIONS,
   bodyType = "rectangle",
   isDraggable = true,
   sampleLength = 15,
@@ -141,7 +146,7 @@ export const MatterBody = ({
     })
 
     return () => context.unregisterElement(id)
-  }, [props, children, matterBodyOptions, isDraggable])
+  }, [context, matterBodyOptions, bodyType, sampleLength, isDraggable, x, y, angle])
 
   return (
     <div
@@ -161,7 +166,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     {
       children,
       debug = false,
-      attractorPoint = { x: 0.5, y: 0.5 },
+      attractorPoint = DEFAULT_ATTRACTOR_POINT,
       attractorStrength = 0.001,
       cursorStrength = 0.0005,
       cursorFieldRadius = 100,
@@ -294,16 +299,20 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       engine.current.gravity.x = 0
       engine.current.gravity.y = 0
 
-      render.current = Render.create({
-        element: canvas.current,
-        engine: engine.current,
-        options: {
-          width,
-          height,
-          wireframes: false,
-          background: "#00000000",
-        },
-      })
+      // The visible particles are DOM elements. Only create Matter's canvas
+      // renderer when debug outlines are explicitly requested.
+      if (debug) {
+        render.current = Render.create({
+          element: canvas.current,
+          engine: engine.current,
+          options: {
+            width,
+            height,
+            wireframes: false,
+            background: "#00000000",
+          },
+        })
+      }
 
       // Add walls
       const walls = [
@@ -352,7 +361,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       World.add(engine.current.world, [...walls])
 
       runner.current = Runner.create()
-      Render.run(render.current)
+      if (render.current) {
+        Render.run(render.current)
+      }
       updateElements()
       runner.current.enabled = false
 
@@ -409,7 +420,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       beforeUpdateHandlerRef.current = beforeUpdateHandler
       Events.on(engine.current, "beforeUpdate", beforeUpdateHandler)
-    }, [updateElements, debug, autoStart, attractorPoint, attractorStrength, cursorStrength])
+    }, [updateElements, debug, autoStart, addTopWall, attractorPoint, attractorStrength, cursorStrength, cursorFieldRadius, mouseRef])
 
     // Clear the Matter.js world
     const clearRenderer = useCallback(() => {
@@ -447,15 +458,23 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
       const newWidth = canvas.current.offsetWidth
       const newHeight = canvas.current.offsetHeight
+      const registeredBodies = Array.from(bodiesMap.current.entries()).map(
+        ([id, { element, props }]) => ({ id, element, props })
+      )
 
       setCanvasSize({ width: newWidth, height: newHeight })
 
-      // Clear and reinitialize
+      // Rebuild the physics world without losing registered DOM particles.
       clearRenderer()
       initializeRenderer()
-    }, [clearRenderer, initializeRenderer, resetOnResize])
+      registeredBodies.forEach(({ id, element, props }) => {
+        registerElement(id, element, props)
+      })
+    }, [clearRenderer, initializeRenderer, registerElement, resetOnResize])
 
     const startEngine = useCallback(() => {
+      if (isRunning.current) return
+
       if (runner.current) {
         runner.current.enabled = true
 
@@ -479,6 +498,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       }
       if (frameId.current) {
         cancelAnimationFrame(frameId.current)
+        frameId.current = undefined
       }
       isRunning.current = false
     }, [])
@@ -532,8 +552,31 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       return clearRenderer
     }, [initializeRenderer, clearRenderer])
 
+    useEffect(() => {
+      if (!canvas.current || !autoStart) return
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            startEngine()
+          } else {
+            stopEngine()
+          }
+        },
+        { threshold: 0.01 }
+      )
+
+      observer.observe(canvas.current)
+      return () => observer.disconnect()
+    }, [autoStart, startEngine, stopEngine])
+
+    const contextValue = useMemo(
+      () => ({ registerElement, unregisterElement }),
+      [registerElement, unregisterElement]
+    )
+
     return (
-      <GravityContext.Provider value={{ registerElement, unregisterElement }}>
+      <GravityContext.Provider value={contextValue}>
         <div
           ref={canvas}
           className={cn(className, "absolute top-0 left-0 w-full h-full")}
