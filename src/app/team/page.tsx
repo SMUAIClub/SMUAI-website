@@ -266,167 +266,49 @@ export default function TeamPage() {
         </div>
       </section>
 
-      <section className="bg-brand-cloud px-5 py-12 text-brand-deep-blue lg:px-8">
-        <div className="mx-auto w-full max-w-[1320px]">
-          <div className="mx-auto max-w-3xl text-center lg:hidden">
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Advisors</p>
-            <h2 className="mx-auto mt-3 max-w-xl text-3xl font-black tracking-tight text-brand-deep-blue text-balance sm:text-4xl">
-              Guided By IIE Leadership
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-brand-slate text-pretty sm:text-base">
-              {advisorsIntro}
-            </p>
-            <div className="mt-5 flex items-center justify-center gap-3">
-              <a
-                href="https://iie.smu.edu.sg/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="IIE website"
-                className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
-              >
-                <Globe size={16} />
-                Website
-              </a>
-              <a
-                href="https://www.linkedin.com/school/smuiie/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="IIE LinkedIn"
-                className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
-              >
-                <Linkedin size={16} />
-                LinkedIn
-              </a>
-            </div>
-          </div>
-
-          <div className="hidden lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start lg:gap-10 xl:gap-14">
-            <div className="max-w-[34rem]">
-              <p className="text-sm font-bold uppercase tracking-[0.24em] text-brand-slate">Advisors</p>
-              <h2 className="mt-3 max-w-lg text-4xl font-black tracking-tight text-brand-deep-blue text-balance xl:text-[2.6rem]">
-                Guided By IIE Leadership
+      <section aria-labelledby="advisors-heading" className="bg-brand-cloud px-5 py-12 text-brand-deep-blue sm:py-16 lg:px-8">
+        <div className="mx-auto w-full max-w-[1200px]">
+          <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-brand-slate sm:text-sm">Advisors</p>
+              <h2 id="advisors-heading" className="mt-3 max-w-md text-3xl font-black leading-tight tracking-tight text-balance sm:text-4xl">
+                Guided by IIE leadership
               </h2>
-              <p className="mt-4 max-w-[32rem] text-sm leading-7 text-brand-slate text-pretty xl:text-[15px]">
-                {advisorsIntro}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <a
-                  href="https://iie.smu.edu.sg/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="IIE website"
-                  className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
-                >
-                  <Globe size={16} />
-                  Website
+              <div className="mt-5 flex flex-wrap items-center gap-5">
+                <a href="https://iie.smu.edu.sg/" target="_blank" rel="noreferrer" aria-label="IIE website" className="inline-flex min-h-11 items-center gap-2 rounded-sm text-sm font-semibold underline decoration-brand-deep-blue/25 underline-offset-4 hover:decoration-brand-deep-blue focus-visible:outline-2 focus-visible:outline-offset-4">
+                  <Globe size={16} aria-hidden="true" /> IIE website
                 </a>
-                <a
-                  href="https://www.linkedin.com/school/smuiie/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="IIE LinkedIn"
-                  className="inline-flex items-center gap-2 rounded-full border border-brand-soft bg-white px-4 py-2 text-sm font-semibold text-brand-deep-blue transition hover:bg-brand-pale-gold"
-                >
-                  <Linkedin size={16} />
-                  LinkedIn
+                <a href="https://www.linkedin.com/school/smuiie/" target="_blank" rel="noreferrer" aria-label="IIE LinkedIn" className="inline-flex min-h-11 items-center gap-2 rounded-sm text-sm font-semibold underline decoration-brand-deep-blue/25 underline-offset-4 hover:decoration-brand-deep-blue focus-visible:outline-2 focus-visible:outline-offset-4">
+                  <Linkedin size={16} aria-hidden="true" /> LinkedIn
                 </a>
               </div>
-
             </div>
-
-            <div className="grid grid-cols-2 gap-4 xl:gap-5">
-              {advisors.map((advisor) => (
-                <article
-                  key={`${advisor.name}-desktop-card`}
-                  className="rounded-[2rem] border border-brand-soft bg-white p-4 shadow-[0_24px_48px_-40px_rgba(27,43,84,0.5)]"
-                >
-                  <div className="aspect-[3/4] w-full overflow-hidden rounded-[1.35rem] bg-brand-soft">
-                    {advisor.photo ? (
-                      <Image
-                        src={advisor.photo}
-                        alt={advisor.name}
-                        className="h-full w-full object-cover object-top"
-                        width={640}
-                        height={640}
-                        sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 22vw, 100vw"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-brand-slate">
-                        Photo placeholder
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <div className="text-[15px] font-semibold leading-snug text-brand-deep-blue">
-                          {advisor.name}
-                        </div>
-                        <div className="mt-1 text-sm text-brand-slate">{advisor.position}</div>
-                      </div>
-                      {advisor.linkedin && (
-                        <a
-                          href={advisor.linkedin}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`${advisor.name} LinkedIn`}
-                          className="inline-flex shrink-0 rounded-xl border border-brand-soft bg-white p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
-                        >
-                          <Linkedin size={16} />
-                        </a>
-                      )}
-                    </div>
-                    <p className="mt-3 text-sm leading-relaxed text-brand-slate">
-                      {advisorsProfileSummary[advisor.name]}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <p className="max-w-2xl text-sm leading-relaxed text-brand-slate sm:text-base lg:pt-8">
+              {advisorsIntro}
+            </p>
           </div>
 
-          <div className="mx-auto mt-8 grid max-w-5xl gap-6 sm:grid-cols-2 lg:hidden">
+          <div className="mt-7 grid grid-cols-2 items-stretch gap-3 sm:mt-9 sm:gap-6">
             {advisors.map((advisor) => (
-              <article
-                key={advisor.name}
-                className="rounded-3xl border border-brand-soft bg-white p-5 shadow-[0_25px_50px_-40px_rgba(27,43,84,0.55)] sm:p-6"
-              >
-                <div className="aspect-[4/5] w-full overflow-hidden rounded-xl bg-brand-soft">
+              <article key={advisor.name} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-brand-soft bg-white sm:rounded-3xl lg:grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+                <div className="relative aspect-[4/5] overflow-hidden bg-brand-soft lg:aspect-auto lg:min-h-[320px]">
                   {advisor.photo ? (
-                    <Image
-                      src={advisor.photo}
-                      alt={advisor.name}
-                      className="h-full w-full object-cover object-top"
-                      width={640}
-                      height={640}
-                      sizes="(min-width: 640px) 40vw, 100vw"
-                    />
+                    <Image src={advisor.photo} alt={advisor.name} fill className="object-cover object-top" sizes="(min-width: 1280px) 250px, (min-width: 1024px) 21vw, 46vw" />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-xs text-brand-slate">
-                      Photo placeholder
-                    </div>
+                    <div className="flex h-full items-center justify-center text-xs text-brand-slate">Photo placeholder</div>
                   )}
                 </div>
-
-                <div className="mt-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="font-medium">{advisor.name}</div>
-                    {advisor.linkedin && (
-                      <a
-                        href={advisor.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`${advisor.name} LinkedIn`}
-                        className="rounded-xl border border-brand-soft p-1.5 text-brand-deep-blue transition hover:bg-brand-pale-gold"
-                      >
-                        <Linkedin size={16} />
-                      </a>
-                    )}
+                <div className="flex flex-1 flex-col p-3.5 sm:p-6 lg:p-5 xl:p-7">
+                  <div className="border-b border-brand-soft pb-3 sm:pb-4">
+                    <h3 className="min-h-[2.5em] text-base font-bold leading-tight tracking-tight sm:min-h-0 sm:text-xl">{advisor.name}</h3>
+                    <p className="mt-2 min-h-[3em] text-xs leading-relaxed text-brand-slate sm:text-sm">{advisor.position}</p>
                   </div>
-                  <div className="text-sm text-brand-slate">{advisor.position}</div>
-                  <p className="mt-3 text-sm text-brand-slate">
-                    {advisorsProfileSummary[advisor.name]}
-                  </p>
+                  <p className="py-3 text-xs leading-relaxed text-brand-slate sm:py-4 sm:text-sm">{advisorsProfileSummary[advisor.name]}</p>
+                  {advisor.linkedin && (
+                    <a href={advisor.linkedin} target="_blank" rel="noreferrer" aria-label={`${advisor.name} on LinkedIn`} className="mt-auto inline-flex min-h-11 items-center gap-2 self-start rounded-sm text-xs font-semibold underline decoration-brand-deep-blue/25 underline-offset-4 hover:decoration-brand-deep-blue focus-visible:outline-2 focus-visible:outline-offset-4 sm:text-sm">
+                      <Linkedin size={15} aria-hidden="true" /> LinkedIn
+                    </a>
+                  )}
                 </div>
               </article>
             ))}

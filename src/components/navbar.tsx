@@ -72,17 +72,18 @@ export default function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand-deep-blue pt-[env(safe-area-inset-top)] text-white backdrop-blur-xl">
-      <div className="relative mx-auto flex w-full max-w-[1380px] items-center justify-between px-5 py-4 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center lg:px-8">
+      <div className="relative mx-auto flex w-full max-w-[1380px] h-[calc(var(--site-header-height)-1px)] items-center justify-between px-5 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center lg:px-8">
         <Link href="/" className="transition-transform duration-300 hover:scale-[1.02] md:justify-self-start">
           <BrandLogo />
         </Link>
 
         <nav
-          className="relative hidden h-[2.625rem] items-center gap-0.5 rounded-full border border-white/15 bg-white/6 p-0.5 md:flex md:justify-self-center"
+          aria-label="Main navigation"
+          className="relative hidden h-12 items-center gap-0.5 rounded-full border border-white/15 bg-white/6 px-1.5 py-1 md:flex md:justify-self-center"
         >
           <motion.span
             aria-hidden="true"
-            className="absolute top-1/2 h-9 -translate-y-1/2 rounded-full bg-brand-gold"
+            className="pointer-events-none absolute top-1/2 h-9 -translate-y-1/2 rounded-full bg-brand-gold"
             initial={false}
             animate={{
               left: pillStyle.left,
@@ -97,11 +98,12 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? "page" : undefined}
                 ref={(node) => {
                   itemRefs.current[item.href] = node;
                 }}
                 className={clsx(
-                  "relative inline-flex h-9 items-center justify-center rounded-full px-3.5 text-[13px] font-semibold tracking-[0.01em] transition-colors",
+                  "relative inline-flex h-9 items-center justify-center rounded-full px-3.5 text-[13px] font-semibold tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                   isActive ? "text-brand-deep-blue" : "text-white hover:text-brand-gold"
                 )}
               >
@@ -200,7 +202,7 @@ export default function Navbar() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 28 }}
               transition={{ duration: 0.24, ease: "easeOut" }}
-              className="fixed right-3 top-[calc(env(safe-area-inset-top)+5rem)] z-50 w-[min(21rem,calc(100vw-1.5rem))] overflow-hidden rounded-[1.75rem] border border-white/14 bg-brand-deep-blue/96 shadow-[0_32px_70px_-28px_rgba(7,14,32,0.72)] backdrop-blur-xl md:hidden"
+              className="fixed right-3 top-[calc(env(safe-area-inset-top)+var(--site-header-height)+0.5rem)] z-50 w-[min(21rem,calc(100vw-1.5rem))] overflow-hidden rounded-[1.75rem] border border-white/14 bg-brand-deep-blue/96 shadow-[0_32px_70px_-28px_rgba(7,14,32,0.72)] backdrop-blur-xl md:hidden"
             >
               <div className="border-b border-white/10 px-4 py-4">
                 <div className="flex items-center justify-between gap-3">

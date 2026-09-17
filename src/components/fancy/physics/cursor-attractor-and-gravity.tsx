@@ -65,6 +65,7 @@ type GravityProps = {
   attractorStrength?: number
   cursorStrength?: number
   cursorFieldRadius?: number
+  clickImpulse?: number
   resetOnResize?: boolean
   addTopWall?: boolean
   autoStart?: boolean
@@ -170,6 +171,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       attractorStrength = 0.001,
       cursorStrength = 0.0005,
       cursorFieldRadius = 100,
+      clickImpulse = 0,
       resetOnResize = true,
       addTopWall = true,
       autoStart = true,
@@ -402,7 +404,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
           }
 
           // Apply cursor force if mouse is present
-          if (mouseRef.current?.x && mouseRef.current?.y && mouseRef.current.x > 0 && mouseRef.current.y > 0) {
+          if (mouseRef.current?.x && mouseRef.current?.y && mouseRef.current.x > 0 && mouseRef.current.y > 0 && mouseRef.current.x < width && mouseRef.current.y < height) {
             const mdx = mouseRef.current.x - body.position.x
             const mdy = mouseRef.current.y - body.position.y
             const mouseDistance = Math.sqrt(mdx * mdx + mdy * mdy)
@@ -534,6 +536,37 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       }),
       [startEngine, stopEngine]
     )
+
+    useEffect(() => {
+      if (!clickImpulse) return
+
+      const scatter = (event: PointerEvent) => {
+        if (!canvas.current || !isRunning.current || !event.isPrimary || event.button !== 0) return
+        // Leave navigation and gallery dragging untouched.
+        if (event.target instanceof Element && event.target.closest("a, button, input, textarea, select, [role='region']")) return
+        const rect = canvas.current.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        if (x < 0 || y < 0 || x > rect.width || y > rect.height) return
+
+        bodiesMap.current.forEach(({ body }) => {
+          const dx = body.position.x - x
+          const dy = body.position.y - y
+          const distance = Math.hypot(dx, dy)
+          const radius = cursorFieldRadius * 1.4
+          if (distance >= radius) return
+          const angle = distance > 0 ? Math.atan2(dy, dx) : body.id * 2.4
+          const speed = clickImpulse * (1 - distance / radius)
+          Body.setVelocity(body, {
+            x: Math.cos(angle) * speed,
+            y: Math.sin(angle) * speed,
+          })
+        })
+      }
+
+      window.addEventListener("pointerdown", scatter, { passive: true })
+      return () => window.removeEventListener("pointerdown", scatter)
+    }, [clickImpulse, cursorFieldRadius])
 
     useEffect(() => {
       if (!resetOnResize) return
