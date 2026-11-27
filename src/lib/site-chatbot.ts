@@ -1,4 +1,5 @@
-import { eventsByYear, getEventEndTimestamp } from "@/content/events";
+import { getEventEndTimestamp } from "@/content/events";
+import { getEventsByYear } from "@/content/events.server";
 import { partners } from "@/content/partners";
 import { advisors, advisorsProfileSummary, executiveCommitteeByYear } from "@/content/team";
 
@@ -34,7 +35,7 @@ type FlattenedEvent = {
 const CURRENT_EXCO_YEAR = "26/27";
 
 function flattenEvents() {
-  return Object.entries(eventsByYear)
+  return Object.entries(getEventsByYear())
     .flatMap(([year, items]) =>
       items.map(
         (item) =>

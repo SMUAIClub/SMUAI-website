@@ -4,7 +4,7 @@ import NumberFlow from "@number-flow/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, ChevronDown, ExternalLink, X } from "lucide-react";
-import { eventsByYear, getEventEndTimestamp, type EventItem } from "@/content/events";
+import { getEventEndTimestamp, type EventItem, type EventsByYear } from "@/content/events";
 
 type EventStatus = "upcoming" | "live" | "ended";
 
@@ -211,7 +211,7 @@ function EventPoster({
   );
 }
 
-export default function EventsPage() {
+export default function EventsView({ eventsByYear }: { eventsByYear: EventsByYear }) {
   const years = useMemo(
     () =>
       Object.keys(eventsByYear).sort((a, b) => {
@@ -219,7 +219,7 @@ export default function EventsPage() {
         const startB = Number(b.split("/")[0]);
         return startB - startA;
       }),
-    [],
+    [eventsByYear],
   );
   const [year, setYear] = useState(years[0]);
   const [nowTs, setNowTs] = useState(() => Date.now());
@@ -245,7 +245,7 @@ export default function EventsPage() {
 
   const events = useMemo(
     () => [...(eventsByYear[year] ?? [])].sort((a, b) => getEventStartTime(a) - getEventStartTime(b)),
-    [year],
+    [eventsByYear, year],
   );
 
   const upcomingEvents = useMemo(

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
+    "@keystatic/core": "^0.6.10",
+    "@keystatic/next": "^5.0.5",
     "@number-flow/react": "^0.6.1",
     "@types/matter-js": "^0.20.2",
     "@vercel/analytics": "^2.0.1",
@@ -21,6 +23,7 @@
     "poly-decomp": "^0.3.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "server-only": "^0.0.1",
     "svg-path-commander": "^2.1.11",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7"

@@ -35,17 +35,18 @@ If the default Turbopack build stalls locally, use `npm run build -- --webpack` 
 Content:
 
 - `src/content/home.ts`
-- `src/content/events.ts`
+- `content/events/*.json` (edited via `/keystatic`)
 - `src/content/team.ts`
 - `src/content/partners.ts`
 
 Top-level pages:
 
-- `src/app/page.tsx`
-- `src/app/events/page.tsx`
-- `src/app/team/page.tsx`
-- `src/app/partners/page.tsx`
-- `src/app/membership/page.tsx`
+- `src/app/(site)/page.tsx`
+- `src/app/(site)/events/page.tsx` (+ `events-view.tsx`)
+- `src/app/(site)/team/page.tsx`
+- `src/app/(site)/partners/page.tsx`
+- `src/app/(site)/membership/page.tsx`
+- `src/app/(site)/layout.tsx` — navbar, footer, chatbot (the `/keystatic` admin sits outside this group)
 
 Shared layout:
 
@@ -141,17 +142,16 @@ If the registration flow changes, update those buttons together.
 
 ## Events
 
-Events are maintained in `src/content/events.ts`.
+Events are edited in the **Keystatic admin** at `/keystatic` (see [Content Management (Keystatic)](#content-management-keystatic)). Each event is one JSON file in `content/events/<slug>.json`, and its poster lives at `public/events/<slug>/poster.<ext>`.
 
-Each event uses:
+Each event has:
 
 - `title`
-- `dateLabel`
-- `timeLabel`
-- `startAt`
-- `endAt`
+- `academicYear` — the year tab it appears under, e.g. `26/27`
+- `dateLabel` / `timeLabel` — the text shown on the site
+- `startAt` / `endAt` — Singapore time, stored as `YYYY-MM-DDTHH:mm` (`endAt` is optional; it defaults to 23:59 on the start day)
 - `poster`
-- `lumaLink`
+- `lumaLink` (optional)
 
 Important behavior:
 
@@ -159,24 +159,26 @@ Important behavior:
 - the nearest future event becomes the featured event
 - ended events still keep their `lumaLink` so visitors can open the event page
 - clicking a card opens the preview modal
-- `src/content/events.ts` is the source of truth for the Events page and chatbot event answers
-- update event dates manually in `src/content/events.ts`; the site no longer auto-syncs from Luma
+- `content/events/` is the source of truth for the Events page and chatbot event answers (loaded by `src/content/events.server.ts`)
+- the site does not auto-sync from Luma
 
-Time values should use ISO timestamps with `+08:00`, for example:
+## Content Management (Keystatic)
 
-```ts
-startAt: "2026-07-03T18:30:00+08:00",
-endAt: "2026-07-03T21:00:00+08:00",
-```
+The admin UI is at `/keystatic`. Saving there edits the content files, so nobody needs to touch the code.
 
-Poster folders:
+- **Locally** (`npm run dev`): open `http://localhost:3000/keystatic`. No login; saves write straight to files on disk, which you then commit.
+- **Production**: admins sign in with their GitHub account. Each save becomes a commit to the repo set in `keystatic.config.ts` (`NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO`, default `SMUAIClub/SMUAI-website`), and Vercel redeploys automatically.
 
-- `public/events/26-27/`
-- `public/events/25-26/`
+Only people with write access to that GitHub repo can save. To add or remove an admin, add or remove them as a collaborator on the repo (or in the GitHub org team).
 
-Suggested poster filename format:
+One-time production setup:
 
-- `YYYY-MM-DD-short-slug.jpg`
+1. Run `NEXT_PUBLIC_KEYSTATIC_STORAGE=github npm run dev`, open `http://localhost:3000/keystatic`, and follow the prompt to create the GitHub App (create it under the org that owns the repo). Keystatic writes `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET` and `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` into `.env` (git-ignored; never commit it).
+2. Install the GitHub App on the repo.
+3. In the GitHub App settings, add the callback URL `https://<your-domain>/api/keystatic/github/oauth/callback`.
+4. Add the four env vars above to Vercel (Production and Preview) and redeploy.
+
+Until those env vars are set, `/keystatic` stays unusable in production (the API returns 503), but the public site still builds and deploys normally.
 
 ## Team
 
@@ -319,8 +321,8 @@ For the current project, no other secret is required.
 
 ## Quick Update Checklist
 
-1. Update upcoming or completed events manually in `src/content/events.ts`.
-2. Upload matching posters into `public/events/<ay>/`.
+1. Add or edit events (and their posters) in the `/keystatic` admin.
+2. If editing locally, commit the changed files in `content/events/` and `public/events/`.
 3. Update homepage featured highlights and photos separately when needed.
 4. Update ExCo names, roles, and individual photos in `src/content/team.ts`; update the homepage group photo and caption for a new committee.
 5. Update partner entries and logos in `src/content/partners.ts`.
