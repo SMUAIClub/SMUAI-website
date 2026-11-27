@@ -1,0 +1,86 @@
+{
+  "year": "24/25",
+  "excoNumber": "6th ExCo",
+  "leadership": [
+    {
+      "name": "Vaishnavi Singh",
+      "position": "President",
+      "photo": "/team/exco/24-25/leadership/0/photo.jpg",
+      "linkedin": "https://sg.linkedin.com/in/vaishnavisingh-"
+    },
+    {
+      "name": "Anson Koh",
+      "position": "Vice President",
+      "photo": "/team/exco/24-25/leadership/1/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/ansonkohh/"
+    },
+    {
+      "name": "Maymunah M",
+      "position": "Honorary General Secretary",
+      "photo": "/team/exco/24-25/leadership/2/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/maymunahm/"
+    },
+    {
+      "name": "Kaung Htet Nyunt",
+      "position": "Honorary Finance Secretary",
+      "photo": "/team/exco/24-25/leadership/3/photo.jpg",
+      "linkedin": "https://sg.linkedin.com/in/kaung-htet-nyunt"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Ryan Teo",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/24-25/departments/0/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/ryanteoyx/"
+        },
+        {
+          "name": "Shyn Lim",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/24-25/departments/0/leads/1/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/limshynru"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Jayden Teoh",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/24-25/departments/1/leads/0/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/jayden-teoh"
+        },
+        {
+          "name": "Lye Jia Jun",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/24-25/departments/1/leads/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/lyejiajun"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Diya Desai",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/24-25/departments/2/leads/0/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/diyadesai"
+        },
+        {
+          "name": "Sandra Yap",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/24-25/departments/2/leads/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/sandraykx/"
+        }
+      ],
+      "executives": []
+    }
+  ]
+}

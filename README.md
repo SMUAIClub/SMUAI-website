@@ -34,18 +34,22 @@ If the default Turbopack build stalls locally, use `npm run build -- --webpack` 
 
 Content:
 
-- `src/content/home.ts`
-- `src/content/events.ts`
-- `src/content/team.ts`
-- `src/content/partners.ts`
+- `content/home.json` — hero gallery + testimonials
+- `content/events/*.json` (edited via `/keystatic`)
+- `content/exco/<yy-yy>.json` — one file per ExCo year
+- `content/advisors.json`
+- `content/partners.json`
+
+All files in `content/` are edited via the `/keystatic` admin. `src/content/*.ts` only hold types and loaders.
 
 Top-level pages:
 
-- `src/app/page.tsx`
-- `src/app/events/page.tsx`
-- `src/app/team/page.tsx`
-- `src/app/partners/page.tsx`
-- `src/app/membership/page.tsx`
+- `src/app/(site)/page.tsx`
+- `src/app/(site)/events/page.tsx` (+ `events-view.tsx`)
+- `src/app/(site)/team/page.tsx`
+- `src/app/(site)/partners/page.tsx`
+- `src/app/(site)/membership/page.tsx`
+- `src/app/(site)/layout.tsx` — navbar, footer, chatbot (the `/keystatic` admin sits outside this group)
 
 Shared layout:
 
@@ -74,11 +78,11 @@ The homepage has four sections:
 
 ### Editing content
 
-- Hero photos: `heroGalleryImages` in `src/content/home.ts`.
+- Hero photos: the Homepage section in `/keystatic` (`content/home.json`).
 - Hero introduction and SMU IIE link: `src/components/home/hero-section.tsx`.
 - Starting-point links, mission, vision, and ExCo photo: `src/components/home/mission-vision-section.tsx`.
 - Activity descriptions and featured highlights: the `activities` array in `src/components/home/what-smuai-does-section.tsx`. These highlights are curated separately from the Events page.
-- Testimonial names, roles, and quotes: `testimonials` in `src/content/home.ts`.
+- Testimonial names, roles, and quotes: the Homepage section in `/keystatic` (`content/home.json`).
 
 ### Homepage images
 
@@ -141,17 +145,16 @@ If the registration flow changes, update those buttons together.
 
 ## Events
 
-Events are maintained in `src/content/events.ts`.
+Events are edited in the **Keystatic admin** at `/keystatic` (see [Content Management (Keystatic)](#content-management-keystatic)). Each event is one JSON file in `content/events/<slug>.json`, and its poster lives at `public/events/<slug>/poster.<ext>`.
 
-Each event uses:
+Each event has:
 
 - `title`
-- `dateLabel`
-- `timeLabel`
-- `startAt`
-- `endAt`
+- `academicYear` — the year tab it appears under, e.g. `26/27`
+- `dateLabel` / `timeLabel` — the text shown on the site
+- `startAt` / `endAt` — Singapore time, stored as `YYYY-MM-DDTHH:mm` (`endAt` is optional; it defaults to 23:59 on the start day)
 - `poster`
-- `lumaLink`
+- `lumaLink` (optional)
 
 Important behavior:
 
@@ -159,57 +162,36 @@ Important behavior:
 - the nearest future event becomes the featured event
 - ended events still keep their `lumaLink` so visitors can open the event page
 - clicking a card opens the preview modal
-- `src/content/events.ts` is the source of truth for the Events page and chatbot event answers
-- update event dates manually in `src/content/events.ts`; the site no longer auto-syncs from Luma
+- `content/events/` is the source of truth for the Events page and chatbot event answers (loaded by `src/content/events.server.ts`)
+- the site does not auto-sync from Luma
 
-Time values should use ISO timestamps with `+08:00`, for example:
+## Content Management (Keystatic)
 
-```ts
-startAt: "2026-07-03T18:30:00+08:00",
-endAt: "2026-07-03T21:00:00+08:00",
-```
+The admin UI is at `/keystatic`. Saving there edits the content files, so nobody needs to touch the code.
 
-Poster folders:
+- **Locally** (`npm run dev`): open `http://localhost:3000/keystatic`. No login; saves write straight to files on disk, which you then commit.
+- **Production**: admins sign in with their GitHub account. Each save becomes a commit to the repo set in `keystatic.config.ts` (`NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO`, default `SMUAIClub/SMUAI-website`), and Vercel redeploys automatically.
 
-- `public/events/26-27/`
-- `public/events/25-26/`
+Only people with write access to that GitHub repo can save. To add or remove an admin, add or remove them as a collaborator on the repo (or in the GitHub org team).
 
-Suggested poster filename format:
+One-time production setup:
 
-- `YYYY-MM-DD-short-slug.jpg`
+1. Run `NEXT_PUBLIC_KEYSTATIC_STORAGE=github npm run dev`, open `http://localhost:3000/keystatic`, and follow the prompt to create the GitHub App (create it under the org that owns the repo). Keystatic writes `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET` and `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` into `.env` (git-ignored; never commit it).
+2. Install the GitHub App on the repo.
+3. In the GitHub App settings, add the callback URL `https://<your-domain>/api/keystatic/github/oauth/callback`.
+4. Add the four env vars above to Vercel (Production and Preview) and redeploy.
+
+Until those env vars are set, `/keystatic` stays unusable in production (the API returns 503), but the public site still builds and deploys normally.
 
 ## Team
 
-Team and advisors are maintained in `src/content/team.ts`.
+Edited in `/keystatic` under **ExCo (by year)** and **Advisors**.
 
-Each ExCo year contains:
-
-- `excoNumber`
-- `leadership`
-- `departments`
-
-Each person supports:
-
-- `name`
-- `position`
-- `photo`
-- `linkedin`
-
-Advisors are also stored there:
-
-- `advisors`
-- `advisorsIntro`
-- `advisorsProfileSummary`
-
-Team image folders:
-
-- `public/team/advisors/`
-- `public/team/exco/26-27/`
-- `public/team/exco/25-26/`
-- `public/team/exco/24-25/`
-- `public/team/exco/22-23/`
-- `public/team/exco/20-21/`
-- `public/team/exco/19-20/`
+- Each ExCo year is one file: `content/exco/<yy-yy>.json` with `year`, `excoNumber`, `leadership` and `departments` (each with `leads` and `executives`).
+- Each person has `name`, `position`, `photo` (optional — falls back to `public/team/exco/placeholder_profile.webp`) and `linkedin` (optional).
+- Advisors and the intro paragraph live in `content/advisors.json`; each advisor also has a short `summary`.
+- Photos uploaded in the admin are stored under `public/team/exco/<yy-yy>/...` and `public/team/advisors/...`.
+- To start a new committee, create a new entry in **ExCo (by year)** (e.g. `27/28`, file name `27-28`). The newest year is shown first on the Team page and used by the chatbot as the current ExCo.
 
 Notes:
 
@@ -217,18 +199,13 @@ Notes:
 - leadership renders before departments
 - mobile view uses two-column advisor cards as well as most people grids
 - LinkedIn buttons only show when a `linkedin` URL exists
+- the homepage group photo (`public/team/exco/26-27/group-portrait.jpg`, used in `mission-vision-section.tsx`) is not managed by the CMS
 
 ## Partners
 
-Partners are maintained in `src/content/partners.ts`.
+Edited in `/keystatic` under **Partners** (`content/partners.json`). The order in the admin is the order on the site.
 
-Each partner currently uses:
-
-- `name`
-- `website`
-- `linkedin`
-- `description`
-- `logo`
+Each partner has `name`, `description`, `logo`, and optional `website` / `linkedin`. Logos live in `public/partners/`.
 
 Partners page behavior:
 
@@ -237,10 +214,6 @@ Partners page behavior:
 - clicking a logo opens a modal
 - orbit animations pause on hover and while a partner modal is open
 - the modal currently shows LinkedIn only
-
-Partner logos live in:
-
-- `public/partners/`
 
 ## Responsive Notes
 
@@ -319,11 +292,11 @@ For the current project, no other secret is required.
 
 ## Quick Update Checklist
 
-1. Update upcoming or completed events manually in `src/content/events.ts`.
-2. Upload matching posters into `public/events/<ay>/`.
+1. Add or edit events (and their posters) in the `/keystatic` admin.
+2. If editing locally, commit the changed files in `content/events/` and `public/events/`.
 3. Update homepage featured highlights and photos separately when needed.
-4. Update ExCo names, roles, and individual photos in `src/content/team.ts`; update the homepage group photo and caption for a new committee.
-5. Update partner entries and logos in `src/content/partners.ts`.
+4. Update ExCo names, roles, and photos in `/keystatic` → ExCo (by year); update the homepage group photo and caption in code for a new committee.
+5. Update partner entries and logos in `/keystatic` → Partners.
 6. Check membership links in the navbar, footer, membership page, and chatbot if the sign-up flow changes.
 7. Run lint, TypeScript, and a production build. Check mobile and desktop layouts, navigation, gallery dragging, activity tabs, and testimonial pause controls.
 8. Review `git diff --check` and `git status --short`. Include new image assets and components, and keep environment files and generated build output out of the commit.

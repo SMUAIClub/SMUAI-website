@@ -1,0 +1,58 @@
+{
+  "year": "21/22",
+  "excoNumber": "3rd ExCo",
+  "leadership": [
+    {
+      "name": "Vrinda Bahl",
+      "position": "President"
+    },
+    {
+      "name": "Trudi Lim",
+      "position": "Honorary General Secretary"
+    },
+    {
+      "name": "Ling Yin",
+      "position": "Finance Lead"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Constance Koh",
+          "position": "Partnerships Lead"
+        },
+        {
+          "name": "Megan Thong",
+          "position": "Partnerships Lead"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Yash Chellani",
+          "position": "Programmes Lead"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Graciella Antonius",
+          "position": "Marketing Lead"
+        },
+        {
+          "name": "Rachele Foo",
+          "position": "Marketing Lead"
+        }
+      ],
+      "executives": []
+    }
+  ]
+}

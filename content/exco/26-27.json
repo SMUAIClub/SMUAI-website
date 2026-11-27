@@ -1,0 +1,174 @@
+{
+  "year": "26/27",
+  "excoNumber": "8th ExCo",
+  "leadership": [
+    {
+      "name": "Eric Law",
+      "position": "President",
+      "photo": "/team/exco/26-27/leadership/0/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/law-eric/"
+    },
+    {
+      "name": "Win Lei Thawdar (Winnie)",
+      "position": "Vice President",
+      "photo": "/team/exco/26-27/leadership/1/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/winleithawdar"
+    },
+    {
+      "name": "Ang Cheng Zuo (Alric)",
+      "position": "Honorary General Secretary",
+      "photo": "/team/exco/26-27/leadership/2/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/ang-cheng-zuo"
+    },
+    {
+      "name": "Su Myat Myat Htay (Sera)",
+      "position": "Honorary Finance Secretary",
+      "photo": "/team/exco/26-27/leadership/3/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/sumyatmyathtay/"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Isaac Pua",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/26-27/departments/0/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/isaacpua/"
+        }
+      ],
+      "executives": [
+        {
+          "name": "Tan Ai Qi",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/26-27/departments/0/executives/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/ai-qi-tan"
+        },
+        {
+          "name": "Makendra Prasad",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/26-27/departments/0/executives/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/subramanian-makendra-prasad/"
+        },
+        {
+          "name": "Liu Zihan",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/26-27/departments/0/executives/2/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/zihan-liu-bb2bba3b4"
+        },
+        {
+          "name": "Palaash Jadav",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/26-27/departments/0/executives/3/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/palaash-jadav"
+        },
+        {
+          "name": "Ju Hyeseong",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/26-27/departments/0/executives/4/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/hyeseong-ju/"
+        },
+        {
+          "name": "Lee Ze Xin",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/26-27/departments/0/executives/5/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/lee-ze-xin/"
+        }
+      ]
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Keane Travasso",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/26-27/departments/1/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/keanedt/"
+        }
+      ],
+      "executives": [
+        {
+          "name": "William Hansel",
+          "position": "Programmes Executive",
+          "photo": "/team/exco/26-27/departments/1/executives/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/whansel007"
+        },
+        {
+          "name": "Yang Dairu",
+          "position": "Programmes Executive",
+          "photo": "/team/exco/26-27/departments/1/executives/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/dairu/"
+        },
+        {
+          "name": "Chelsea Gaol",
+          "position": "Programmes Executive",
+          "photo": "/team/exco/26-27/departments/1/executives/2/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/chelseamalg"
+        },
+        {
+          "name": "Phoebe Wong",
+          "position": "Programmes Executive",
+          "photo": "/team/exco/26-27/departments/1/executives/3/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/phoebe-wong/"
+        }
+      ]
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Su Pyae Pyae Zaw (Suzan)",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/26-27/departments/2/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/supyaepyaezaw/"
+        }
+      ],
+      "executives": [
+        {
+          "name": "Alan Sebastian Bun",
+          "position": "Marketing Executive",
+          "photo": "/team/exco/26-27/departments/2/executives/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/alan-sebastian-bun"
+        },
+        {
+          "name": "Wunna Aung",
+          "position": "Marketing Executive",
+          "photo": "/team/exco/26-27/departments/2/executives/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/wunna-aung/"
+        },
+        {
+          "name": "Emilee Zheng",
+          "position": "Marketing Executive",
+          "photo": "/team/exco/26-27/departments/2/executives/2/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/emileezheng/"
+        }
+      ]
+    },
+    {
+      "name": "Research",
+      "leads": [
+        {
+          "name": "Darrius Ng",
+          "position": "Research Lead",
+          "photo": "/team/exco/26-27/departments/3/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/darriusng"
+        }
+      ],
+      "executives": [
+        {
+          "name": "Yi Khuen Chai",
+          "position": "Research Executive",
+          "photo": "/team/exco/26-27/departments/3/executives/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/chaiyikhuen/"
+        },
+        {
+          "name": "Anson Koh",
+          "position": "Research Executive",
+          "photo": "/team/exco/26-27/departments/3/executives/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/ansonkohh/"
+        }
+      ]
+    }
+  ]
+}

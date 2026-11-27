@@ -1,0 +1,62 @@
+{
+  "year": "20/21",
+  "excoNumber": "2nd ExCo",
+  "leadership": [
+    {
+      "name": "Kwa Zhi Poh",
+      "position": "President",
+      "photo": "/team/exco/20-21/leadership/0/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/zhi-poh-kwa/"
+    },
+    {
+      "name": "Shawn Teo",
+      "position": "Honorary General Secretary",
+      "photo": "/team/exco/20-21/leadership/1/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/shawn-teo-5459101a5/"
+    },
+    {
+      "name": "Gan Shao Hong",
+      "position": "Finance Lead",
+      "photo": "/team/exco/20-21/leadership/2/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/g-shaohong/?originalSubdomain=sg"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Lukas Tham Wei Jie",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/20-21/departments/0/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/lukastham/"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Hafil Zachiary",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/20-21/departments/1/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/hafilnz/"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Jean Goh Kai Xuan",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/20-21/departments/2/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/jgkx/"
+        }
+      ],
+      "executives": []
+    }
+  ]
+}

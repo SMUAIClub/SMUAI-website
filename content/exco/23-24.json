@@ -1,0 +1,54 @@
+{
+  "year": "23/24",
+  "excoNumber": "5th ExCo",
+  "leadership": [
+    {
+      "name": "Reuben Yang",
+      "position": "President"
+    },
+    {
+      "name": "Harshita N Balaji",
+      "position": "Honorary General Secretary"
+    },
+    {
+      "name": "Javan Chok",
+      "position": "Honorary Finance Secretary"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Vaishnavi Singh",
+          "position": "Partnerships Lead"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Yin Qiuhao (Ben)",
+          "position": "Programmes Lead"
+        },
+        {
+          "name": "Nicole Daduya",
+          "position": "Programmes Lead"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Jezelei Manangan",
+          "position": "Marketing Lead"
+        }
+      ],
+      "executives": []
+    }
+  ]
+}

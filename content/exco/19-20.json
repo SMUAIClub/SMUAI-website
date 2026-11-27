@@ -1,0 +1,68 @@
+{
+  "year": "19/20",
+  "excoNumber": "1st ExCo",
+  "leadership": [
+    {
+      "name": "Sheldon Chin",
+      "position": "President",
+      "photo": "/team/exco/19-20/leadership/0/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/sheldon-chin-715951124/"
+    },
+    {
+      "name": "Lee Ee Xuan",
+      "position": "Honorary General Secretary",
+      "photo": "/team/exco/19-20/leadership/1/photo.jpeg",
+      "linkedin": "https://www.linkedin.com/in/lee-e-b3b19593/"
+    },
+    {
+      "name": "Charis Low",
+      "position": "Finance Lead",
+      "photo": "/team/exco/19-20/leadership/2/photo.png",
+      "linkedin": "https://www.linkedin.com/in/charislow/"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Jeremy Ang",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/19-20/departments/0/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/jeremy-ang/"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Cindy Zheng",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/19-20/departments/1/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/zxx/"
+        },
+        {
+          "name": "Johnathan Tan",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/19-20/departments/1/leads/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/johnathan-tan-kw/"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Haran Dorairaj",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/19-20/departments/2/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/harandrj/"
+        }
+      ],
+      "executives": []
+    }
+  ]
+}
