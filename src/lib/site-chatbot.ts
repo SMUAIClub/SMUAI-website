@@ -1,7 +1,8 @@
 import { getEventEndTimestamp } from "@/content/events";
 import { getEventsByYear } from "@/content/events.server";
 import { partners } from "@/content/partners";
-import { advisors, advisorsProfileSummary, executiveCommitteeByYear } from "@/content/team";
+import { advisors, advisorsProfileSummary, sortYearsDesc } from "@/content/team";
+import { getExecutiveCommitteeByYear } from "@/content/team.server";
 
 export const chatbotLinks = {
   teamPage: "/team",
@@ -32,7 +33,6 @@ type FlattenedEvent = {
   lumaLink?: string;
 };
 
-const CURRENT_EXCO_YEAR = "26/27";
 
 function flattenEvents() {
   return Object.entries(getEventsByYear())
@@ -59,8 +59,15 @@ function getUpcomingEvents(limit = 5) {
   return futureEvents.slice(0, limit);
 }
 
+/** The newest year in content/exco/ is treated as the current committee. */
+function getCurrentExco() {
+  const executiveCommitteeByYear = getExecutiveCommitteeByYear();
+  const [year] = sortYearsDesc(Object.keys(executiveCommitteeByYear));
+  return { executiveCommitteeByYear, year, currentExco: executiveCommitteeByYear[year] };
+}
+
 function getCurrentExcoSummary() {
-  const currentExco = executiveCommitteeByYear[CURRENT_EXCO_YEAR];
+  const { executiveCommitteeByYear, year: CURRENT_EXCO_YEAR, currentExco } = getCurrentExco();
   const leadership = currentExco.leadership
     .map((member) => `${member.position}: ${member.name}`)
     .join("; ");
@@ -204,7 +211,7 @@ export function buildFallbackChatReply(message: string) {
     question.includes("president") ||
     question.includes("advisor")
   ) {
-    const currentExco = executiveCommitteeByYear[CURRENT_EXCO_YEAR];
+    const { year: CURRENT_EXCO_YEAR, currentExco } = getCurrentExco();
     return [
       `The current team shown on the site is AY${CURRENT_EXCO_YEAR} (${currentExco.excoNumber}).`,
       ...currentExco.leadership.map((member) => `- ${member.position}: ${member.name}`),

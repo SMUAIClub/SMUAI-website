@@ -1,0 +1,107 @@
+{
+  "year": "25/26",
+  "excoNumber": "7th ExCo",
+  "leadership": [
+    {
+      "name": "Darrius Ng",
+      "position": "President",
+      "photo": "/team/exco/25-26/leadership/0/photo.jpg",
+      "linkedin": "https://sg.linkedin.com/in/darriusng"
+    },
+    {
+      "name": "Yi Khuen Chai",
+      "position": "Vice President",
+      "photo": "/team/exco/25-26/leadership/1/photo.jpg",
+      "linkedin": "https://sg.linkedin.com/in/chaiyikhuen"
+    },
+    {
+      "name": "Chantel Lee",
+      "position": "Honorary General Secretary",
+      "photo": "/team/exco/25-26/leadership/2/photo.jpg",
+      "linkedin": "https://sg.linkedin.com/in/chantelleejy"
+    },
+    {
+      "name": "Priyal Nevatia",
+      "position": "Honorary Finance Secretary",
+      "photo": "/team/exco/25-26/leadership/3/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/priyalnevatia/"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Anson Koh",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/25-26/departments/0/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/ansonkohh/"
+        }
+      ],
+      "executives": [
+        {
+          "name": "Isaac Pua",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/25-26/departments/0/executives/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/isaacpua/"
+        },
+        {
+          "name": "Saai Raja",
+          "position": "Partnerships Executive",
+          "photo": "/team/exco/25-26/departments/0/executives/1/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/saaiaravindhraja"
+        }
+      ]
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Jones Koh",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/25-26/departments/1/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/kohweijunjones/"
+        }
+      ],
+      "executives": [
+        {
+          "name": "Harry Ng",
+          "position": "Programmes Executive",
+          "photo": "/team/exco/25-26/departments/1/executives/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/ngkokjing/"
+        },
+        {
+          "name": "Flash Teng",
+          "position": "Programmes Executive",
+          "photo": "/team/exco/25-26/departments/1/executives/1/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/flashtxh"
+        }
+      ]
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Win Lei Thawdar",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/25-26/departments/2/leads/0/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/winleithawdar"
+        }
+      ],
+      "executives": [
+        {
+          "name": "Chue Myat Sandy",
+          "position": "Marketing Executive",
+          "photo": "/team/exco/25-26/departments/2/executives/0/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/chue-myat-sandy"
+        },
+        {
+          "name": "Kiara Desai",
+          "position": "Marketing Executive",
+          "photo": "/team/exco/25-26/departments/2/executives/1/photo.jpg",
+          "linkedin": "https://sg.linkedin.com/in/kiarakuldeepdesai"
+        }
+      ]
+    }
+  ]
+}

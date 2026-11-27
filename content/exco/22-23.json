@@ -1,0 +1,74 @@
+{
+  "year": "22/23",
+  "excoNumber": "4th ExCo",
+  "leadership": [
+    {
+      "name": "Yap En Rui Andrea",
+      "position": "President",
+      "photo": "/team/exco/22-23/leadership/0/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/andreayapenrui"
+    },
+    {
+      "name": "Ang Zheng Nan",
+      "position": "Honorary General Secretary",
+      "photo": "/team/exco/22-23/leadership/1/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/zheng-nan-ang/"
+    },
+    {
+      "name": "Elijah Ang Chang Hao",
+      "position": "Finance Lead",
+      "photo": "/team/exco/22-23/leadership/2/photo.jpg",
+      "linkedin": "https://www.linkedin.com/in/elijah-ang-chang-hao/"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Partnerships",
+      "leads": [
+        {
+          "name": "Lau Li Qing",
+          "position": "Partnerships Lead",
+          "photo": "/team/exco/22-23/departments/0/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/lau-li-qing"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Programmes",
+      "leads": [
+        {
+          "name": "Pang Jun Rong (Jayden)",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/22-23/departments/1/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/jun-rong-pang"
+        },
+        {
+          "name": "Yin Qiuhao (Ben)",
+          "position": "Programmes Lead",
+          "photo": "/team/exco/22-23/departments/1/leads/1/photo.jpeg",
+          "linkedin": "https://www.linkedin.com/in/qiuhaoyin74b999198"
+        }
+      ],
+      "executives": []
+    },
+    {
+      "name": "Marketing",
+      "leads": [
+        {
+          "name": "Audrey Ang",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/22-23/departments/2/leads/0/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/audrey-ang01"
+        },
+        {
+          "name": "Reuben Yang Zhong Hng",
+          "position": "Marketing Lead",
+          "photo": "/team/exco/22-23/departments/2/leads/1/photo.jpg",
+          "linkedin": "https://www.linkedin.com/in/reuben-yang-zh224"
+        }
+      ],
+      "executives": []
+    }
+  ]
+}

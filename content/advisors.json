@@ -1,0 +1,19 @@
+{
+  "intro": "SMUAI Club is proudly supported by the SMU Institute of Innovation and Entrepreneurship (IIE), which champions selected interest clubs across the SMU student community. Through the guidance of its advisors, IIE helps shape the club's direction, strengthen its community, and create meaningful opportunities for members to learn, build, and grow.",
+  "advisors": [
+    {
+      "name": "Huo Yasi",
+      "position": "Senior Associate Director at IIE",
+      "photo": "/team/advisors/yasi.jpg",
+      "linkedin": "https://www.linkedin.com/in/huo-yasi/",
+      "summary": "Leading programs that inspire innovation, Yasi combines her rich educational background and a Harvard Master’s to foster impactful learning experiences and partnerships."
+    },
+    {
+      "name": "Nazreen Coupland",
+      "position": "Assistant Manager at IIE",
+      "photo": "/team/advisors/naz.jpg",
+      "linkedin": "https://www.linkedin.com/in/nazreen-annecoupland/",
+      "summary": "Nazreen brings her passion for community building to IIE, with experience at the Mental Health Film Festival and a Theatre Studies degree from NUS."
+    }
+  ]
+}

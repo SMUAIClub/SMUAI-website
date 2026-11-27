@@ -34,10 +34,13 @@ If the default Turbopack build stalls locally, use `npm run build -- --webpack` 
 
 Content:
 
-- `src/content/home.ts`
+- `content/home.json` — hero gallery + testimonials
 - `content/events/*.json` (edited via `/keystatic`)
-- `src/content/team.ts`
-- `src/content/partners.ts`
+- `content/exco/<yy-yy>.json` — one file per ExCo year
+- `content/advisors.json`
+- `content/partners.json`
+
+All files in `content/` are edited via the `/keystatic` admin. `src/content/*.ts` only hold types and loaders.
 
 Top-level pages:
 
@@ -75,11 +78,11 @@ The homepage has four sections:
 
 ### Editing content
 
-- Hero photos: `heroGalleryImages` in `src/content/home.ts`.
+- Hero photos: the Homepage section in `/keystatic` (`content/home.json`).
 - Hero introduction and SMU IIE link: `src/components/home/hero-section.tsx`.
 - Starting-point links, mission, vision, and ExCo photo: `src/components/home/mission-vision-section.tsx`.
 - Activity descriptions and featured highlights: the `activities` array in `src/components/home/what-smuai-does-section.tsx`. These highlights are curated separately from the Events page.
-- Testimonial names, roles, and quotes: `testimonials` in `src/content/home.ts`.
+- Testimonial names, roles, and quotes: the Homepage section in `/keystatic` (`content/home.json`).
 
 ### Homepage images
 
@@ -182,36 +185,13 @@ Until those env vars are set, `/keystatic` stays unusable in production (the API
 
 ## Team
 
-Team and advisors are maintained in `src/content/team.ts`.
+Edited in `/keystatic` under **ExCo (by year)** and **Advisors**.
 
-Each ExCo year contains:
-
-- `excoNumber`
-- `leadership`
-- `departments`
-
-Each person supports:
-
-- `name`
-- `position`
-- `photo`
-- `linkedin`
-
-Advisors are also stored there:
-
-- `advisors`
-- `advisorsIntro`
-- `advisorsProfileSummary`
-
-Team image folders:
-
-- `public/team/advisors/`
-- `public/team/exco/26-27/`
-- `public/team/exco/25-26/`
-- `public/team/exco/24-25/`
-- `public/team/exco/22-23/`
-- `public/team/exco/20-21/`
-- `public/team/exco/19-20/`
+- Each ExCo year is one file: `content/exco/<yy-yy>.json` with `year`, `excoNumber`, `leadership` and `departments` (each with `leads` and `executives`).
+- Each person has `name`, `position`, `photo` (optional — falls back to `public/team/exco/placeholder_profile.webp`) and `linkedin` (optional).
+- Advisors and the intro paragraph live in `content/advisors.json`; each advisor also has a short `summary`.
+- Photos uploaded in the admin are stored under `public/team/exco/<yy-yy>/...` and `public/team/advisors/...`.
+- To start a new committee, create a new entry in **ExCo (by year)** (e.g. `27/28`, file name `27-28`). The newest year is shown first on the Team page and used by the chatbot as the current ExCo.
 
 Notes:
 
@@ -219,18 +199,13 @@ Notes:
 - leadership renders before departments
 - mobile view uses two-column advisor cards as well as most people grids
 - LinkedIn buttons only show when a `linkedin` URL exists
+- the homepage group photo (`public/team/exco/26-27/group-portrait.jpg`, used in `mission-vision-section.tsx`) is not managed by the CMS
 
 ## Partners
 
-Partners are maintained in `src/content/partners.ts`.
+Edited in `/keystatic` under **Partners** (`content/partners.json`). The order in the admin is the order on the site.
 
-Each partner currently uses:
-
-- `name`
-- `website`
-- `linkedin`
-- `description`
-- `logo`
+Each partner has `name`, `description`, `logo`, and optional `website` / `linkedin`. Logos live in `public/partners/`.
 
 Partners page behavior:
 
@@ -239,10 +214,6 @@ Partners page behavior:
 - clicking a logo opens a modal
 - orbit animations pause on hover and while a partner modal is open
 - the modal currently shows LinkedIn only
-
-Partner logos live in:
-
-- `public/partners/`
 
 ## Responsive Notes
 
@@ -324,8 +295,8 @@ For the current project, no other secret is required.
 1. Add or edit events (and their posters) in the `/keystatic` admin.
 2. If editing locally, commit the changed files in `content/events/` and `public/events/`.
 3. Update homepage featured highlights and photos separately when needed.
-4. Update ExCo names, roles, and individual photos in `src/content/team.ts`; update the homepage group photo and caption for a new committee.
-5. Update partner entries and logos in `src/content/partners.ts`.
+4. Update ExCo names, roles, and photos in `/keystatic` → ExCo (by year); update the homepage group photo and caption in code for a new committee.
+5. Update partner entries and logos in `/keystatic` → Partners.
 6. Check membership links in the navbar, footer, membership page, and chatbot if the sign-up flow changes.
 7. Run lint, TypeScript, and a production build. Check mobile and desktop layouts, navigation, gallery dragging, activity tabs, and testimonial pause controls.
 8. Review `git diff --check` and `git status --short`. Include new image assets and components, and keep environment files and generated build output out of the commit.
